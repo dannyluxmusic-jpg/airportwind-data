@@ -1,68 +1,9 @@
 name: Update Airport Frequencies
 
 on:
-  schedule:
-    - cron: '0 6 */28 * *'
   workflow_dispatch:
-
-jobs:
-  build:
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-
-      - run: pip install requests
-
-      - name: Build Frequency CSV
-        run: python build_frequencies.py
-
-      - name: Commit changes
-        run: |
-          git config user.name "github-actions"
-          git config user.email "actions@github.com"
-          git add airport_frequencies.csv
-          git commit -m "Auto update airport frequencies" || echo "No changes"
-          git push
-name: Update Airport Frequencies
-
-on:
   schedule:
-    - cron: '0 6 */28 * *'
-  workflow_dispatch:
-
-jobs:
-  build:
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-
-      - run: pip install requests
-
-      - name: Build Frequency CSV
-        run: python build_frequencies.py
-
-      - name: Commit changes
-        run: |
-          git config user.name "github-actions"
-          git config user.email "actions@github.com"
-          git add airport_frequencies.csv
-          git commit -m "Auto update airport frequencies" || echo "No changes"
-          git pushname: Update Airport Frequencies
-
-on:
-  schedule:
-    - cron: '0 6 */28 * *'
-  workflow_dispatch:
+    - cron: "0 6 */28 * *"
 
 jobs:
   build:
@@ -78,17 +19,10 @@ jobs:
           python-version: '3.11'
 
       - name: Install dependencies
-        run: |
-          pip install requests
-
-      - name: Download FAA NASR Data
-        run: |
-          curl -L -o NASR.zip https://nfdc.faa.gov/webContent/28DaySub/28DaySubscription_Effective.zip
-          unzip -q NASR.zip
+        run: pip install requests
 
       - name: Build Frequency CSV
-        run: |
-          python build_frequencies.py
+        run: python build_frequencies.py
 
       - name: Commit changes
         run: |
@@ -97,4 +31,3 @@ jobs:
           git add airport_frequencies.csv
           git commit -m "Auto update airport frequencies" || echo "No changes"
           git push
-

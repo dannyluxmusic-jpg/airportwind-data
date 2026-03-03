@@ -3,8 +3,7 @@ name: Update Airport Frequencies
 on:
   workflow_dispatch:
   schedule:
-    # Run daily; it will only commit when the CSV changes
-    - cron: "0 6 * * *"
+    - cron: "0 6 * * *"   # daily at 06:00 UTC
 
 permissions:
   contents: write
@@ -12,7 +11,7 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 40
 
     steps:
       - name: Checkout repo
@@ -26,35 +25,23 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install requests
 
-      - name: Download FAA datasets (retry + resume)
+      - name: Download current NASR zip
         shell: bash
         run: |
           set -euo pipefail
 
-          fetch() {
-            local url="$1"
-            local out="$2"
-            echo "Downloading: $out"
-            # -C - resumes partial downloads (fixes curl exit 18 situations)
-            # --retry-all-errors retries on more than just transient network errors
-            curl -L --fail \
-              --retry 25 --retry-all-errors --retry-delay 10 \
-              --connect-timeout 30 --max-time 1800 \
-              -C - -o "$out" "$url"
+          NASR_URL=$(curl -fsSL "https://www.faa.gov/air_traffic/flight_info/aeronav/aero_data/NASR_Subscription" \
+            | grep -Eo 'https://nfdc\.faa\.gov/webContent/28DaySub/28DaySubscription_Effective_[0-9]{4}-[0-9]{2}-[0-9]{2}\.zip' \
+            | head -n 1)
 
-            # Basic sanity check: file should not be tiny / HTML error page
-            if [ ! -s "$out" ]; then
-              echo "ERROR: $out is empty"
-              exit 1
-            fi
-            head -n 2 "$out" | sed -e 's/[^[:print:]\t]//g' || true
-          }
+          echo "Resolved NASR URL:"
+          echo "$NASR_URL"
 
-          fetch "https://adds-faa.opendata.arcgis.com/api/v3/datasets/16966d553d454cca9706d2ce32b14d31_0/downloads/data?format=csv&where=1%3D1&spatialRefId=4326" "faa_nav_raw.csv"
-          fetch "https://adds-faa.opendata.arcgis.com/api/v3/datasets/6e89f7409c2f486894f5393859232cc9_0/downloads/data?format=csv&where=1%3D1&spatialRefId=4326" "faa_services_raw.csv"
-          fetch "https://adds-faa.opendata.arcgis.com/api/v3/datasets/e747ab91a11045e8b3f8a3efd093d3b5_0/downloads/data?format=csv&where=1%3D1&spatialRefId=4326" "faa_airports_raw.csv"
+          curl -L --fail --retry 20 --retry-all-errors --retry-delay 5 \
+            -o NASR.zip "$NASR_URL"
+
+          ls -lh NASR.zip
 
       - name: Build airport_frequencies.csv
         run: python build_frequencies.py

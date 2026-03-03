@@ -3,7 +3,7 @@ name: Update Airport Frequencies
 on:
   workflow_dispatch:
   schedule:
-    - cron: "12 6 * * 1"   # Mondays 06:12 UTC (weekly). Safer than "every 28 days".
+    - cron: "12 6 * * 1"   # Mondays 06:12 UTC (weekly)
 
 permissions:
   contents: write

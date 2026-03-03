@@ -1,126 +1,142 @@
-#!/usr/bin/env python3
 import csv
-import re
-import zipfile
-from pathlib import Path
+import requests
 
 OUTPUT_FILE = "airport_frequencies.csv"
-NASR_ZIP_PATH = "NASR.zip"
 
-# --- helpers ---
-def norm_freq(s):
-    if s is None:
-        return ""
-    s = str(s).strip()
-    # keep digits + dot only
-    s = "".join(c for c in s if c.isdigit() or c == ".")
-    # basic sanity: must contain at least 3 digits
-    if len(re.sub(r"\D", "", s)) < 3:
-        return ""
-    return s
+BASE_URL = "https://services6.arcgis.com/ssFJjBXIUyZDrSYZ/arcgis/rest/services/Frequencies/FeatureServer/0/query"
 
-def norm_type(s):
-    if not s:
-        return ""
-    s = str(s).strip().upper()
-    s = re.sub(r"\s+", " ", s)
+params = {
+    "where": "1=1",
+    "outFields": "*",
+    "f": "json",
+    "resultRecordCount": 2000
+}
 
-    # common cleanups
-    # take first "word-ish" token like ATIS, TWR, GND, CTAF, UNICOM, RCO, AWOS, ASOS, APP, DEP, CLR, etc.
-    token = re.split(r"[^A-Z0-9]+", s)[0].strip()
+def fetch_all():
+    all_rows = []
+    offset = 0
 
-    # map a few variants
-    mapping = {
-        "TOWER": "TWR",
-        "GROUND": "GND",
-        "APPROACH": "APP",
-        "DEPARTURE": "DEP",
-        "CLEARANCE": "CLR",
-        "UNICOM": "UNICOM",
-        "CTAF": "CTAF",
-        "ATIS": "ATIS",
-        "AWOS": "AWOS",
-        "ASOS": "ASOS",
-        "RCO": "RCO",
-    }
-    return mapping.get(token, token)
+    while True:
+        params["resultOffset"] = offset
+        r = requests.get(BASE_URL, params=params, timeout=60)
+        r.raise_for_status()
+        data = r.json()
 
-def to_icao(ident):
-    ident = (ident or "").strip().upper()
-    if not ident:
-        return ""
-    # If already looks like ICAO (4 chars), keep it
-    if len(ident) == 4:
-        return ident
-    # If 3-letter FAA/IATA style, most US airports are K + ident
-    if len(ident) == 3 and ident.isalnum():
-        return "K" + ident
-    # Otherwise keep as-is (some facilities use different formats)
-    return ident
+        features = data.get("features", [])
+        if not features:
+            break
 
-def open_nasr_zip():
-    zp = Path(NASR_ZIP_PATH)
-    if not zp.exists():
-        raise SystemExit(f"ERROR: {NASR_ZIP_PATH} not found in {Path.cwd()}. Download it first.")
-    print("Opening NASR from:", zp.resolve())
-    return zipfile.ZipFile(zp)
+        all_rows.extend(features)
+        offset += len(features)
 
-def find_apt_com(zip_file):
-    for name in zip_file.namelist():
-        if name.upper().endswith("APT_COM.TXT") or "APT_COM.TXT" in name.upper():
-            print("Found:", name)
-            return name
-    raise SystemExit("ERROR: APT_COM.txt not found inside NASR.zip")
+    return all_rows
 
-def parse_apt_com(zip_file, member_name):
-    out = []
+def normalize(freq):
+    return "".join(c for c in str(freq) if c.isdigit() or c == ".")
+
+def main():
+    print("Fetching FAA frequencies...")
+    features = fetch_all()
+
     seen = set()
+    rows = []
 
-    # NOTE: APT_COM is fixed-width; these slices match what you already had.
-    # If FAA shifts widths in the future, we’ll adjust.
-    with zip_file.open(member_name) as f:
-        for raw in f:
-            try:
-                line = raw.decode("latin-1", errors="ignore")
-            except Exception:
-                continue
+    for feat in features:
+        attr = feat["attributes"]
 
-            # skip headers/blank
-            if not line.startswith("APT"):
-                continue
+        icao = attr.get("IDENT")
+        freq = normalize(attr.get("FREQ_TRANS") or attr.get("FREQ_REC"))
+        type_code = attr.get("TYPE_CODE")
 
-            ident = line[27:31].strip()
-            freq  = line[53:60].strip()
-            typ   = line[121:140].strip()
+        if not icao or not freq or not type_code:
+            continue
 
-            icao = to_icao(ident)
-            freq = norm_freq(freq)
-            typ  = norm_type(typ)
+        key = (icao, type_code, freq)
+        if key in seen:
+            continue
 
-            if not icao or not freq or not typ:
-                continue
+        seen.add(key)
+        rows.append(key)
 
-            key = (icao, typ, freq)
-            if key in seen:
-                continue
-            seen.add(key)
-            out.append(key)
+    print("Rows:", len(rows))
 
-    return out
-
-def write_csv(rows):
-    rows.sort()
     with open(OUTPUT_FILE, "w", newline="", encoding="utf-8") as f:
         w = csv.writer(f)
         w.writerow(["ICAO","TYPE","VALUE"])
         w.writerows(rows)
-    print(f"Wrote {OUTPUT_FILE} rows: {len(rows)}")
+
+    print("Wrote airport_frequencies.csv")
+
+if __name__ == "__main__":
+    main()
+import os
+import csv
+import zipfile
+import requests
+import io
+
+OUTPUT_FILE = "airport_frequencies.csv"
+
+NASR_URL = "https://aeronav.faa.gov/Upload_313-d/28DaySubscription_Effective.zip"
+
+def download_nasr():
+    print("Downloading NASR...")
+    r = requests.get(NASR_URL, timeout=120)
+    r.raise_for_status()
+    return zipfile.ZipFile(io.BytesIO(r.content))
+
+def find_apt_com(zip_file):
+    for name in zip_file.namelist():
+        if "APT_COM.txt" in name.upper():
+            print("Found:", name)
+            return name
+    raise Exception("APT_COM.txt not found in NASR zip")
+
+def parse_apt_com(zip_file, file_name):
+    rows = []
+    seen = set()
+
+    with zip_file.open(file_name) as f:
+        for line in f:
+            try:
+                line = line.decode("latin-1")
+            except:
+                continue
+
+            if not line.startswith("APT"):
+                continue
+
+            icao = line[27:31].strip()
+            freq = line[53:60].strip()
+            type_code = line[121:140].strip()
+
+            if not icao or not freq:
+                continue
+
+            freq = "".join(c for c in freq if c.isdigit() or c == ".")
+
+            key = (icao, type_code, freq)
+            if key in seen:
+                continue
+
+            seen.add(key)
+            rows.append(key)
+
+    return rows
+
+def write_csv(rows):
+    with open(OUTPUT_FILE, "w", newline="", encoding="utf-8") as f:
+        writer = csv.writer(f)
+        writer.writerow(["ICAO", "TYPE", "VALUE"])
+        writer.writerows(rows)
 
 def main():
-    z = open_nasr_zip()
-    member = find_apt_com(z)
-    rows = parse_apt_com(z, member)
+    zip_file = download_nasr()
+    apt_com_file = find_apt_com(zip_file)
+    rows = parse_apt_com(zip_file, apt_com_file)
+    print("Parsed rows:", len(rows))
     write_csv(rows)
+    print("Wrote airport_frequencies.csv")
 
 if __name__ == "__main__":
     main()

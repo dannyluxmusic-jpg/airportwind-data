@@ -1,181 +1,222 @@
 #!/usr/bin/env python3
 
-import zipfile
 import re
-from typing import Dict, List, Tuple, Set, Optional
+import sys
+import zipfile
+from pathlib import Path
 
-NASR_ZIP = "NASR.zip"
-OUTPUT_CSV = "airport_frequencies.csv"
+HERE = Path(__file__).resolve().parent
+NASR_ZIP = HERE / "NASR.zip"
+OUT_CSV = HERE / "airport_frequencies.csv"
 
+VHF_MIN = 118.000
+VHF_MAX = 136.975
 
-# -----------------------------
-# Utilities
-# -----------------------------
+FREQ_RE = re.compile(r"(?:^|[^0-9])((?:\d{2,3})\.\d{1,3})(?:[^0-9]|$)")
 
-def norm_station(s: str) -> str:
-    s = s.strip().upper()
-    if len(s) == 3:
-        return "K" + s
-    return s
-
-
-def norm_freq(s: str) -> Optional[str]:
+def norm_freq(s):
     s = s.strip()
+    if not re.match(r"^\d{2,3}\.\d{1,3}$", s):
+        return None
     try:
         v = float(s)
     except:
         return None
+    if v < VHF_MIN or v > VHF_MAX:
+        return None
+    return "%.3f" % v
 
-    # Civil VHF COM band
-    if 118.000 <= v <= 136.975:
-        return f"{v:.3f}"
+def extract_vhf(line):
+    out = []
+    for m in FREQ_RE.finditer(line):
+        f = norm_freq(m.group(1))
+        if f:
+            out.append(f)
+    return out
+
+def add_row(rows, seen, icao, typ, freq):
+    key = (icao, typ, freq)
+    if key in seen:
+        return
+    seen.add(key)
+    rows.append(key)
+
+def classify_twr(line):
+    u = line.upper()
+    types = []
+
+    if "APCH" in u or "APP" in u:
+        types.append("approach")
+    if "DEP" in u:
+        types.append("departure")
+    if "GND" in u or "GROUND" in u:
+        types.append("ground")
+    if "CLNC" in u or "CLEAR" in u or "CD/" in u:
+        types.append("clearance")
+    if "CTR" in u or "CENTER" in u:
+        types.append("center")
+
+    if not types:
+        types.append("tower")
+
+    return list(dict.fromkeys(types))
+
+def pick_airport_ident(parts, ident3_to_icao):
+    for tok in parts:
+        t = tok.strip().upper().replace("*", "")
+        if len(t) == 3 and t in ident3_to_icao:
+            return ident3_to_icao[t]
+    for tok in parts:
+        t = tok.strip().upper().replace("*", "")
+        if len(t) == 4 and t.isalnum():
+            return t
+    return None
+
+def weather_kind_from_line(filename, line):
+    u = line.upper()
+
+    if "ATIS" in u:
+        return "atis"
+    if "ASOS" in u:
+        return "asos"
+    if "AWOS" in u:
+        return "awos"
+
+    if filename.upper().startswith("AWOS"):
+        return "awos"
+    if filename.upper().startswith("WXL"):
+        return "atis"
 
     return None
 
-
-def add_row(rows: List[Tuple[str, str, str]],
-            seen: Set[Tuple[str, str, str]],
-            icao: str,
-            typ: str,
-            freq: str):
-
-    key = (icao, typ, freq)
-    if key not in seen:
-        rows.append(key)
-        seen.add(key)
-
-
-# -----------------------------
-# APT.txt (CTAF / UNICOM)
-# -----------------------------
-
-def parse_apt_txt(zf: zipfile.ZipFile):
-    rows: List[Tuple[str, str, str]] = []
-    seen: Set[Tuple[str, str, str]] = set()
-    ident3_to_icao: Dict[str, str] = {}
-
-    print("Reading: APT.txt")
-
-    with zf.open("APT.txt") as f:
-        for raw in f:
-            line = raw.decode("latin-1")
-
-            if not line.startswith("APT"):
-                continue
-
-            parts = line.split()
-            if len(parts) < 4:
-                continue
-
-            ident3 = parts[2].strip().upper()
-            icao = norm_station(ident3)
-
-            ident3_to_icao[ident3] = icao
-
-            # Find frequency-like tokens (e.g. 122.700)
-            freqs = re.findall(r"\d{3}\.\d{3}", line)
-
-            for freq in freqs:
-                f2 = norm_freq(freq)
-                if f2:
-                    # For now, treat first valid APT frequency as CTAF
-                    add_row(rows, seen, icao, "CTAF", f2)
-
-    return rows, ident3_to_icao
-
-
-# -----------------------------
-# TWR.txt (Tower / Approach / Departure)
-# -----------------------------
-
-def classify_twr_line(line: str) -> str:
-    u = line.upper()
-
-    if "GROUND" in u or " GND" in u:
-        return "GROUND"
-
-    if "CLEAR" in u or "CLR" in u:
-        return "CLEARANCE"
-
-    if "DEP" in u:
-        return "DEPARTURE"
-
-    if "APP" in u:
-        return "APPROACH"
-
-    if "TWR" in u:
-        return "TOWER"
-
-    return "APPROACH"
-
-
-def parse_twr_txt(zf: zipfile.ZipFile, ident3_to_icao: Dict[str, str]):
-    rows: List[Tuple[str, str, str]] = []
-    seen: Set[Tuple[str, str, str]] = set()
-
-    if "TWR.txt" not in zf.namelist():
-        print("TWR.txt not found.")
-        return rows
-
-    print("Reading: TWR.txt")
-
-    with zf.open("TWR.txt") as f:
-        for raw in f:
-            line = raw.decode("latin-1")
-
-            if not line.startswith("TWR"):
-                continue
-
-            parts = line.split()
-            if len(parts) < 2:
-                continue
-
-            freq = norm_freq(parts[1])
-            if not freq:
-                continue
-
-            ident = None
-
-            for tok in parts:
-                t = tok.strip().upper().replace("*", "")
-                if len(t) == 3 and t in ident3_to_icao:
-                    ident = t
-                    break
-
-            if not ident:
-                continue
-
-            icao = ident3_to_icao.get(ident)
-            if not icao:
-                continue
-
-            typ = classify_twr_line(line)
-            add_row(rows, seen, icao, typ, freq)
-
-    return rows
-
-
-# -----------------------------
-# Main
-# -----------------------------
-
 def main():
-    print("Opening:", NASR_ZIP)
+    if not NASR_ZIP.exists():
+        print("ERROR: NASR.zip not found")
+        sys.exit(1)
+
+    rows = []
+    seen = set()
+    ident3_to_icao = {}
+
+    print("Opening:", NASR_ZIP.name)
 
     with zipfile.ZipFile(NASR_ZIP) as zf:
-        apt_rows, ident_map = parse_apt_txt(zf)
-        twr_rows = parse_twr_txt(zf, ident_map)
 
-    all_rows = apt_rows + twr_rows
+        # ---------------------------
+        # APT.txt (Fixed-width UNICOM / CTAF)
+        # ---------------------------
+        if "APT.txt" not in zf.namelist():
+            print("ERROR: APT.txt missing")
+            sys.exit(1)
 
-    print("Writing:", OUTPUT_CSV)
+        print("Reading: APT.txt")
 
-    with open(OUTPUT_CSV, "w") as f:
+        with zf.open("APT.txt") as f:
+            for raw in f:
+                try:
+                    line = raw.decode("latin-1")
+                except:
+                    continue
+
+                if not line.startswith("APT"):
+                    continue
+                if " AIRPORT " not in line:
+                    continue
+
+                m3 = re.search(r"\bAIRPORT\s+([A-Z0-9]{3})\b", line)
+                if not m3:
+                    continue
+                ident3 = m3.group(1)
+
+                m4 = re.search(r"\bL([A-Z0-9]{4})\b", line)
+                if not m4:
+                    continue
+                icao = m4.group(1)
+
+                ident3_to_icao[ident3] = icao
+
+                # FAA Layout_Data/apt_rf.txt positions:
+                # UNICOM freq: cols 982–988 (1-based)
+                # CTAF freq:   cols 989–995 (1-based)
+
+                if len(line) >= 995:
+                    unicom_raw = line[981:988]
+                    ctaf_raw   = line[988:995]
+
+                    unicom = norm_freq(unicom_raw)
+                    ctaf   = norm_freq(ctaf_raw)
+
+                    if unicom:
+                        add_row(rows, seen, icao, "unicom", unicom)
+                    if ctaf:
+                        add_row(rows, seen, icao, "ctaf", ctaf)
+
+        # ---------------------------
+        # TWR.txt
+        # ---------------------------
+        if "TWR.txt" in zf.namelist():
+            print("Reading: TWR.txt")
+            with zf.open("TWR.txt") as f:
+                for raw in f:
+                    try:
+                        line = raw.decode("latin-1")
+                    except:
+                        continue
+
+                    if not line.startswith("TWR"):
+                        continue
+
+                    parts = line.split()
+                    if len(parts) < 2:
+                        continue
+
+                    freq = norm_freq(parts[1])
+                    if not freq:
+                        continue
+
+                    icao = pick_airport_ident(parts, ident3_to_icao)
+                    if not icao:
+                        continue
+
+                    for typ in classify_twr(line):
+                        add_row(rows, seen, icao, typ, freq)
+
+        # ---------------------------
+        # Weather files
+        # ---------------------------
+        for weather_file in ["AWOS.txt", "WXL.txt"]:
+            if weather_file not in zf.namelist():
+                continue
+
+            print("Reading:", weather_file)
+
+            with zf.open(weather_file) as f:
+                for raw in f:
+                    try:
+                        line = raw.decode("latin-1")
+                    except:
+                        continue
+
+                    kind = weather_kind_from_line(weather_file, line)
+                    if not kind:
+                        continue
+
+                    parts = line.split()
+                    icao = pick_airport_ident(parts, ident3_to_icao)
+                    if not icao:
+                        continue
+
+                    for fr in extract_vhf(line):
+                        add_row(rows, seen, icao, kind, fr)
+
+    print("Writing:", OUT_CSV.name)
+
+    with open(OUT_CSV, "w") as f:
         f.write("icao,type,value\n")
-        for icao, typ, freq in sorted(all_rows):
-            f.write(f"{icao},{typ},{freq}\n")
+        for icao, typ, val in rows:
+            f.write("%s,%s,%s\n" % (icao, typ, val))
 
-    print("Done. Total rows:", len(all_rows))
+    print("Done. Total rows:", len(rows))
 
 
 if __name__ == "__main__":

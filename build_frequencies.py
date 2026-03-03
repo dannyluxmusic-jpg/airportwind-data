@@ -1,98 +1,106 @@
 #!/usr/bin/env python3
 import csv
+import os
 import re
 import zipfile
-from pathlib import Path
 
-NASR_ZIP = Path("NASR.zip")
-OUTPUT_FILE = Path("airport_frequencies.csv")
+OUT = "airport_frequencies.csv"
+NASR_ZIP_PATH = "NASR.zip"
 
-# Offsets from Layout_Data/apt_rf.txt (1-based -> convert to 0-based slices)
-LOC_ID_START, LOC_ID_LEN = 28, 4
-UNICOM_START, UNICOM_LEN = 982, 7
-CTAF_START, CTAF_LEN     = 989, 7
-ICAO_START, ICAO_LEN     = 1211, 7
+# Field locations are defined in Layout_Data/apt_rf.txt inside NASR.
+# We use the APT record fields:
+# - ICAO IDENTIFIER (A12) at positions 1211-1217 (length 7)
+# - UNICOM FREQUENCY AVAILABLE (A82) at positions 982-988 (length 7)
+# - COMMON TRAFFIC ADVISORY FREQUENCY (CTAF) (E100) at positions 989-995 (length 7)
+#
+# NOTE: NASR layout files are 1-based positions.
+# Python slicing is 0-based and end-exclusive.
+#
+# So:
+# 982..988 => [981:988]
+# 989..995 => [988:995]
+# 1211..1217 => [1210:1217]
+SL_ICAO = (1210, 1217)
+SL_UNICOM = (981, 988)
+SL_CTAF = (988, 995)
 
-def sl(line: str, start_1based: int, length: int) -> str:
-    i = start_1based - 1
-    return line[i:i+length].strip()
+def normalize_icao(s: str) -> str:
+    return (s or "").strip().upper()
 
-def norm_freq(s: str) -> str:
+def normalize_freq(s: str) -> str:
     if not s:
         return ""
-    s = s.strip()
-    s = re.sub(r"[^0-9.]", "", s)
-    if not s:
-        return ""
-    # Normalize common forms like 122900 -> 122.900
-    if "." not in s and len(s) >= 5:
-        s = s[:-3] + "." + s[-3:]
-    # Remove trailing zeros after decimal, but keep at least one decimal digit
-    if "." in s:
-        left, right = s.split(".", 1)
-        right = right.rstrip("0")
-        if right == "":
-            right = "0"
-        s = left + "." + right
-    return s
+    s = (s or "").strip()
+    # keep digits and dot only
+    s = "".join(ch for ch in s if ch.isdigit() or ch == ".")
+    # basic sanity: must contain at least 3 digits
+    digits = sum(ch.isdigit() for ch in s)
+    return s if digits >= 3 else ""
 
-def main():
-    if not NASR_ZIP.exists():
-        raise SystemExit(f"ERROR: {NASR_ZIP} not found. (You already downloaded it once; put it in this folder.)")
+def open_nasr_zip() -> zipfile.ZipFile:
+    path = os.path.abspath(NASR_ZIP_PATH)
+    print("Opening NASR from:", path)
+    if not os.path.exists(path):
+        raise SystemExit(f"ERROR: {NASR_ZIP_PATH} not found in repo folder. Expected: {path}")
+    return zipfile.ZipFile(path)
 
-    with zipfile.ZipFile(NASR_ZIP, "r") as z:
-        # APT.txt exists at root in your zip listing
-        members = [n for n in z.namelist() if n.upper().endswith("APT.TXT")]
-        if not members:
-            raise SystemExit("ERROR: APT.txt not found in NASR.zip")
-        apt_name = members[0]
-        print("Reading:", apt_name)
+def find_member(z: zipfile.ZipFile, wanted_basename: str) -> str:
+    want = wanted_basename.upper()
+    for name in z.namelist():
+        if name.upper().endswith("/" + want) or name.upper() == want:
+            return name
+    raise SystemExit(f"ERROR: {wanted_basename} not found inside NASR.zip")
 
-        out = []
-        seen = set()
+def parse_from_apt_txt(z: zipfile.ZipFile) -> list[tuple[str, str, str]]:
+    apt_name = find_member(z, "APT.txt")
+    print("Reading:", apt_name)
 
-        with z.open(apt_name, "r") as f:
-            for raw in f:
-                try:
-                    line = raw.decode("latin-1", errors="ignore")
-                except Exception:
-                    continue
+    out_rows: list[tuple[str, str, str]] = []
+    seen: set[tuple[str, str, str]] = set()
 
-                if not line.startswith("APT"):
-                    continue
+    with z.open(apt_name) as f:
+        for raw in f:
+            try:
+                line = raw.decode("latin-1", errors="ignore")
+            except Exception:
+                continue
 
-                icao = sl(line, ICAO_START, ICAO_LEN)
-                loc  = sl(line, LOC_ID_START, LOC_ID_LEN)
+            # Only APT records
+            if not line.startswith("APT"):
+                continue
 
-                # ICAO field is preferred; fallback to loc id if it already looks like ICAO (Kxxx/Pxxx etc)
-                if not icao:
-                    icao = loc if (loc and len(loc) == 4) else ""
+            icao = normalize_icao(line[SL_ICAO[0]:SL_ICAO[1]])
+            if not icao:
+                continue
 
-                if not icao:
-                    continue
+            unicom = normalize_freq(line[SL_UNICOM[0]:SL_UNICOM[1]])
+            ctaf = normalize_freq(line[SL_CTAF[0]:SL_CTAF[1]])
 
-                unicom = norm_freq(sl(line, UNICOM_START, UNICOM_LEN))
-                ctaf   = norm_freq(sl(line, CTAF_START, CTAF_LEN))
+            if unicom:
+                key = (icao, "UNICOM", unicom)
+                if key not in seen:
+                    seen.add(key)
+                    out_rows.append(key)
 
-                if unicom:
-                    key = (icao, "UNICOM", unicom)
-                    if key not in seen:
-                        seen.add(key)
-                        out.append(key)
+            if ctaf:
+                key = (icao, "CTAF", ctaf)
+                if key not in seen:
+                    seen.add(key)
+                    out_rows.append(key)
 
-                if ctaf:
-                    key = (icao, "CTAF", ctaf)
-                    if key not in seen:
-                        seen.add(key)
-                        out.append(key)
+    return out_rows
 
-        out.sort()
-        with OUTPUT_FILE.open("w", newline="", encoding="utf-8") as f2:
-            w = csv.writer(f2)
-            w.writerow(["ICAO","TYPE","VALUE"])
-            w.writerows(out)
+def write_csv(rows: list[tuple[str, str, str]]) -> None:
+    with open(OUT, "w", newline="", encoding="utf-8") as f:
+        w = csv.writer(f)
+        w.writerow(["ICAO", "TYPE", "VALUE"])
+        w.writerows(rows)
 
-        print(f"Wrote {OUTPUT_FILE} rows: {len(out)}")
+def main() -> None:
+    z = open_nasr_zip()
+    rows = parse_from_apt_txt(z)
+    write_csv(rows)
+    print("Wrote", OUT, "rows:", len(rows))
 
 if __name__ == "__main__":
     main()

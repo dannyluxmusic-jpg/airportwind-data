@@ -1,4 +1,74 @@
-import os
+import csv
+import requests
+
+OUTPUT_FILE = "airport_frequencies.csv"
+
+BASE_URL = "https://services6.arcgis.com/ssFJjBXIUyZDrSYZ/arcgis/rest/services/Frequencies/FeatureServer/0/query"
+
+params = {
+    "where": "1=1",
+    "outFields": "*",
+    "f": "json",
+    "resultRecordCount": 2000
+}
+
+def fetch_all():
+    all_rows = []
+    offset = 0
+
+    while True:
+        params["resultOffset"] = offset
+        r = requests.get(BASE_URL, params=params, timeout=60)
+        r.raise_for_status()
+        data = r.json()
+
+        features = data.get("features", [])
+        if not features:
+            break
+
+        all_rows.extend(features)
+        offset += len(features)
+
+    return all_rows
+
+def normalize(freq):
+    return "".join(c for c in str(freq) if c.isdigit() or c == ".")
+
+def main():
+    print("Fetching FAA frequencies...")
+    features = fetch_all()
+
+    seen = set()
+    rows = []
+
+    for feat in features:
+        attr = feat["attributes"]
+
+        icao = attr.get("IDENT")
+        freq = normalize(attr.get("FREQ_TRANS") or attr.get("FREQ_REC"))
+        type_code = attr.get("TYPE_CODE")
+
+        if not icao or not freq or not type_code:
+            continue
+
+        key = (icao, type_code, freq)
+        if key in seen:
+            continue
+
+        seen.add(key)
+        rows.append(key)
+
+    print("Rows:", len(rows))
+
+    with open(OUTPUT_FILE, "w", newline="", encoding="utf-8") as f:
+        w = csv.writer(f)
+        w.writerow(["ICAO","TYPE","VALUE"])
+        w.writerows(rows)
+
+    print("Wrote airport_frequencies.csv")
+
+if __name__ == "__main__":
+    main()import os
 import csv
 import zipfile
 import requests

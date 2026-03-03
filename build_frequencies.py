@@ -1,106 +1,198 @@
 #!/usr/bin/env python3
+"""
+Build airport_frequencies.csv from a local NASR.zip.
+
+Extracts:
+- CTAF + UNICOM from APT.txt
+- Tower/Approach/Departure/etc best-effort from TWR.txt
+
+Output:
+ICAO,TYPE,VALUE
+"""
+
+from __future__ import annotations
+
 import csv
-import os
 import re
 import zipfile
+from pathlib import Path
+from typing import Dict, List, Optional, Set, Tuple
 
-OUT = "airport_frequencies.csv"
-NASR_ZIP_PATH = "NASR.zip"
 
-# Field locations are defined in Layout_Data/apt_rf.txt inside NASR.
-# We use the APT record fields:
-# - ICAO IDENTIFIER (A12) at positions 1211-1217 (length 7)
-# - UNICOM FREQUENCY AVAILABLE (A82) at positions 982-988 (length 7)
-# - COMMON TRAFFIC ADVISORY FREQUENCY (CTAF) (E100) at positions 989-995 (length 7)
-#
-# NOTE: NASR layout files are 1-based positions.
-# Python slicing is 0-based and end-exclusive.
-#
-# So:
-# 982..988 => [981:988]
-# 989..995 => [988:995]
-# 1211..1217 => [1210:1217]
-SL_ICAO = (1210, 1217)
-SL_UNICOM = (981, 988)
-SL_CTAF = (988, 995)
+HERE = Path(__file__).resolve().parent
+NASR_ZIP = HERE / "NASR.zip"
+OUT = HERE / "airport_frequencies.csv"
 
-def normalize_icao(s: str) -> str:
+FREQ_RE = re.compile(r"\b(\d{2,3}\.\d{1,3})\b")
+
+
+def norm_station(s: str) -> str:
     return (s or "").strip().upper()
 
-def normalize_freq(s: str) -> str:
-    if not s:
-        return ""
-    s = (s or "").strip()
-    # keep digits and dot only
-    s = "".join(ch for ch in s if ch.isdigit() or ch == ".")
-    # basic sanity: must contain at least 3 digits
-    digits = sum(ch.isdigit() for ch in s)
-    return s if digits >= 3 else ""
 
-def open_nasr_zip() -> zipfile.ZipFile:
-    path = os.path.abspath(NASR_ZIP_PATH)
-    print("Opening NASR from:", path)
-    if not os.path.exists(path):
-        raise SystemExit(f"ERROR: {NASR_ZIP_PATH} not found in repo folder. Expected: {path}")
-    return zipfile.ZipFile(path)
+def norm_freq(s: str) -> Optional[str]:
+    if s is None:
+        return None
+    m = FREQ_RE.search(str(s))
+    if not m:
+        return None
+    f = m.group(1)
+    a, b = f.split(".", 1)
+    b = (b + "000")[:3]
+    return f"{a}.{b}"
 
-def find_member(z: zipfile.ZipFile, wanted_basename: str) -> str:
-    want = wanted_basename.upper()
-    for name in z.namelist():
-        if name.upper().endswith("/" + want) or name.upper() == want:
-            return name
-    raise SystemExit(f"ERROR: {wanted_basename} not found inside NASR.zip")
 
-def parse_from_apt_txt(z: zipfile.ZipFile) -> list[tuple[str, str, str]]:
-    apt_name = find_member(z, "APT.txt")
-    print("Reading:", apt_name)
+def add_row(rows: List[Tuple[str, str, str]], seen: Set[Tuple[str, str, str]], icao: str, typ: str, freq: str):
+    key = (icao, typ, freq)
+    if key in seen:
+        return
+    seen.add(key)
+    rows.append(key)
 
-    out_rows: list[tuple[str, str, str]] = []
-    seen: set[tuple[str, str, str]] = set()
 
-    with z.open(apt_name) as f:
+# ----- APT.txt slices (CTAF/UNICOM) -----
+APT_ICAO = slice(27, 31)        # e.g. KLAX
+APT_UNICOM = slice(981, 988)    # 7 chars
+APT_CTAF = slice(988, 995)      # 7 chars
+
+
+def parse_apt(zf: zipfile.ZipFile) -> Tuple[List[Tuple[str, str, str]], Dict[str, str]]:
+    if "APT.txt" not in zf.namelist():
+        raise SystemExit("ERROR: APT.txt not found inside NASR.zip")
+
+    rows: List[Tuple[str, str, str]] = []
+    seen: Set[Tuple[str, str, str]] = set()
+    ident3_to_icao: Dict[str, str] = {}
+
+    print("Reading: APT.txt")
+    with zf.open("APT.txt") as f:
         for raw in f:
             try:
-                line = raw.decode("latin-1", errors="ignore")
+                line = raw.decode("latin-1")
             except Exception:
                 continue
-
-            # Only APT records
             if not line.startswith("APT"):
                 continue
 
-            icao = normalize_icao(line[SL_ICAO[0]:SL_ICAO[1]])
+            icao = norm_station(line[APT_ICAO])
             if not icao:
                 continue
 
-            unicom = normalize_freq(line[SL_UNICOM[0]:SL_UNICOM[1]])
-            ctaf = normalize_freq(line[SL_CTAF[0]:SL_CTAF[1]])
+            # helpful map for TWR file (often uses 3-letter ids)
+            if len(icao) == 4 and icao.startswith("K"):
+                ident3_to_icao[icao[1:]] = icao
+
+            unicom = norm_freq(line[APT_UNICOM].strip())
+            ctaf = norm_freq(line[APT_CTAF].strip())
 
             if unicom:
-                key = (icao, "UNICOM", unicom)
-                if key not in seen:
-                    seen.add(key)
-                    out_rows.append(key)
-
+                add_row(rows, seen, icao, "UNICOM", unicom)
             if ctaf:
-                key = (icao, "CTAF", ctaf)
-                if key not in seen:
-                    seen.add(key)
-                    out_rows.append(key)
+                add_row(rows, seen, icao, "CTAF", ctaf)
 
-    return out_rows
+    return rows, ident3_to_icao
 
-def write_csv(rows: list[tuple[str, str, str]]) -> None:
-    with open(OUT, "w", newline="", encoding="utf-8") as f:
+
+# ----- TWR.txt parsing -----
+
+def classify(line: str) -> str:
+    u = line.upper()
+    # order matters: some lines have both APCH and DEP
+    if "ATIS" in u:
+        return "ATIS"
+    if "GND" in u or "GROUND" in u:
+        return "GROUND"
+    if "CLNC" in u or "CLEARANCE" in u or "CLR " in u:
+        return "CLEARANCE"
+    if "APCH" in u or "APPROACH" in u or " APP " in u:
+        return "APPROACH"
+    if " DEP" in u or "DEPARTURE" in u:
+        return "DEPARTURE"
+    if "CENTER" in u or " CTR" in u:
+        return "CENTER"
+    # default
+    return "TOWER"
+
+
+def best_effort_icao(ident: str, ident3_to_icao: Dict[str, str]) -> str:
+    s = norm_station(ident).replace("*", "")
+    if len(s) == 3 and s in ident3_to_icao:
+        return ident3_to_icao[s]
+    if len(s) == 3 and s.isalpha():
+        return "K" + s
+    return s
+
+
+def parse_twr(zf: zipfile.ZipFile, ident3_to_icao: Dict[str, str]) -> List[Tuple[str, str, str]]:
+    if "TWR.txt" not in zf.namelist():
+        print("NOTE: TWR.txt not found; skipping tower/approach/etc")
+        return []
+
+    rows: List[Tuple[str, str, str]] = []
+    seen: Set[Tuple[str, str, str]] = set()
+
+    print("Reading: TWR.txt")
+    with zf.open("TWR.txt") as f:
+        for raw in f:
+            try:
+                line = raw.decode("latin-1")
+            except Exception:
+                continue
+            if not line.startswith("TWR"):
+                continue
+
+            parts = line.split()
+            if len(parts) < 3:
+                continue
+
+            freq = norm_freq(parts[1])
+            if not freq:
+                continue
+
+            # Find first plausible station token after the freq
+            ident = None
+            for tok in parts[2:25]:
+                t = tok.strip().upper().replace("*", "")
+                # skip region codes
+                if t in {"AWP", "ASW", "AEA", "ACE", "AGL", "AAL", "ANM", "ASO"}:
+                    continue
+                if len(t) in (3, 4) and t.isalnum():
+                    ident = t
+                    break
+
+            if not ident:
+                continue
+
+            icao = best_effort_icao(ident, ident3_to_icao)
+            if not icao:
+                continue
+
+            typ = classify(line)
+            add_row(rows, seen, icao, typ, freq)
+
+    return rows
+
+
+def main() -> int:
+    if not NASR_ZIP.exists():
+        print("ERROR: NASR.zip not found at:", NASR_ZIP)
+        return 2
+
+    with zipfile.ZipFile(NASR_ZIP, "r") as zf:
+        apt_rows, ident_map = parse_apt(zf)
+        twr_rows = parse_twr(zf, ident_map)
+
+    rows = apt_rows + twr_rows
+    rows.sort(key=lambda r: (r[0], r[1], r[2]))
+
+    with OUT.open("w", newline="", encoding="utf-8") as f:
         w = csv.writer(f)
         w.writerow(["ICAO", "TYPE", "VALUE"])
         w.writerows(rows)
 
-def main() -> None:
-    z = open_nasr_zip()
-    rows = parse_from_apt_txt(z)
-    write_csv(rows)
-    print("Wrote", OUT, "rows:", len(rows))
+    print(f"Wrote {OUT.name} rows: {len(rows)}")
+    return 0
+
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main())

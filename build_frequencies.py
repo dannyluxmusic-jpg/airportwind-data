@@ -68,7 +68,8 @@ def main():
     print("Wrote airport_frequencies.csv")
 
 if __name__ == "__main__":
-    main()import os
+    main()
+import os
 import csv
 import zipfile
 import requests

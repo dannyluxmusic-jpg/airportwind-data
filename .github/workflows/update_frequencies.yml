@@ -3,7 +3,8 @@ name: Update Airport Frequencies
 on:
   workflow_dispatch:
   schedule:
-    - cron: "12 6 * * 1"   # weekly (Mon 06:12 UTC)
+    # Run daily; it will only commit when the CSV changes
+    - cron: "0 6 * * *"
 
 permissions:
   contents: write
@@ -11,6 +12,7 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
 
     steps:
       - name: Checkout repo
@@ -22,18 +24,37 @@ jobs:
           python-version: "3.11"
 
       - name: Install dependencies
-        run: pip install requests
-
-      - name: Download FAA Frequency Data (ArcGIS CSV)
         run: |
-          curl -L --fail --retry 5 -o faa_frequency_raw.csv \
-          "https://adds-faa.opendata.arcgis.com/api/v3/datasets/16966d553d454cca9706d2ce32b14d31_0/downloads/data?format=csv&where=1%3D1&spatialRefId=4326"
+          python -m pip install --upgrade pip
+          pip install requests
 
-          curl -L --fail --retry 5 -o faa_services_raw.csv \
-          "https://adds-faa.opendata.arcgis.com/api/v3/datasets/6e89f7409c2f486894f5393859232cc9_0/downloads/data?format=csv&where=1%3D1&spatialRefId=4326"
+      - name: Download FAA datasets (retry + resume)
+        shell: bash
+        run: |
+          set -euo pipefail
 
-          curl -L --fail --retry 5 -o faa_airports_raw.csv \
-          "https://adds-faa.opendata.arcgis.com/api/v3/datasets/e747ab91a11045e8b3f8a3efd093d3b5_0/downloads/data?format=csv&where=1%3D1&spatialRefId=4326"
+          fetch() {
+            local url="$1"
+            local out="$2"
+            echo "Downloading: $out"
+            # -C - resumes partial downloads (fixes curl exit 18 situations)
+            # --retry-all-errors retries on more than just transient network errors
+            curl -L --fail \
+              --retry 25 --retry-all-errors --retry-delay 10 \
+              --connect-timeout 30 --max-time 1800 \
+              -C - -o "$out" "$url"
+
+            # Basic sanity check: file should not be tiny / HTML error page
+            if [ ! -s "$out" ]; then
+              echo "ERROR: $out is empty"
+              exit 1
+            fi
+            head -n 2 "$out" | sed -e 's/[^[:print:]\t]//g' || true
+          }
+
+          fetch "https://adds-faa.opendata.arcgis.com/api/v3/datasets/16966d553d454cca9706d2ce32b14d31_0/downloads/data?format=csv&where=1%3D1&spatialRefId=4326" "faa_nav_raw.csv"
+          fetch "https://adds-faa.opendata.arcgis.com/api/v3/datasets/6e89f7409c2f486894f5393859232cc9_0/downloads/data?format=csv&where=1%3D1&spatialRefId=4326" "faa_services_raw.csv"
+          fetch "https://adds-faa.opendata.arcgis.com/api/v3/datasets/e747ab91a11045e8b3f8a3efd093d3b5_0/downloads/data?format=csv&where=1%3D1&spatialRefId=4326" "faa_airports_raw.csv"
 
       - name: Build airport_frequencies.csv
         run: python build_frequencies.py

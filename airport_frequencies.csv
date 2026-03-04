@@ -1,1 +1,13 @@
-
+ICAO,type,value
+KDAL,atis,120.150
+KDAL,ground,121.750
+KDAL,tower,118.700
+KDAL,tower,123.700
+KDAL,clearance,127.900
+KDAL,approach,124.300
+KDAL,approach,125.200
+KBNA,atis,132.850
+KBNA,ground,121.900
+KBNA,tower,118.600
+KJWN,awos,118.525
+KJWN,ctaf,122.800

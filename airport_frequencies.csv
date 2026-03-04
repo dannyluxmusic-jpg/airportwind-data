@@ -1,4 +1,5 @@
 ICAO,type,value
+
 KDAL,atis,120.150
 KDAL,ground,121.750
 KDAL,tower,118.700
@@ -16,18 +17,23 @@ KBNA,approach,119.350
 KBNA,departure,120.200
 
 KJFK,atis,128.725
+KJFK,ground,121.650
 KJFK,ground,121.900
 KJFK,tower,119.100
 KJFK,tower,123.900
 KJFK,clearance,135.050
-KJFK,approach,120.400
+KJFK,approach,123.700
 
 KLAX,atis,133.800
+KLAX,atis,135.650
 KLAX,ground,121.650
+KLAX,ground,121.750
 KLAX,tower,119.800
+KLAX,tower,120.950
 KLAX,tower,133.900
-KLAX,clearance,118.050
-KLAX,approach,124.500
+KLAX,clearance,120.350
+KLAX,approach,124.300
+KLAX,departure,125.200
 
 KJWN,awos,118.525
 KJWN,ctaf,122.800

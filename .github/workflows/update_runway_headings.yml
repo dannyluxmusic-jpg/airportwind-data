@@ -1,0 +1,85 @@
+name: Update FAA runway headings
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 12 * * 4'
+
+permissions:
+  contents: write
+
+jobs:
+  update-runway-headings:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Download FAA airport dataset
+        run: |
+          curl -L -o apt_csv.zip "https://nfdc.faa.gov/webContent/28DaySub/extra/19_Mar_2026_APT_CSV.zip"
+          unzip -o apt_csv.zip
+
+      - name: Build runway headings
+        run: |
+          python3 << 'PY'
+          import csv
+
+          mag = {}
+          with open("APT_BASE.csv", newline="", encoding="utf-8-sig") as f:
+              r = csv.DictReader(f)
+              for row in r:
+                  arpt = row["ARPT_ID"].strip().upper()
+                  var = row["MAG_VARN"].strip()
+                  hemi = row["MAG_HEMIS"].strip().upper()
+                  if arpt and var:
+                      try:
+                          v = float(var)
+                          if hemi == "E":
+                              v = -v
+                          mag[arpt] = v
+                      except:
+                          pass
+
+          rows = []
+          with open("APT_RWY_END.csv", newline="", encoding="utf-8-sig") as f:
+              r = csv.DictReader(f)
+              for row in r:
+                  arpt = row["ARPT_ID"].strip().upper()
+                  end_id = row["RWY_END_ID"].strip().upper()
+                  true_align = row["TRUE_ALIGNMENT"].strip()
+
+                  if not arpt or not end_id or not true_align:
+                      continue
+
+                  try:
+                      true_hdg = float(true_align)
+                  except:
+                      continue
+
+                  var = mag.get(arpt, 0.0)
+                  magnetic = true_hdg + var
+
+                  while magnetic <= 0:
+                      magnetic += 360
+                  while magnetic > 360:
+                      magnetic -= 360
+
+                  rows.append((arpt, end_id, round(magnetic)))
+
+          with open("runway_headings_faa.csv", "w", newline="", encoding="utf-8") as f:
+              w = csv.writer(f)
+              w.writerow(["ARPT_ID","RWY_END_ID","MAG_HEADING"])
+              w.writerows(rows)
+
+          print("Created runway_headings_faa.csv")
+          PY
+
+      - name: Commit updated dataset
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add runway_headings_faa.csv
+          git diff --cached --quiet || git commit -m "Update FAA runway headings"
+          git push

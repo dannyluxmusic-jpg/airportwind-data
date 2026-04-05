@@ -148,6 +148,114 @@
     {
       "type": "Feature",
       "properties": {
+        "name": "ATL B CORE",
+        "type": "Class B",
+        "floor": 0,
+        "ceiling": 10000
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -84.63000000000001,
+              33.44
+            ],
+            [
+              -84.23,
+              33.44
+            ],
+            [
+              -84.23,
+              33.84
+            ],
+            [
+              -84.63000000000001,
+              33.84
+            ],
+            [
+              -84.63000000000001,
+              33.44
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "ATL B MID",
+        "type": "Class B",
+        "floor": 3000,
+        "ceiling": 10000
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -84.83000000000001,
+              33.24
+            ],
+            [
+              -84.03,
+              33.24
+            ],
+            [
+              -84.03,
+              34.04
+            ],
+            [
+              -84.83000000000001,
+              34.04
+            ],
+            [
+              -84.83000000000001,
+              33.24
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "ATL B OUTER",
+        "type": "Class B",
+        "floor": 6000,
+        "ceiling": 10000
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -85.13000000000001,
+              32.94
+            ],
+            [
+              -83.73,
+              32.94
+            ],
+            [
+              -83.73,
+              34.34
+            ],
+            [
+              -85.13000000000001,
+              34.34
+            ],
+            [
+              -85.13000000000001,
+              32.94
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
         "name": "ORD Class B",
         "type": "Class B",
         "floor": 0,

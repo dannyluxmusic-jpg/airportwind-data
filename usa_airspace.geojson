@@ -4,20 +4,52 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "TEST AIRSPACE",
-        "type": "Class D"
+        "name": "NASHVILLE CLASS C",
+        "type": "Class C"
       },
       "geometry": {
         "type": "Polygon",
-        "coordinates": [
-          [
-            [-86.8, 36.1],
-            [-86.7, 36.1],
-            [-86.7, 36.2],
-            [-86.8, 36.2],
-            [-86.8, 36.1]
-          ]
-        ]
+        "coordinates": [[
+          [-87.0, 36.0],
+          [-86.4, 36.0],
+          [-86.4, 36.5],
+          [-87.0, 36.5],
+          [-87.0, 36.0]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "ATLANTA CLASS B",
+        "type": "Class B"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [-84.8, 33.4],
+          [-84.1, 33.4],
+          [-84.1, 34.0],
+          [-84.8, 34.0],
+          [-84.8, 33.4]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "TEST MOA",
+        "type": "MOA"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [-85.5, 35.5],
+          [-85.0, 35.5],
+          [-85.0, 36.0],
+          [-85.5, 36.0],
+          [-85.5, 35.5]
+        ]]
       }
     }
   ]

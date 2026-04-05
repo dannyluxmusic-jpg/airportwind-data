@@ -4,39 +4,361 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "NASHVILLE CLASS C CORE",
-        "type": "Class C",
-        "floor": 0,
-        "ceiling": 4000
-      },
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [[
-          [-86.85, 36.00],
-          [-86.55, 36.00],
-          [-86.55, 36.25],
-          [-86.85, 36.25],
-          [-86.85, 36.00]
-        ]]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "name": "ATLANTA CLASS B",
+        "name": "ATL Class B",
         "type": "Class B",
         "floor": 0,
         "ceiling": 10000
       },
       "geometry": {
         "type": "Polygon",
-        "coordinates": [[
-          [-84.80, 33.40],
-          [-84.10, 33.40],
-          [-84.10, 34.00],
-          [-84.80, 34.00],
-          [-84.80, 33.40]
-        ]]
+        "coordinates": [
+          [
+            [
+              -84.93,
+              33.14
+            ],
+            [
+              -83.93,
+              33.14
+            ],
+            [
+              -83.93,
+              34.14
+            ],
+            [
+              -84.93,
+              34.14
+            ],
+            [
+              -84.93,
+              33.14
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "BNA Class C",
+        "type": "Class C",
+        "floor": 0,
+        "ceiling": 4000
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -86.97,
+              35.82
+            ],
+            [
+              -86.37,
+              35.82
+            ],
+            [
+              -86.37,
+              36.419999999999995
+            ],
+            [
+              -86.97,
+              36.419999999999995
+            ],
+            [
+              -86.97,
+              35.82
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "JFK Class B",
+        "type": "Class B",
+        "floor": 0,
+        "ceiling": 10000
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -74.28,
+              40.14
+            ],
+            [
+              -73.28,
+              40.14
+            ],
+            [
+              -73.28,
+              41.14
+            ],
+            [
+              -74.28,
+              41.14
+            ],
+            [
+              -74.28,
+              40.14
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "LAX Class B",
+        "type": "Class B",
+        "floor": 0,
+        "ceiling": 10000
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -118.9,
+              33.44
+            ],
+            [
+              -117.9,
+              33.44
+            ],
+            [
+              -117.9,
+              34.44
+            ],
+            [
+              -118.9,
+              34.44
+            ],
+            [
+              -118.9,
+              33.44
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "ORD Class B",
+        "type": "Class B",
+        "floor": 0,
+        "ceiling": 10000
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -88.4,
+              41.47
+            ],
+            [
+              -87.4,
+              41.47
+            ],
+            [
+              -87.4,
+              42.47
+            ],
+            [
+              -88.4,
+              42.47
+            ],
+            [
+              -88.4,
+              41.47
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "DFW Class B",
+        "type": "Class B",
+        "floor": 0,
+        "ceiling": 10000
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -97.54,
+              32.4
+            ],
+            [
+              -96.54,
+              32.4
+            ],
+            [
+              -96.54,
+              33.4
+            ],
+            [
+              -97.54,
+              33.4
+            ],
+            [
+              -97.54,
+              32.4
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "DEN Class B",
+        "type": "Class B",
+        "floor": 0,
+        "ceiling": 10000
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -105.17,
+              39.36
+            ],
+            [
+              -104.17,
+              39.36
+            ],
+            [
+              -104.17,
+              40.36
+            ],
+            [
+              -105.17,
+              40.36
+            ],
+            [
+              -105.17,
+              39.36
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "SEA Class B",
+        "type": "Class B",
+        "floor": 0,
+        "ceiling": 10000
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -122.81,
+              46.95
+            ],
+            [
+              -121.81,
+              46.95
+            ],
+            [
+              -121.81,
+              47.95
+            ],
+            [
+              -122.81,
+              47.95
+            ],
+            [
+              -122.81,
+              46.95
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "MIA Class B",
+        "type": "Class B",
+        "floor": 0,
+        "ceiling": 10000
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -80.79,
+              25.29
+            ],
+            [
+              -79.79,
+              25.29
+            ],
+            [
+              -79.79,
+              26.29
+            ],
+            [
+              -80.79,
+              26.29
+            ],
+            [
+              -80.79,
+              25.29
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "BOS Class B",
+        "type": "Class B",
+        "floor": 0,
+        "ceiling": 10000
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -71.51,
+              41.86
+            ],
+            [
+              -70.51,
+              41.86
+            ],
+            [
+              -70.51,
+              42.86
+            ],
+            [
+              -71.51,
+              42.86
+            ],
+            [
+              -71.51,
+              41.86
+            ]
+          ]
+        ]
       }
     }
   ]

@@ -25,19 +25,41 @@ func fetchRemoteAirspace() {
 
                 guard
                     let props = feature["properties"] as? [String: Any],
-                    let geom = feature["geometry"] as? [String: Any],
-                    let coords = geom["coordinates"] as? [[[Double]]]
+                    let geom = feature["geometry"] as? [String: Any]
                 else { return nil }
 
-                let flattened = coords.first ?? []
+                // 🔥 FIXED GEOMETRY (Polygon + MultiPolygon)
+                let points: [CLLocationCoordinate2D] = {
 
-                let points = flattened.map {
-                    CLLocationCoordinate2D(latitude: $0[1], longitude: $0[0])
-                }
+                    guard let coords = geom["coordinates"] else { return [] }
+
+                    // Polygon
+                    if let polygon = coords as? [[[Double]]] {
+                        return polygon.first?.map {
+                            CLLocationCoordinate2D(latitude: $0[1], longitude: $0[0])
+                        } ?? []
+                    }
+
+                    // MultiPolygon
+                    if let multi = coords as? [[[[Double]]]] {
+                        return multi.first?.first?.map {
+                            CLLocationCoordinate2D(latitude: $0[1], longitude: $0[0])
+                        } ?? []
+                    }
+
+                    return []
+                }()
+
+                // Debug (leave for now)
+                print("POINT COUNT:", points.count)
+
+                // Skip bad geometry
+                guard !points.isEmpty else { return nil }
 
                 let name = props["name"] as? String ?? "Airspace"
                 let type = props["type"] as? String ?? ""
 
+                // 🔥 ALTITUDE SUPPORT
                 let floor = props["floor"] as? Double ?? 0
                 let ceiling = props["ceiling"] as? Double ?? 60000
 
@@ -65,7 +87,7 @@ func fetchRemoteAirspace() {
             }
 
         } catch {
-            print("Failed to parse remote airspace")
+            print("Failed to parse remote airspace:", error.localizedDescription)
         }
 
     }.resume()

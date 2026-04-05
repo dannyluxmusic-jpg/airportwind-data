@@ -1,94 +1,62 @@
-func fetchRemoteAirspace() {
-
-    guard let url = URL(string: "https://raw.githubusercontent.com/dannyluxmusic-jpg/airportwind-data/main/usa_airspace.geojson") else {
-        print("Invalid airspace URL")
-        return
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "NASHVILLE CLASS C CORE",
+        "type": "Class C",
+        "floor": 0,
+        "ceiling": 4000
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [-86.85, 36.00],
+          [-86.55, 36.00],
+          [-86.55, 36.25],
+          [-86.85, 36.25],
+          [-86.85, 36.00]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "NASHVILLE CLASS C OUTER",
+        "type": "Class C",
+        "floor": 1200,
+        "ceiling": 4000
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [-87.10, 35.85],
+          [-86.30, 35.85],
+          [-86.30, 36.50],
+          [-87.10, 36.50],
+          [-87.10, 35.85]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "ATLANTA CLASS B",
+        "type": "Class B",
+        "floor": 0,
+        "ceiling": 10000
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [-84.80, 33.40],
+          [-84.10, 33.40],
+          [-84.10, 34.00],
+          [-84.80, 34.00],
+          [-84.80, 33.40]
+        ]]
+      }
     }
-
-    URLSession.shared.dataTask(with: url) { data, _, error in
-
-        if let error = error {
-            print("Airspace fetch error:", error.localizedDescription)
-            return
-        }
-
-        guard let data = data else {
-            print("No airspace data received")
-            return
-        }
-
-        do {
-            let geo = try JSONSerialization.jsonObject(with: data) as? [String: Any]
-            let features = geo?["features"] as? [[String: Any]] ?? []
-
-            let parsed: [AirspacePolygon] = features.compactMap { feature -> AirspacePolygon? in
-
-                guard
-                    let props = feature["properties"] as? [String: Any],
-                    let geom = feature["geometry"] as? [String: Any]
-                else { return nil }
-
-                // 🔥 FIXED GEOMETRY (Polygon + MultiPolygon)
-                let points: [CLLocationCoordinate2D] = {
-
-                    guard let coords = geom["coordinates"] else { return [] }
-
-                    // Polygon
-                    if let polygon = coords as? [[[Double]]] {
-                        return polygon.first?.map {
-                            CLLocationCoordinate2D(latitude: $0[1], longitude: $0[0])
-                        } ?? []
-                    }
-
-                    // MultiPolygon
-                    if let multi = coords as? [[[[Double]]]] {
-                        return multi.first?.first?.map {
-                            CLLocationCoordinate2D(latitude: $0[1], longitude: $0[0])
-                        } ?? []
-                    }
-
-                    return []
-                }()
-
-                // Debug (leave for now)
-                print("POINT COUNT:", points.count)
-
-                // Skip bad geometry
-                guard !points.isEmpty else { return nil }
-
-                let name = props["name"] as? String ?? "Airspace"
-                let type = props["type"] as? String ?? ""
-
-                // 🔥 ALTITUDE SUPPORT
-                let floor = props["floor"] as? Double ?? 0
-                let ceiling = props["ceiling"] as? Double ?? 60000
-
-                let airspaceClass: AirspaceClass = {
-                    if type.contains("Class B") { return .bravo }
-                    if type.contains("Class C") { return .charlie }
-                    if type.contains("Class D") { return .delta }
-                    if type.contains("MOA") { return .moa }
-                    if type.contains("Restricted") { return .restricted }
-                    return .restricted
-                }()
-
-                return AirspacePolygon(
-                    name: name,
-                    airspaceClass: airspaceClass,
-                    floorFeetMSL: floor,
-                    ceilingFeetMSL: ceiling,
-                    coordinates: points
-                )
-            }
-
-            DispatchQueue.main.async {
-                self.airspaces = parsed
-                print("REMOTE AIRSPACE LOADED:", parsed.count)
-            }
-
-        } catch {
-            print("Failed to parse remote airspace:", error.localizedDescription)
-        }
-
-    }.resume()
+  ]
 }

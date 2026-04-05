@@ -3348,6 +3348,5046 @@
           ]
         ]
       }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "FRG D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -73.49,
+              40.65
+            ],
+            [
+              -73.33,
+              40.65
+            ],
+            [
+              -73.33,
+              40.809999999999995
+            ],
+            [
+              -73.49,
+              40.809999999999995
+            ],
+            [
+              -73.49,
+              40.65
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "HPN D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -73.78999999999999,
+              40.99
+            ],
+            [
+              -73.63,
+              40.99
+            ],
+            [
+              -73.63,
+              41.15
+            ],
+            [
+              -73.78999999999999,
+              41.15
+            ],
+            [
+              -73.78999999999999,
+              40.99
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "TEB D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -74.14,
+              40.77
+            ],
+            [
+              -73.98,
+              40.77
+            ],
+            [
+              -73.98,
+              40.93
+            ],
+            [
+              -74.14,
+              40.93
+            ],
+            [
+              -74.14,
+              40.77
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "VNY D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -118.57,
+              34.13
+            ],
+            [
+              -118.41,
+              34.13
+            ],
+            [
+              -118.41,
+              34.29
+            ],
+            [
+              -118.57,
+              34.29
+            ],
+            [
+              -118.57,
+              34.13
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "SMO D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -118.53,
+              33.940000000000005
+            ],
+            [
+              -118.37,
+              33.940000000000005
+            ],
+            [
+              -118.37,
+              34.1
+            ],
+            [
+              -118.53,
+              34.1
+            ],
+            [
+              -118.53,
+              33.940000000000005
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "PAO D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -122.19,
+              37.38
+            ],
+            [
+              -122.03,
+              37.38
+            ],
+            [
+              -122.03,
+              37.54
+            ],
+            [
+              -122.19,
+              37.54
+            ],
+            [
+              -122.19,
+              37.38
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "HWD D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -122.2,
+              37.58
+            ],
+            [
+              -122.04,
+              37.58
+            ],
+            [
+              -122.04,
+              37.739999999999995
+            ],
+            [
+              -122.2,
+              37.739999999999995
+            ],
+            [
+              -122.2,
+              37.58
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "FUL D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -118.06,
+              33.79
+            ],
+            [
+              -117.9,
+              33.79
+            ],
+            [
+              -117.9,
+              33.949999999999996
+            ],
+            [
+              -118.06,
+              33.949999999999996
+            ],
+            [
+              -118.06,
+              33.79
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "ADS D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -96.92,
+              32.89
+            ],
+            [
+              -96.76,
+              32.89
+            ],
+            [
+              -96.76,
+              33.05
+            ],
+            [
+              -96.92,
+              33.05
+            ],
+            [
+              -96.92,
+              32.89
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "RBD D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -96.95,
+              32.6
+            ],
+            [
+              -96.79,
+              32.6
+            ],
+            [
+              -96.79,
+              32.76
+            ],
+            [
+              -96.95,
+              32.76
+            ],
+            [
+              -96.95,
+              32.6
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "APA D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -104.92999999999999,
+              39.49
+            ],
+            [
+              -104.77,
+              39.49
+            ],
+            [
+              -104.77,
+              39.65
+            ],
+            [
+              -104.92999999999999,
+              39.65
+            ],
+            [
+              -104.92999999999999,
+              39.49
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "BJC D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -105.2,
+              39.83
+            ],
+            [
+              -105.04,
+              39.83
+            ],
+            [
+              -105.04,
+              39.989999999999995
+            ],
+            [
+              -105.2,
+              39.989999999999995
+            ],
+            [
+              -105.2,
+              39.83
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "ORL D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -81.41,
+              28.470000000000002
+            ],
+            [
+              -81.25,
+              28.470000000000002
+            ],
+            [
+              -81.25,
+              28.63
+            ],
+            [
+              -81.41,
+              28.63
+            ],
+            [
+              -81.41,
+              28.470000000000002
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "FXE D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -80.25,
+              26.12
+            ],
+            [
+              -80.09,
+              26.12
+            ],
+            [
+              -80.09,
+              26.279999999999998
+            ],
+            [
+              -80.25,
+              26.279999999999998
+            ],
+            [
+              -80.25,
+              26.12
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "OPF D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -80.36,
+              25.830000000000002
+            ],
+            [
+              -80.2,
+              25.830000000000002
+            ],
+            [
+              -80.2,
+              25.99
+            ],
+            [
+              -80.36,
+              25.99
+            ],
+            [
+              -80.36,
+              25.830000000000002
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "SDL D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -111.99,
+              33.54
+            ],
+            [
+              -111.83,
+              33.54
+            ],
+            [
+              -111.83,
+              33.699999999999996
+            ],
+            [
+              -111.99,
+              33.699999999999996
+            ],
+            [
+              -111.99,
+              33.54
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "FFZ D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -111.81,
+              33.38
+            ],
+            [
+              -111.65,
+              33.38
+            ],
+            [
+              -111.65,
+              33.54
+            ],
+            [
+              -111.81,
+              33.54
+            ],
+            [
+              -111.81,
+              33.38
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "PDK D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -84.38,
+              33.800000000000004
+            ],
+            [
+              -84.22,
+              33.800000000000004
+            ],
+            [
+              -84.22,
+              33.96
+            ],
+            [
+              -84.38,
+              33.96
+            ],
+            [
+              -84.38,
+              33.800000000000004
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "FTY D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -84.6,
+              33.7
+            ],
+            [
+              -84.44,
+              33.7
+            ],
+            [
+              -84.44,
+              33.86
+            ],
+            [
+              -84.6,
+              33.86
+            ],
+            [
+              -84.6,
+              33.7
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "RYY D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -84.67999999999999,
+              33.93
+            ],
+            [
+              -84.52,
+              33.93
+            ],
+            [
+              -84.52,
+              34.089999999999996
+            ],
+            [
+              -84.67999999999999,
+              34.089999999999996
+            ],
+            [
+              -84.67999999999999,
+              33.93
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "D25124 D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -124.05,
+              24.95
+            ],
+            [
+              -123.95,
+              24.95
+            ],
+            [
+              -123.95,
+              25.05
+            ],
+            [
+              -124.05,
+              25.05
+            ],
+            [
+              -124.05,
+              24.95
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "D25120 D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -120.05,
+              24.95
+            ],
+            [
+              -119.95,
+              24.95
+            ],
+            [
+              -119.95,
+              25.05
+            ],
+            [
+              -120.05,
+              25.05
+            ],
+            [
+              -120.05,
+              24.95
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "D25116 D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -116.05,
+              24.95
+            ],
+            [
+              -115.95,
+              24.95
+            ],
+            [
+              -115.95,
+              25.05
+            ],
+            [
+              -116.05,
+              25.05
+            ],
+            [
+              -116.05,
+              24.95
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "D25112 D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -112.05,
+              24.95
+            ],
+            [
+              -111.95,
+              24.95
+            ],
+            [
+              -111.95,
+              25.05
+            ],
+            [
+              -112.05,
+              25.05
+            ],
+            [
+              -112.05,
+              24.95
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "D25108 D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -108.05,
+              24.95
+            ],
+            [
+              -107.95,
+              24.95
+            ],
+            [
+              -107.95,
+              25.05
+            ],
+            [
+              -108.05,
+              25.05
+            ],
+            [
+              -108.05,
+              24.95
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "D25104 D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -104.05,
+              24.95
+            ],
+            [
+              -103.95,
+              24.95
+            ],
+            [
+              -103.95,
+              25.05
+            ],
+            [
+              -104.05,
+              25.05
+            ],
+            [
+              -104.05,
+              24.95
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "D25100 D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -100.05,
+              24.95
+            ],
+            [
+              -99.95,
+              24.95
+            ],
+            [
+              -99.95,
+              25.05
+            ],
+            [
+              -100.05,
+              25.05
+            ],
+            [
+              -100.05,
+              24.95
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "D2596 D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -96.05,
+              24.95
+            ],
+            [
+              -95.95,
+              24.95
+            ],
+            [
+              -95.95,
+              25.05
+            ],
+            [
+              -96.05,
+              25.05
+            ],
+            [
+              -96.05,
+              24.95
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "D2592 D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -92.05,
+              24.95
+            ],
+            [
+              -91.95,
+              24.95
+            ],
+            [
+              -91.95,
+              25.05
+            ],
+            [
+              -92.05,
+              25.05
+            ],
+            [
+              -92.05,
+              24.95
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "D2588 D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -88.05,
+              24.95
+            ],
+            [
+              -87.95,
+              24.95
+            ],
+            [
+              -87.95,
+              25.05
+            ],
+            [
+              -88.05,
+              25.05
+            ],
+            [
+              -88.05,
+              24.95
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "D2584 D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -84.05,
+              24.95
+            ],
+            [
+              -83.95,
+              24.95
+            ],
+            [
+              -83.95,
+              25.05
+            ],
+            [
+              -84.05,
+              25.05
+            ],
+            [
+              -84.05,
+              24.95
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "D2580 D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -80.05,
+              24.95
+            ],
+            [
+              -79.95,
+              24.95
+            ],
+            [
+              -79.95,
+              25.05
+            ],
+            [
+              -80.05,
+              25.05
+            ],
+            [
+              -80.05,
+              24.95
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "D2576 D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -76.05,
+              24.95
+            ],
+            [
+              -75.95,
+              24.95
+            ],
+            [
+              -75.95,
+              25.05
+            ],
+            [
+              -76.05,
+              25.05
+            ],
+            [
+              -76.05,
+              24.95
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "D2572 D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -72.05,
+              24.95
+            ],
+            [
+              -71.95,
+              24.95
+            ],
+            [
+              -71.95,
+              25.05
+            ],
+            [
+              -72.05,
+              25.05
+            ],
+            [
+              -72.05,
+              24.95
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "D2568 D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -68.05,
+              24.95
+            ],
+            [
+              -67.95,
+              24.95
+            ],
+            [
+              -67.95,
+              25.05
+            ],
+            [
+              -68.05,
+              25.05
+            ],
+            [
+              -68.05,
+              24.95
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "D28124 D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -124.05,
+              27.95
+            ],
+            [
+              -123.95,
+              27.95
+            ],
+            [
+              -123.95,
+              28.05
+            ],
+            [
+              -124.05,
+              28.05
+            ],
+            [
+              -124.05,
+              27.95
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "D28120 D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -120.05,
+              27.95
+            ],
+            [
+              -119.95,
+              27.95
+            ],
+            [
+              -119.95,
+              28.05
+            ],
+            [
+              -120.05,
+              28.05
+            ],
+            [
+              -120.05,
+              27.95
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "D28116 D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -116.05,
+              27.95
+            ],
+            [
+              -115.95,
+              27.95
+            ],
+            [
+              -115.95,
+              28.05
+            ],
+            [
+              -116.05,
+              28.05
+            ],
+            [
+              -116.05,
+              27.95
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "D28112 D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -112.05,
+              27.95
+            ],
+            [
+              -111.95,
+              27.95
+            ],
+            [
+              -111.95,
+              28.05
+            ],
+            [
+              -112.05,
+              28.05
+            ],
+            [
+              -112.05,
+              27.95
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "D28108 D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -108.05,
+              27.95
+            ],
+            [
+              -107.95,
+              27.95
+            ],
+            [
+              -107.95,
+              28.05
+            ],
+            [
+              -108.05,
+              28.05
+            ],
+            [
+              -108.05,
+              27.95
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "D28104 D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -104.05,
+              27.95
+            ],
+            [
+              -103.95,
+              27.95
+            ],
+            [
+              -103.95,
+              28.05
+            ],
+            [
+              -104.05,
+              28.05
+            ],
+            [
+              -104.05,
+              27.95
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "D28100 D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -100.05,
+              27.95
+            ],
+            [
+              -99.95,
+              27.95
+            ],
+            [
+              -99.95,
+              28.05
+            ],
+            [
+              -100.05,
+              28.05
+            ],
+            [
+              -100.05,
+              27.95
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "D2896 D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -96.05,
+              27.95
+            ],
+            [
+              -95.95,
+              27.95
+            ],
+            [
+              -95.95,
+              28.05
+            ],
+            [
+              -96.05,
+              28.05
+            ],
+            [
+              -96.05,
+              27.95
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "D2892 D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -92.05,
+              27.95
+            ],
+            [
+              -91.95,
+              27.95
+            ],
+            [
+              -91.95,
+              28.05
+            ],
+            [
+              -92.05,
+              28.05
+            ],
+            [
+              -92.05,
+              27.95
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "D2888 D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -88.05,
+              27.95
+            ],
+            [
+              -87.95,
+              27.95
+            ],
+            [
+              -87.95,
+              28.05
+            ],
+            [
+              -88.05,
+              28.05
+            ],
+            [
+              -88.05,
+              27.95
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "D2884 D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -84.05,
+              27.95
+            ],
+            [
+              -83.95,
+              27.95
+            ],
+            [
+              -83.95,
+              28.05
+            ],
+            [
+              -84.05,
+              28.05
+            ],
+            [
+              -84.05,
+              27.95
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "D2880 D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -80.05,
+              27.95
+            ],
+            [
+              -79.95,
+              27.95
+            ],
+            [
+              -79.95,
+              28.05
+            ],
+            [
+              -80.05,
+              28.05
+            ],
+            [
+              -80.05,
+              27.95
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "D2876 D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -76.05,
+              27.95
+            ],
+            [
+              -75.95,
+              27.95
+            ],
+            [
+              -75.95,
+              28.05
+            ],
+            [
+              -76.05,
+              28.05
+            ],
+            [
+              -76.05,
+              27.95
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "D2872 D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -72.05,
+              27.95
+            ],
+            [
+              -71.95,
+              27.95
+            ],
+            [
+              -71.95,
+              28.05
+            ],
+            [
+              -72.05,
+              28.05
+            ],
+            [
+              -72.05,
+              27.95
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "D2868 D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -68.05,
+              27.95
+            ],
+            [
+              -67.95,
+              27.95
+            ],
+            [
+              -67.95,
+              28.05
+            ],
+            [
+              -68.05,
+              28.05
+            ],
+            [
+              -68.05,
+              27.95
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "D31124 D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -124.05,
+              30.95
+            ],
+            [
+              -123.95,
+              30.95
+            ],
+            [
+              -123.95,
+              31.05
+            ],
+            [
+              -124.05,
+              31.05
+            ],
+            [
+              -124.05,
+              30.95
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "D31120 D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -120.05,
+              30.95
+            ],
+            [
+              -119.95,
+              30.95
+            ],
+            [
+              -119.95,
+              31.05
+            ],
+            [
+              -120.05,
+              31.05
+            ],
+            [
+              -120.05,
+              30.95
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "D31116 D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -116.05,
+              30.95
+            ],
+            [
+              -115.95,
+              30.95
+            ],
+            [
+              -115.95,
+              31.05
+            ],
+            [
+              -116.05,
+              31.05
+            ],
+            [
+              -116.05,
+              30.95
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "D31112 D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -112.05,
+              30.95
+            ],
+            [
+              -111.95,
+              30.95
+            ],
+            [
+              -111.95,
+              31.05
+            ],
+            [
+              -112.05,
+              31.05
+            ],
+            [
+              -112.05,
+              30.95
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "D31108 D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -108.05,
+              30.95
+            ],
+            [
+              -107.95,
+              30.95
+            ],
+            [
+              -107.95,
+              31.05
+            ],
+            [
+              -108.05,
+              31.05
+            ],
+            [
+              -108.05,
+              30.95
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "D31104 D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -104.05,
+              30.95
+            ],
+            [
+              -103.95,
+              30.95
+            ],
+            [
+              -103.95,
+              31.05
+            ],
+            [
+              -104.05,
+              31.05
+            ],
+            [
+              -104.05,
+              30.95
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "D31100 D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -100.05,
+              30.95
+            ],
+            [
+              -99.95,
+              30.95
+            ],
+            [
+              -99.95,
+              31.05
+            ],
+            [
+              -100.05,
+              31.05
+            ],
+            [
+              -100.05,
+              30.95
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "D3196 D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -96.05,
+              30.95
+            ],
+            [
+              -95.95,
+              30.95
+            ],
+            [
+              -95.95,
+              31.05
+            ],
+            [
+              -96.05,
+              31.05
+            ],
+            [
+              -96.05,
+              30.95
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "D3192 D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -92.05,
+              30.95
+            ],
+            [
+              -91.95,
+              30.95
+            ],
+            [
+              -91.95,
+              31.05
+            ],
+            [
+              -92.05,
+              31.05
+            ],
+            [
+              -92.05,
+              30.95
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "D3188 D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -88.05,
+              30.95
+            ],
+            [
+              -87.95,
+              30.95
+            ],
+            [
+              -87.95,
+              31.05
+            ],
+            [
+              -88.05,
+              31.05
+            ],
+            [
+              -88.05,
+              30.95
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "D3184 D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -84.05,
+              30.95
+            ],
+            [
+              -83.95,
+              30.95
+            ],
+            [
+              -83.95,
+              31.05
+            ],
+            [
+              -84.05,
+              31.05
+            ],
+            [
+              -84.05,
+              30.95
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "D3180 D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -80.05,
+              30.95
+            ],
+            [
+              -79.95,
+              30.95
+            ],
+            [
+              -79.95,
+              31.05
+            ],
+            [
+              -80.05,
+              31.05
+            ],
+            [
+              -80.05,
+              30.95
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "D3176 D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -76.05,
+              30.95
+            ],
+            [
+              -75.95,
+              30.95
+            ],
+            [
+              -75.95,
+              31.05
+            ],
+            [
+              -76.05,
+              31.05
+            ],
+            [
+              -76.05,
+              30.95
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "D3172 D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -72.05,
+              30.95
+            ],
+            [
+              -71.95,
+              30.95
+            ],
+            [
+              -71.95,
+              31.05
+            ],
+            [
+              -72.05,
+              31.05
+            ],
+            [
+              -72.05,
+              30.95
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "D3168 D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -68.05,
+              30.95
+            ],
+            [
+              -67.95,
+              30.95
+            ],
+            [
+              -67.95,
+              31.05
+            ],
+            [
+              -68.05,
+              31.05
+            ],
+            [
+              -68.05,
+              30.95
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "D34124 D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -124.05,
+              33.95
+            ],
+            [
+              -123.95,
+              33.95
+            ],
+            [
+              -123.95,
+              34.05
+            ],
+            [
+              -124.05,
+              34.05
+            ],
+            [
+              -124.05,
+              33.95
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "D34120 D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -120.05,
+              33.95
+            ],
+            [
+              -119.95,
+              33.95
+            ],
+            [
+              -119.95,
+              34.05
+            ],
+            [
+              -120.05,
+              34.05
+            ],
+            [
+              -120.05,
+              33.95
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "D34116 D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -116.05,
+              33.95
+            ],
+            [
+              -115.95,
+              33.95
+            ],
+            [
+              -115.95,
+              34.05
+            ],
+            [
+              -116.05,
+              34.05
+            ],
+            [
+              -116.05,
+              33.95
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "D34112 D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -112.05,
+              33.95
+            ],
+            [
+              -111.95,
+              33.95
+            ],
+            [
+              -111.95,
+              34.05
+            ],
+            [
+              -112.05,
+              34.05
+            ],
+            [
+              -112.05,
+              33.95
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "D34108 D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -108.05,
+              33.95
+            ],
+            [
+              -107.95,
+              33.95
+            ],
+            [
+              -107.95,
+              34.05
+            ],
+            [
+              -108.05,
+              34.05
+            ],
+            [
+              -108.05,
+              33.95
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "D34104 D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -104.05,
+              33.95
+            ],
+            [
+              -103.95,
+              33.95
+            ],
+            [
+              -103.95,
+              34.05
+            ],
+            [
+              -104.05,
+              34.05
+            ],
+            [
+              -104.05,
+              33.95
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "D34100 D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -100.05,
+              33.95
+            ],
+            [
+              -99.95,
+              33.95
+            ],
+            [
+              -99.95,
+              34.05
+            ],
+            [
+              -100.05,
+              34.05
+            ],
+            [
+              -100.05,
+              33.95
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "D3496 D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -96.05,
+              33.95
+            ],
+            [
+              -95.95,
+              33.95
+            ],
+            [
+              -95.95,
+              34.05
+            ],
+            [
+              -96.05,
+              34.05
+            ],
+            [
+              -96.05,
+              33.95
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "D3492 D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -92.05,
+              33.95
+            ],
+            [
+              -91.95,
+              33.95
+            ],
+            [
+              -91.95,
+              34.05
+            ],
+            [
+              -92.05,
+              34.05
+            ],
+            [
+              -92.05,
+              33.95
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "D3488 D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -88.05,
+              33.95
+            ],
+            [
+              -87.95,
+              33.95
+            ],
+            [
+              -87.95,
+              34.05
+            ],
+            [
+              -88.05,
+              34.05
+            ],
+            [
+              -88.05,
+              33.95
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "D3484 D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -84.05,
+              33.95
+            ],
+            [
+              -83.95,
+              33.95
+            ],
+            [
+              -83.95,
+              34.05
+            ],
+            [
+              -84.05,
+              34.05
+            ],
+            [
+              -84.05,
+              33.95
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "D3480 D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -80.05,
+              33.95
+            ],
+            [
+              -79.95,
+              33.95
+            ],
+            [
+              -79.95,
+              34.05
+            ],
+            [
+              -80.05,
+              34.05
+            ],
+            [
+              -80.05,
+              33.95
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "D3476 D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -76.05,
+              33.95
+            ],
+            [
+              -75.95,
+              33.95
+            ],
+            [
+              -75.95,
+              34.05
+            ],
+            [
+              -76.05,
+              34.05
+            ],
+            [
+              -76.05,
+              33.95
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "D3472 D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -72.05,
+              33.95
+            ],
+            [
+              -71.95,
+              33.95
+            ],
+            [
+              -71.95,
+              34.05
+            ],
+            [
+              -72.05,
+              34.05
+            ],
+            [
+              -72.05,
+              33.95
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "D3468 D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -68.05,
+              33.95
+            ],
+            [
+              -67.95,
+              33.95
+            ],
+            [
+              -67.95,
+              34.05
+            ],
+            [
+              -68.05,
+              34.05
+            ],
+            [
+              -68.05,
+              33.95
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "D37124 D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -124.05,
+              36.95
+            ],
+            [
+              -123.95,
+              36.95
+            ],
+            [
+              -123.95,
+              37.05
+            ],
+            [
+              -124.05,
+              37.05
+            ],
+            [
+              -124.05,
+              36.95
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "D37120 D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -120.05,
+              36.95
+            ],
+            [
+              -119.95,
+              36.95
+            ],
+            [
+              -119.95,
+              37.05
+            ],
+            [
+              -120.05,
+              37.05
+            ],
+            [
+              -120.05,
+              36.95
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "D37116 D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -116.05,
+              36.95
+            ],
+            [
+              -115.95,
+              36.95
+            ],
+            [
+              -115.95,
+              37.05
+            ],
+            [
+              -116.05,
+              37.05
+            ],
+            [
+              -116.05,
+              36.95
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "D37112 D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -112.05,
+              36.95
+            ],
+            [
+              -111.95,
+              36.95
+            ],
+            [
+              -111.95,
+              37.05
+            ],
+            [
+              -112.05,
+              37.05
+            ],
+            [
+              -112.05,
+              36.95
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "D37108 D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -108.05,
+              36.95
+            ],
+            [
+              -107.95,
+              36.95
+            ],
+            [
+              -107.95,
+              37.05
+            ],
+            [
+              -108.05,
+              37.05
+            ],
+            [
+              -108.05,
+              36.95
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "D37104 D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -104.05,
+              36.95
+            ],
+            [
+              -103.95,
+              36.95
+            ],
+            [
+              -103.95,
+              37.05
+            ],
+            [
+              -104.05,
+              37.05
+            ],
+            [
+              -104.05,
+              36.95
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "D37100 D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -100.05,
+              36.95
+            ],
+            [
+              -99.95,
+              36.95
+            ],
+            [
+              -99.95,
+              37.05
+            ],
+            [
+              -100.05,
+              37.05
+            ],
+            [
+              -100.05,
+              36.95
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "D3796 D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -96.05,
+              36.95
+            ],
+            [
+              -95.95,
+              36.95
+            ],
+            [
+              -95.95,
+              37.05
+            ],
+            [
+              -96.05,
+              37.05
+            ],
+            [
+              -96.05,
+              36.95
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "D3792 D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -92.05,
+              36.95
+            ],
+            [
+              -91.95,
+              36.95
+            ],
+            [
+              -91.95,
+              37.05
+            ],
+            [
+              -92.05,
+              37.05
+            ],
+            [
+              -92.05,
+              36.95
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "D3788 D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -88.05,
+              36.95
+            ],
+            [
+              -87.95,
+              36.95
+            ],
+            [
+              -87.95,
+              37.05
+            ],
+            [
+              -88.05,
+              37.05
+            ],
+            [
+              -88.05,
+              36.95
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "D3784 D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -84.05,
+              36.95
+            ],
+            [
+              -83.95,
+              36.95
+            ],
+            [
+              -83.95,
+              37.05
+            ],
+            [
+              -84.05,
+              37.05
+            ],
+            [
+              -84.05,
+              36.95
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "D3780 D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -80.05,
+              36.95
+            ],
+            [
+              -79.95,
+              36.95
+            ],
+            [
+              -79.95,
+              37.05
+            ],
+            [
+              -80.05,
+              37.05
+            ],
+            [
+              -80.05,
+              36.95
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "D3776 D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -76.05,
+              36.95
+            ],
+            [
+              -75.95,
+              36.95
+            ],
+            [
+              -75.95,
+              37.05
+            ],
+            [
+              -76.05,
+              37.05
+            ],
+            [
+              -76.05,
+              36.95
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "D3772 D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -72.05,
+              36.95
+            ],
+            [
+              -71.95,
+              36.95
+            ],
+            [
+              -71.95,
+              37.05
+            ],
+            [
+              -72.05,
+              37.05
+            ],
+            [
+              -72.05,
+              36.95
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "D3768 D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -68.05,
+              36.95
+            ],
+            [
+              -67.95,
+              36.95
+            ],
+            [
+              -67.95,
+              37.05
+            ],
+            [
+              -68.05,
+              37.05
+            ],
+            [
+              -68.05,
+              36.95
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "D40124 D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -124.05,
+              39.95
+            ],
+            [
+              -123.95,
+              39.95
+            ],
+            [
+              -123.95,
+              40.05
+            ],
+            [
+              -124.05,
+              40.05
+            ],
+            [
+              -124.05,
+              39.95
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "D40120 D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -120.05,
+              39.95
+            ],
+            [
+              -119.95,
+              39.95
+            ],
+            [
+              -119.95,
+              40.05
+            ],
+            [
+              -120.05,
+              40.05
+            ],
+            [
+              -120.05,
+              39.95
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "D40116 D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -116.05,
+              39.95
+            ],
+            [
+              -115.95,
+              39.95
+            ],
+            [
+              -115.95,
+              40.05
+            ],
+            [
+              -116.05,
+              40.05
+            ],
+            [
+              -116.05,
+              39.95
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "D40112 D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -112.05,
+              39.95
+            ],
+            [
+              -111.95,
+              39.95
+            ],
+            [
+              -111.95,
+              40.05
+            ],
+            [
+              -112.05,
+              40.05
+            ],
+            [
+              -112.05,
+              39.95
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "D40108 D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -108.05,
+              39.95
+            ],
+            [
+              -107.95,
+              39.95
+            ],
+            [
+              -107.95,
+              40.05
+            ],
+            [
+              -108.05,
+              40.05
+            ],
+            [
+              -108.05,
+              39.95
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "D40104 D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -104.05,
+              39.95
+            ],
+            [
+              -103.95,
+              39.95
+            ],
+            [
+              -103.95,
+              40.05
+            ],
+            [
+              -104.05,
+              40.05
+            ],
+            [
+              -104.05,
+              39.95
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "D40100 D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -100.05,
+              39.95
+            ],
+            [
+              -99.95,
+              39.95
+            ],
+            [
+              -99.95,
+              40.05
+            ],
+            [
+              -100.05,
+              40.05
+            ],
+            [
+              -100.05,
+              39.95
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "D4096 D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -96.05,
+              39.95
+            ],
+            [
+              -95.95,
+              39.95
+            ],
+            [
+              -95.95,
+              40.05
+            ],
+            [
+              -96.05,
+              40.05
+            ],
+            [
+              -96.05,
+              39.95
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "D4092 D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -92.05,
+              39.95
+            ],
+            [
+              -91.95,
+              39.95
+            ],
+            [
+              -91.95,
+              40.05
+            ],
+            [
+              -92.05,
+              40.05
+            ],
+            [
+              -92.05,
+              39.95
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "D4088 D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -88.05,
+              39.95
+            ],
+            [
+              -87.95,
+              39.95
+            ],
+            [
+              -87.95,
+              40.05
+            ],
+            [
+              -88.05,
+              40.05
+            ],
+            [
+              -88.05,
+              39.95
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "D4084 D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -84.05,
+              39.95
+            ],
+            [
+              -83.95,
+              39.95
+            ],
+            [
+              -83.95,
+              40.05
+            ],
+            [
+              -84.05,
+              40.05
+            ],
+            [
+              -84.05,
+              39.95
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "D4080 D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -80.05,
+              39.95
+            ],
+            [
+              -79.95,
+              39.95
+            ],
+            [
+              -79.95,
+              40.05
+            ],
+            [
+              -80.05,
+              40.05
+            ],
+            [
+              -80.05,
+              39.95
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "D4076 D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -76.05,
+              39.95
+            ],
+            [
+              -75.95,
+              39.95
+            ],
+            [
+              -75.95,
+              40.05
+            ],
+            [
+              -76.05,
+              40.05
+            ],
+            [
+              -76.05,
+              39.95
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "D4072 D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -72.05,
+              39.95
+            ],
+            [
+              -71.95,
+              39.95
+            ],
+            [
+              -71.95,
+              40.05
+            ],
+            [
+              -72.05,
+              40.05
+            ],
+            [
+              -72.05,
+              39.95
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "D4068 D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -68.05,
+              39.95
+            ],
+            [
+              -67.95,
+              39.95
+            ],
+            [
+              -67.95,
+              40.05
+            ],
+            [
+              -68.05,
+              40.05
+            ],
+            [
+              -68.05,
+              39.95
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "D43124 D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -124.05,
+              42.95
+            ],
+            [
+              -123.95,
+              42.95
+            ],
+            [
+              -123.95,
+              43.05
+            ],
+            [
+              -124.05,
+              43.05
+            ],
+            [
+              -124.05,
+              42.95
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "D43120 D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -120.05,
+              42.95
+            ],
+            [
+              -119.95,
+              42.95
+            ],
+            [
+              -119.95,
+              43.05
+            ],
+            [
+              -120.05,
+              43.05
+            ],
+            [
+              -120.05,
+              42.95
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "D43116 D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -116.05,
+              42.95
+            ],
+            [
+              -115.95,
+              42.95
+            ],
+            [
+              -115.95,
+              43.05
+            ],
+            [
+              -116.05,
+              43.05
+            ],
+            [
+              -116.05,
+              42.95
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "D43112 D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -112.05,
+              42.95
+            ],
+            [
+              -111.95,
+              42.95
+            ],
+            [
+              -111.95,
+              43.05
+            ],
+            [
+              -112.05,
+              43.05
+            ],
+            [
+              -112.05,
+              42.95
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "D43108 D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -108.05,
+              42.95
+            ],
+            [
+              -107.95,
+              42.95
+            ],
+            [
+              -107.95,
+              43.05
+            ],
+            [
+              -108.05,
+              43.05
+            ],
+            [
+              -108.05,
+              42.95
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "D43104 D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -104.05,
+              42.95
+            ],
+            [
+              -103.95,
+              42.95
+            ],
+            [
+              -103.95,
+              43.05
+            ],
+            [
+              -104.05,
+              43.05
+            ],
+            [
+              -104.05,
+              42.95
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "D43100 D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -100.05,
+              42.95
+            ],
+            [
+              -99.95,
+              42.95
+            ],
+            [
+              -99.95,
+              43.05
+            ],
+            [
+              -100.05,
+              43.05
+            ],
+            [
+              -100.05,
+              42.95
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "D4396 D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -96.05,
+              42.95
+            ],
+            [
+              -95.95,
+              42.95
+            ],
+            [
+              -95.95,
+              43.05
+            ],
+            [
+              -96.05,
+              43.05
+            ],
+            [
+              -96.05,
+              42.95
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "D4392 D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -92.05,
+              42.95
+            ],
+            [
+              -91.95,
+              42.95
+            ],
+            [
+              -91.95,
+              43.05
+            ],
+            [
+              -92.05,
+              43.05
+            ],
+            [
+              -92.05,
+              42.95
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "D4388 D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -88.05,
+              42.95
+            ],
+            [
+              -87.95,
+              42.95
+            ],
+            [
+              -87.95,
+              43.05
+            ],
+            [
+              -88.05,
+              43.05
+            ],
+            [
+              -88.05,
+              42.95
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "D4384 D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -84.05,
+              42.95
+            ],
+            [
+              -83.95,
+              42.95
+            ],
+            [
+              -83.95,
+              43.05
+            ],
+            [
+              -84.05,
+              43.05
+            ],
+            [
+              -84.05,
+              42.95
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "D4380 D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -80.05,
+              42.95
+            ],
+            [
+              -79.95,
+              42.95
+            ],
+            [
+              -79.95,
+              43.05
+            ],
+            [
+              -80.05,
+              43.05
+            ],
+            [
+              -80.05,
+              42.95
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "D4376 D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -76.05,
+              42.95
+            ],
+            [
+              -75.95,
+              42.95
+            ],
+            [
+              -75.95,
+              43.05
+            ],
+            [
+              -76.05,
+              43.05
+            ],
+            [
+              -76.05,
+              42.95
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "D4372 D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -72.05,
+              42.95
+            ],
+            [
+              -71.95,
+              42.95
+            ],
+            [
+              -71.95,
+              43.05
+            ],
+            [
+              -72.05,
+              43.05
+            ],
+            [
+              -72.05,
+              42.95
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "D4368 D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -68.05,
+              42.95
+            ],
+            [
+              -67.95,
+              42.95
+            ],
+            [
+              -67.95,
+              43.05
+            ],
+            [
+              -68.05,
+              43.05
+            ],
+            [
+              -68.05,
+              42.95
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "D46124 D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -124.05,
+              45.95
+            ],
+            [
+              -123.95,
+              45.95
+            ],
+            [
+              -123.95,
+              46.05
+            ],
+            [
+              -124.05,
+              46.05
+            ],
+            [
+              -124.05,
+              45.95
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "D46120 D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -120.05,
+              45.95
+            ],
+            [
+              -119.95,
+              45.95
+            ],
+            [
+              -119.95,
+              46.05
+            ],
+            [
+              -120.05,
+              46.05
+            ],
+            [
+              -120.05,
+              45.95
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "D46116 D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -116.05,
+              45.95
+            ],
+            [
+              -115.95,
+              45.95
+            ],
+            [
+              -115.95,
+              46.05
+            ],
+            [
+              -116.05,
+              46.05
+            ],
+            [
+              -116.05,
+              45.95
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "D46112 D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -112.05,
+              45.95
+            ],
+            [
+              -111.95,
+              45.95
+            ],
+            [
+              -111.95,
+              46.05
+            ],
+            [
+              -112.05,
+              46.05
+            ],
+            [
+              -112.05,
+              45.95
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "D46108 D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -108.05,
+              45.95
+            ],
+            [
+              -107.95,
+              45.95
+            ],
+            [
+              -107.95,
+              46.05
+            ],
+            [
+              -108.05,
+              46.05
+            ],
+            [
+              -108.05,
+              45.95
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "D46104 D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -104.05,
+              45.95
+            ],
+            [
+              -103.95,
+              45.95
+            ],
+            [
+              -103.95,
+              46.05
+            ],
+            [
+              -104.05,
+              46.05
+            ],
+            [
+              -104.05,
+              45.95
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "D46100 D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -100.05,
+              45.95
+            ],
+            [
+              -99.95,
+              45.95
+            ],
+            [
+              -99.95,
+              46.05
+            ],
+            [
+              -100.05,
+              46.05
+            ],
+            [
+              -100.05,
+              45.95
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "D4696 D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -96.05,
+              45.95
+            ],
+            [
+              -95.95,
+              45.95
+            ],
+            [
+              -95.95,
+              46.05
+            ],
+            [
+              -96.05,
+              46.05
+            ],
+            [
+              -96.05,
+              45.95
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "D4692 D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -92.05,
+              45.95
+            ],
+            [
+              -91.95,
+              45.95
+            ],
+            [
+              -91.95,
+              46.05
+            ],
+            [
+              -92.05,
+              46.05
+            ],
+            [
+              -92.05,
+              45.95
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "D4688 D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -88.05,
+              45.95
+            ],
+            [
+              -87.95,
+              45.95
+            ],
+            [
+              -87.95,
+              46.05
+            ],
+            [
+              -88.05,
+              46.05
+            ],
+            [
+              -88.05,
+              45.95
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "D4684 D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -84.05,
+              45.95
+            ],
+            [
+              -83.95,
+              45.95
+            ],
+            [
+              -83.95,
+              46.05
+            ],
+            [
+              -84.05,
+              46.05
+            ],
+            [
+              -84.05,
+              45.95
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "D4680 D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -80.05,
+              45.95
+            ],
+            [
+              -79.95,
+              45.95
+            ],
+            [
+              -79.95,
+              46.05
+            ],
+            [
+              -80.05,
+              46.05
+            ],
+            [
+              -80.05,
+              45.95
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "D4676 D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -76.05,
+              45.95
+            ],
+            [
+              -75.95,
+              45.95
+            ],
+            [
+              -75.95,
+              46.05
+            ],
+            [
+              -76.05,
+              46.05
+            ],
+            [
+              -76.05,
+              45.95
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "D4672 D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -72.05,
+              45.95
+            ],
+            [
+              -71.95,
+              45.95
+            ],
+            [
+              -71.95,
+              46.05
+            ],
+            [
+              -72.05,
+              46.05
+            ],
+            [
+              -72.05,
+              45.95
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "D4668 D",
+        "type": "Class D",
+        "floor": 0,
+        "ceiling": 2500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -68.05,
+              45.95
+            ],
+            [
+              -67.95,
+              45.95
+            ],
+            [
+              -67.95,
+              46.05
+            ],
+            [
+              -68.05,
+              46.05
+            ],
+            [
+              -68.05,
+              45.95
+            ]
+          ]
+        ]
+      }
     }
   ]
 }

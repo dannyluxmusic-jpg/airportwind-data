@@ -9,11 +9,15 @@ import datetime
 
 HERE = Path(__file__).resolve().parent
 NASR_ZIP = HERE / "NASR.zip"
-AWOS_CSV = HERE / "AWOS.csv"   # <-- YOUR CLEAN FILE
+AWOS_CSV = HERE / "AWOS.csv"
 OUT_CSV = HERE / "airport_frequencies.csv"
 
 VHF_MIN = 118.000
 VHF_MAX = 136.975
+
+# -----------------------
+# HELPERS
+# -----------------------
 
 def norm_freq(s):
     try:
@@ -64,6 +68,10 @@ def pick_airport_ident(parts, ident3_to_icao):
             return t
     return None
 
+# -----------------------
+# MAIN
+# -----------------------
+
 def main():
     if not NASR_ZIP.exists():
         print("ERROR: NASR.zip not found")
@@ -73,11 +81,12 @@ def main():
     seen = set()
     ident3_to_icao = {}
 
+    # =========================
+    # READ NASR
+    # =========================
     with zipfile.ZipFile(NASR_ZIP) as zf:
 
-        # -------------------------
-        # APT (mapping + CTAF/UNICOM)
-        # -------------------------
+        # APT → build mapping + CTAF/UNICOM
         with zf.open("APT.txt") as f:
             for raw in f:
                 try:
@@ -107,9 +116,7 @@ def main():
                     if ctaf:
                         add_row(rows, seen, icao, "ctaf", ctaf)
 
-        # -------------------------
-        # TWR (frequencies)
-        # -------------------------
+        # TWR → frequencies
         if "TWR.txt" in zf.namelist():
             with zf.open("TWR.txt") as f:
                 for raw in f:
@@ -136,22 +143,25 @@ def main():
                     for typ in classify_twr(line):
                         add_row(rows, seen, icao, typ, freq)
 
-    # -------------------------
-    # 🔥 AWOS CSV (THE FIX)
-    # -------------------------
-    if AWOS_CSV.exists():
+    # =========================
+    # 🔥 AWOS CSV (THIS IS THE KEY)
+    # =========================
+    if not AWOS_CSV.exists():
+        print("ERROR: AWOS.csv not found")
+    else:
         with open(AWOS_CSV, newline="") as f:
             reader = csv.DictReader(f)
 
             for r in reader:
-                ident = r.get("Station Identifier", "").strip().upper()
-                phone = r.get("Phone Number", "").strip()
-                kind = r.get("Type", "").upper()
+                ident = r.get("ASOS_AWOS_ID", "").strip().upper()
+                kind = r.get("ASOS_AWOS_TYPE", "").upper()
+                phone1 = r.get("PHONE_NO", "").strip()
+                phone2 = r.get("SECOND_PHONE_NO", "").strip()
 
-                if not ident or not phone:
+                if not ident:
                     continue
 
-                # map 3-letter → ICAO
+                # map to ICAO
                 icao = ident3_to_icao.get(ident)
 
                 if not icao:
@@ -167,11 +177,15 @@ def main():
                 else:
                     continue
 
-                add_row(rows, seen, icao, typ, phone)
+                if phone1:
+                    add_row(rows, seen, icao, typ, phone1)
 
-    # -------------------------
-    # WRITE OUTPUT (force update)
-    # -------------------------
+                if phone2:
+                    add_row(rows, seen, icao, typ, phone2)
+
+    # =========================
+    # WRITE OUTPUT (FORCE UPDATE)
+    # =========================
     with open(OUT_CSV, "w") as f:
         f.write(f"# updated {datetime.datetime.utcnow()}\n")
         f.write("icao,type,value\n")

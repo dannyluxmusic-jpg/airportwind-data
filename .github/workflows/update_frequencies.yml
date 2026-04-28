@@ -43,8 +43,53 @@ jobs:
 
           ls -lh NASR.zip
 
-      - name: Build airport_frequencies.csv
-        run: python build_frequencies.py
+      # 🔧 BUILD NEW DATA (TEMP ONLY)
+      - name: Build new frequencies (temp file)
+        run: |
+          python build_frequencies.py
+          mv airport_frequencies.csv new_freqs.csv
+
+      # 🔧 MERGE WITH EXISTING (PRESERVE PHONES)
+      - name: Merge with existing CSV (preserve phones)
+        run: |
+          python3 <<EOF
+import csv
+
+old = {}
+try:
+    with open("airport_frequencies.csv", newline="") as f:
+        reader = csv.reader(f)
+        next(reader, None)
+        for r in reader:
+            old.setdefault(r[0], []).append(r)
+except:
+    pass
+
+new = {}
+with open("new_freqs.csv", newline="") as f:
+    reader = csv.reader(f)
+    next(reader, None)
+    for r in reader:
+        new.setdefault(r[0], []).append(r)
+
+merged = []
+
+for icao in set(old) | set(new):
+    # keep ALL existing data (phones, etc)
+    for r in old.get(icao, []):
+        merged.append(r)
+
+    # add new frequencies only if missing
+    existing = set((r[1], r[2]) for r in old.get(icao, []))
+    for r in new.get(icao, []):
+        if (r[1], r[2]) not in existing:
+            merged.append(r)
+
+with open("airport_frequencies.csv", "w", newline="") as f:
+    writer = csv.writer(f)
+    writer.writerow(["icao","type","value"])
+    writer.writerows(merged)
+EOF
 
       - name: Commit changes (only if changed)
         run: |

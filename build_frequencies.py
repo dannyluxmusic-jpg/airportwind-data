@@ -126,9 +126,13 @@ def main():
 
                     phone = f"{digits[:3]}-{digits[3:6]}-{digits[6:]}"
 
+                    # 🔥 FIX: handle ICAO mapping correctly
                     icao = ident3_to_icao.get(ident)
                     if not icao:
-                        continue
+                        if len(ident) == 3:
+                            icao = "K" + ident
+                        else:
+                            continue
 
                     if "AWOS" in kind:
                         typ = "awos_phone"

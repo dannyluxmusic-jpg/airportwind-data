@@ -21,10 +21,15 @@ jobs:
 
       - run: python -m pip install --upgrade pip
 
-      # 🔥 DOWNLOAD AWOS CSV (REAL FAA SOURCE)
-      - name: Download AWOS CSV
+      # 🔥 DOWNLOAD REAL FAA DATA
+      - name: Download NASR
         run: |
-          curl -L -o AWOS.csv https://raw.githubusercontent.com/datasets/airport-codes/master/data/airport-codes.csv
+          URL=$(curl -fsSL "https://www.faa.gov/air_traffic/flight_info/aeronav/aero_data/NASR_Subscription/" \
+            | grep -Eo 'https://nfdc\.faa\.gov/webContent/28DaySub/28DaySubscription_Effective_[0-9\-]+\.zip' \
+            | head -n 1)
+
+          echo "Downloading: $URL"
+          curl -L -o NASR.zip "$URL"
 
       # 🔥 BUILD CSV
       - name: Build frequencies

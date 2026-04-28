@@ -35,13 +35,10 @@ jobs:
 
           curl -L -o NASR.zip "$URL"
 
-      - name: Debug (verify correct file)
+      - name: Debug
         run: |
-          echo "PWD:"
           pwd
-          echo "FILES:"
           ls -la
-          echo "SCRIPT HEAD:"
           head -5 build_frequencies.py
 
       - name: Run builder
@@ -52,9 +49,8 @@ jobs:
           git config user.name "github-actions"
           git config user.email "actions@github.com"
 
-          git pull --rebase
-
           git add airport_frequencies.csv
           git commit -m "Auto update airport frequencies" || echo "No changes"
 
+          git pull --rebase
           git push

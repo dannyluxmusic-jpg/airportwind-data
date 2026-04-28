@@ -3,27 +3,19 @@
 import re
 import sys
 import zipfile
+import csv
 from pathlib import Path
 import datetime
 
 HERE = Path(__file__).resolve().parent
 NASR_ZIP = HERE / "NASR.zip"
+AWOS_CSV = HERE / "AWOS.csv"   # <-- YOUR CLEAN FILE
 OUT_CSV = HERE / "airport_frequencies.csv"
 
 VHF_MIN = 118.000
 VHF_MAX = 136.975
 
-FREQ_RE = re.compile(r"(?:^|[^0-9])((?:\d{2,3})\.\d{1,3})(?:[^0-9]|$)")
-PHONE_RE = re.compile(r"\(?\d{3}\)?[- ]?\d{3}[- ]?\d{4}")
-
-# -----------------------
-# HELPERS
-# -----------------------
-
 def norm_freq(s):
-    s = s.strip()
-    if not re.match(r"^\d{2,3}\.\d{1,3}$", s):
-        return None
     try:
         v = float(s)
     except:
@@ -72,10 +64,6 @@ def pick_airport_ident(parts, ident3_to_icao):
             return t
     return None
 
-# -----------------------
-# MAIN
-# -----------------------
-
 def main():
     if not NASR_ZIP.exists():
         print("ERROR: NASR.zip not found")
@@ -88,7 +76,7 @@ def main():
     with zipfile.ZipFile(NASR_ZIP) as zf:
 
         # -------------------------
-        # APT.txt (mapping + CTAF/UNICOM)
+        # APT (mapping + CTAF/UNICOM)
         # -------------------------
         with zf.open("APT.txt") as f:
             for raw in f:
@@ -108,7 +96,6 @@ def main():
 
                 ident3 = m3.group(1)
                 icao = m4.group(1)
-
                 ident3_to_icao[ident3] = icao
 
                 if len(line) >= 995:
@@ -121,7 +108,7 @@ def main():
                         add_row(rows, seen, icao, "ctaf", ctaf)
 
         # -------------------------
-        # TWR.txt (frequencies)
+        # TWR (frequencies)
         # -------------------------
         if "TWR.txt" in zf.namelist():
             with zf.open("TWR.txt") as f:
@@ -149,41 +136,38 @@ def main():
                     for typ in classify_twr(line):
                         add_row(rows, seen, icao, typ, freq)
 
-        # -------------------------
-        # AWOS / ASOS / WX PHONE EXTRACTION (from NASR files)
-        # -------------------------
-        for filename in zf.namelist():
+    # -------------------------
+    # 🔥 AWOS CSV (THE FIX)
+    # -------------------------
+    if AWOS_CSV.exists():
+        with open(AWOS_CSV, newline="") as f:
+            reader = csv.DictReader(f)
 
-            name_upper = filename.upper()
+            for r in reader:
+                ident = r.get("Station Identifier", "").strip().upper()
+                phone = r.get("Phone Number", "").strip()
+                kind = r.get("Type", "").upper()
 
-            if not any(x in name_upper for x in ["AWOS", "ASOS", "WXL"]):
-                continue
+                if not ident or not phone:
+                    continue
 
-            with zf.open(filename) as f:
-                for raw in f:
-                    try:
-                        line = raw.decode("latin-1")
-                    except:
+                # map 3-letter → ICAO
+                icao = ident3_to_icao.get(ident)
+
+                if not icao:
+                    if len(ident) == 3:
+                        icao = "K" + ident
+                    else:
                         continue
 
-                    u = line.upper()
+                if "AWOS" in kind:
+                    typ = "awos_phone"
+                elif "ASOS" in kind:
+                    typ = "asos_phone"
+                else:
+                    continue
 
-                    # Must be weather-related
-                    if not any(k in u for k in ["AWOS", "ASOS", "ATIS"]):
-                        continue
-
-                    parts = line.split()
-
-                    icao = pick_airport_ident(parts, ident3_to_icao)
-                    if not icao:
-                        continue
-
-                    phones = PHONE_RE.findall(line)
-                    if not phones:
-                        continue
-
-                    for p in phones:
-                        add_row(rows, seen, icao, "phone", p)
+                add_row(rows, seen, icao, typ, phone)
 
     # -------------------------
     # WRITE OUTPUT (force update)

@@ -42,6 +42,8 @@ def extract_phone(line):
 
 
 def add_row(rows, seen, icao, typ, val):
+    if not re.match(r"^[A-Z0-9]{4}$", icao):
+        return
     key = (icao, typ, val)
     if key in seen:
         return
@@ -154,7 +156,7 @@ def main():
                     for typ in classify_twr(line):
                         add_row(rows, seen, icao, typ, freq)
 
-        # -------- CLEAN PHONE FILTER --------
+        # -------- CLEAN PHONE FILTER (STRICT) --------
         with zf.open("APT.txt") as f:
             current_icao = None
 
@@ -174,12 +176,11 @@ def main():
 
                 u = line.upper()
 
-                # STRICT FILTER
-                if any(x in u for x in [" ATIS ", "AWOS", "ASOS"]):
-                    if "PHONE" in u or "TEL" in u:
-                        phones = extract_phone(line)
-                        for p in phones:
-                            add_row(rows, seen, current_icao, "phone", p)
+                # STRICT: must include BOTH weather + phone
+                if ("ATIS" in u or "AWOS" in u or "ASOS" in u) and ("PHONE" in u):
+                    phones = extract_phone(line)
+                    for p in phones:
+                        add_row(rows, seen, current_icao, "phone", p)
 
     # -------- WRITE CSV --------
     with open(OUT_CSV, "w") as f:

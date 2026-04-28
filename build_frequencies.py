@@ -34,16 +34,14 @@ def main():
 
             ident = r[0].strip().upper()
             kind = r[1].strip().upper()
-            phone = r[2].strip()
+            phone1 = r[2].strip()
+            phone2 = r[3].strip() if len(r) > 3 else ""
 
-            if not ident or not phone:
+            if not ident:
                 continue
 
-            # normalize ICAO
-            if len(ident) == 3:
-                icao = "K" + ident
-            else:
-                icao = ident
+            # ICAO normalization
+            icao = "K" + ident if len(ident) == 3 else ident
 
             if "AWOS" in kind:
                 typ = "awos_phone"
@@ -52,10 +50,14 @@ def main():
             else:
                 continue
 
-            add_row(rows, seen, icao, typ, phone)
+            if phone1:
+                add_row(rows, seen, icao, typ, phone1)
+
+            if phone2:
+                add_row(rows, seen, icao, typ, phone2)
 
     with open(OUT_CSV, "w") as f:
-        # FORCE change every run
+        # FORCE UPDATE EVERY RUN
         f.write(f"# updated {datetime.datetime.utcnow()}\n")
         f.write("icao,type,value\n")
 

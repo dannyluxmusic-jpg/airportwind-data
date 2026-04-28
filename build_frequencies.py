@@ -26,21 +26,15 @@ def main():
 
     with zipfile.ZipFile(NASR_ZIP) as zf:
 
-        # 🔥 LIST FILES (debug once)
-        print("FILES IN ZIP:")
-        for name in zf.namelist():
-            if "AWOS" in name.upper():
-                print("FOUND:", name)
-
-        # 🔥 CORRECT FILE (FAA)
+        # find AWOS/ASOS file
         target = None
         for name in zf.namelist():
-            if "AWOS" in name.upper():
+            if "AWOS" in name.upper() or "ASOS" in name.upper():
                 target = name
                 break
 
         if not target:
-            print("NO AWOS FILE FOUND")
+            print("NO AWOS/ASOS FILE FOUND")
             return
 
         print("USING:", target)
@@ -52,20 +46,16 @@ def main():
                 except:
                     continue
 
-                # FAA format example:
-                # IDENT TYPE ... PHONE
                 if "AWOS" not in line and "ASOS" not in line:
                     continue
 
-                # extract phone
-                match = re.search(r"\d{3}-\d{3}-\d{4}", line)
-                if not match:
+                phone_match = re.search(r"\d{3}-\d{3}-\d{4}", line)
+                if not phone_match:
                     continue
 
-                phone = match.group()
+                phone = phone_match.group()
 
                 ident = line[0:4].strip().upper()
-
                 if not ident:
                     continue
 

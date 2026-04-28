@@ -3,7 +3,7 @@ name: Update Airport Frequencies
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 6 * * *"   # daily at 06:00 UTC
+    - cron: "0 6 * * *"
 
 permissions:
   contents: write
@@ -23,81 +23,68 @@ jobs:
           python-version: "3.11"
 
       - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
+        run: python -m pip install --upgrade pip
 
       - name: Download current NASR zip
-        shell: bash
         run: |
-          set -euo pipefail
+          set -e
 
-          NASR_URL=$(curl -fsSL "https://www.faa.gov/air_traffic/flight_info/aeronav/aero_data/NASR_Subscription" \
-            | grep -Eo 'https://nfdc\.faa\.gov/webContent/28DaySub/28DaySubscription_Effective_[0-9]{4}-[0-9]{2}-[0-9]{2}\.zip' \
+          NASR_URL=$(curl -fsSL https://www.faa.gov/air_traffic/flight_info/aeronav/aero_data/NASR_Subscription \
+            | grep -Eo 'https://nfdc\.faa\.gov/webContent/28DaySub/28DaySubscription_Effective_[0-9\-]+\.zip' \
             | head -n 1)
 
-          echo "Resolved NASR URL:"
+          echo "Downloading:"
           echo "$NASR_URL"
 
-          curl -L --fail --retry 20 --retry-all-errors --retry-delay 5 \
-            -o NASR.zip "$NASR_URL"
+          curl -L --fail --retry 10 -o NASR.zip "$NASR_URL"
 
-          ls -lh NASR.zip
-
-      # BUILD NEW DATA (TEMP FILE)
-      - name: Build new frequencies (temp file)
+      - name: Build new frequencies
         run: |
           python build_frequencies.py
           mv airport_frequencies.csv new_freqs.csv
 
-      # MERGE WITH EXISTING (PRESERVE PHONES)
-      - name: Merge with existing CSV (preserve phones)
+      - name: Merge (preserve phones)
         run: |
-          cat << 'EOF' > merge.py
-import csv
+          printf "import csv\n" > merge.py
+          printf "old={}\n" >> merge.py
+          printf "try:\n" >> merge.py
+          printf "    f=open('airport_frequencies.csv')\n" >> merge.py
+          printf "    r=csv.reader(f)\n" >> merge.py
+          printf "    next(r,None)\n" >> merge.py
+          printf "    for x in r: old.setdefault(x[0],[]).append(x)\n" >> merge.py
+          printf "    f.close()\n" >> merge.py
+          printf "except: pass\n" >> merge.py
 
-old = {}
-try:
-    with open("airport_frequencies.csv", newline="") as f:
-        reader = csv.reader(f)
-        next(reader, None)
-        for r in reader:
-            old.setdefault(r[0], []).append(r)
-except:
-    pass
+          printf "new={}\n" >> merge.py
+          printf "f=open('new_freqs.csv')\n" >> merge.py
+          printf "r=csv.reader(f)\n" >> merge.py
+          printf "next(r,None)\n" >> merge.py
+          printf "for x in r: new.setdefault(x[0],[]).append(x)\n" >> merge.py
+          printf "f.close()\n" >> merge.py
 
-new = {}
-with open("new_freqs.csv", newline="") as f:
-    reader = csv.reader(f)
-    next(reader, None)
-    for r in reader:
-        new.setdefault(r[0], []).append(r)
+          printf "out=[]\n" >> merge.py
+          printf "for k in set(old)|set(new):\n" >> merge.py
+          printf "    for x in old.get(k,[]): out.append(x)\n" >> merge.py
+          printf "    seen=set((x[1],x[2]) for x in old.get(k,[]))\n" >> merge.py
+          printf "    for x in new.get(k,[]):\n" >> merge.py
+          printf "        if (x[1],x[2]) not in seen: out.append(x)\n" >> merge.py
 
-merged = []
-
-for icao in set(old) | set(new):
-    # keep ALL existing data (phones, etc)
-    for r in old.get(icao, []):
-        merged.append(r)
-
-    # add new frequencies only if missing
-    existing = set((r[1], r[2]) for r in old.get(icao, []))
-    for r in new.get(icao, []):
-        if (r[1], r[2]) not in existing:
-            merged.append(r)
-
-with open("airport_frequencies.csv", "w", newline="") as f:
-    writer = csv.writer(f)
-    writer.writerow(["icao","type","value"])
-    writer.writerows(merged)
-EOF
+          printf "f=open('airport_frequencies.csv','w')\n" >> merge.py
+          printf "w=csv.writer(f)\n" >> merge.py
+          printf "w.writerow(['icao','type','value'])\n" >> merge.py
+          printf "w.writerows(out)\n" >> merge.py
+          printf "f.close()\n" >> merge.py
 
           python3 merge.py
 
-      - name: Commit changes (only if changed)
+      - name: Commit changes
         run: |
-          git config user.name "github-actions"
-          git config user.email "actions@github.com"
+          git config user.name github-actions
+          git config user.email actions@github.com
+
           git add airport_frequencies.csv
-          git diff --cached --quiet && echo "No changes to commit" && exit 0
+
+          git diff --cached --quiet && echo "No changes" && exit 0
+
           git commit -m "Auto update airport frequencies"
           git push

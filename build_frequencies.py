@@ -14,6 +14,11 @@ VHF_MIN = 118.000
 VHF_MAX = 136.975
 
 FREQ_RE = re.compile(r"(?:^|[^0-9])((?:\d{2,3})\.\d{1,3})(?:[^0-9]|$)")
+PHONE_RE = re.compile(r"\(?\d{3}\)?[- ]?\d{3}[- ]?\d{4}")
+
+# -----------------------
+# HELPERS
+# -----------------------
 
 def norm_freq(s):
     s = s.strip()
@@ -27,16 +32,10 @@ def norm_freq(s):
         return None
     return "%.3f" % v
 
-def extract_vhf(line):
-    out = []
-    for m in FREQ_RE.finditer(line):
-        f = norm_freq(m.group(1))
-        if f:
-            out.append(f)
-    return out
-
-def add_row(rows, seen, icao, typ, value):
-    key = (icao, typ, value)
+def add_row(rows, seen, icao, typ, val):
+    if not icao or len(icao) != 4:
+        return
+    key = (icao, typ, val)
     if key in seen:
         return
     seen.add(key)
@@ -73,6 +72,10 @@ def pick_airport_ident(parts, ident3_to_icao):
             return t
     return None
 
+# -----------------------
+# MAIN
+# -----------------------
+
 def main():
     if not NASR_ZIP.exists():
         print("ERROR: NASR.zip not found")
@@ -85,7 +88,7 @@ def main():
     with zipfile.ZipFile(NASR_ZIP) as zf:
 
         # -------------------------
-        # APT.txt (UNICOM / CTAF)
+        # APT.txt (mapping + CTAF/UNICOM)
         # -------------------------
         with zf.open("APT.txt") as f:
             for raw in f:
@@ -118,7 +121,7 @@ def main():
                         add_row(rows, seen, icao, "ctaf", ctaf)
 
         # -------------------------
-        # TWR.txt (Tower/Approach/etc)
+        # TWR.txt (frequencies)
         # -------------------------
         if "TWR.txt" in zf.namelist():
             with zf.open("TWR.txt") as f:
@@ -146,8 +149,44 @@ def main():
                     for typ in classify_twr(line):
                         add_row(rows, seen, icao, typ, freq)
 
+        # -------------------------
+        # AWOS / ASOS / WX PHONE EXTRACTION (from NASR files)
+        # -------------------------
+        for filename in zf.namelist():
+
+            name_upper = filename.upper()
+
+            if not any(x in name_upper for x in ["AWOS", "ASOS", "WXL"]):
+                continue
+
+            with zf.open(filename) as f:
+                for raw in f:
+                    try:
+                        line = raw.decode("latin-1")
+                    except:
+                        continue
+
+                    u = line.upper()
+
+                    # Must be weather-related
+                    if not any(k in u for k in ["AWOS", "ASOS", "ATIS"]):
+                        continue
+
+                    parts = line.split()
+
+                    icao = pick_airport_ident(parts, ident3_to_icao)
+                    if not icao:
+                        continue
+
+                    phones = PHONE_RE.findall(line)
+                    if not phones:
+                        continue
+
+                    for p in phones:
+                        add_row(rows, seen, icao, "phone", p)
+
     # -------------------------
-    # WRITE OUTPUT (FORCE UPDATE)
+    # WRITE OUTPUT (force update)
     # -------------------------
     with open(OUT_CSV, "w") as f:
         f.write(f"# updated {datetime.datetime.utcnow()}\n")

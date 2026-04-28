@@ -84,6 +84,17 @@ def pick_airport_ident(parts, ident3_to_icao):
     return None
 
 
+def detect_weather_type(line):
+    u = line.upper()
+    if "ATIS" in u:
+        return "atis_phone"
+    if "AWOS" in u:
+        return "awos_phone"
+    if "ASOS" in u:
+        return "asos_phone"
+    return None
+
+
 # -----------------------
 # MAIN
 # -----------------------
@@ -156,7 +167,7 @@ def main():
                     for typ in classify_twr(line):
                         add_row(rows, seen, icao, typ, freq)
 
-        # -------- CLEAN PHONE FILTER (STRICT) --------
+        # -------- WEATHER PHONES (FIXED LOGIC) --------
         with zf.open("APT.txt") as f:
             current_icao = None
 
@@ -174,13 +185,13 @@ def main():
                 if not current_icao:
                     continue
 
-                u = line.upper()
+                typ = detect_weather_type(line)
+                if not typ:
+                    continue
 
-                # STRICT: must include BOTH weather + phone
-                if ("ATIS" in u or "AWOS" in u or "ASOS" in u) and ("PHONE" in u):
-                    phones = extract_phone(line)
-                    for p in phones:
-                        add_row(rows, seen, current_icao, "phone", p)
+                phones = extract_phone(line)
+                for p in phones:
+                    add_row(rows, seen, current_icao, typ, p)
 
     # -------- WRITE CSV --------
     with open(OUT_CSV, "w") as f:

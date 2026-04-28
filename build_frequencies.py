@@ -14,6 +14,10 @@ VHF_MAX = 136.975
 
 FREQ_RE = re.compile(r"(?:^|[^0-9])((?:\d{2,3})\.\d{1,3})(?:[^0-9]|$)")
 
+# -----------------------
+# HELPERS
+# -----------------------
+
 def norm_freq(s):
     s = s.strip()
     if not re.match(r"^\d{2,3}\.\d{1,3}$", s):
@@ -26,6 +30,7 @@ def norm_freq(s):
         return None
     return "%.3f" % v
 
+
 def extract_phone(line):
     phones = re.findall(r'\b\d{3}[-\.\s]?\d{3}[-\.\s]?\d{4}\b', line)
     out = []
@@ -35,12 +40,14 @@ def extract_phone(line):
             out.append(f"{p[0:3]}-{p[3:6]}-{p[6:10]}")
     return out
 
+
 def add_row(rows, seen, icao, typ, val):
     key = (icao, typ, val)
     if key in seen:
         return
     seen.add(key)
     rows.append(key)
+
 
 def classify_twr(line):
     u = line.upper()
@@ -62,6 +69,7 @@ def classify_twr(line):
 
     return list(dict.fromkeys(types))
 
+
 def pick_airport_ident(parts, ident3_to_icao):
     for tok in parts:
         t = tok.strip().upper().replace("*", "")
@@ -72,6 +80,11 @@ def pick_airport_ident(parts, ident3_to_icao):
         if len(t) == 4 and t.isalnum():
             return t
     return None
+
+
+# -----------------------
+# MAIN
+# -----------------------
 
 def main():
     if not NASR_ZIP.exists():
@@ -141,7 +154,7 @@ def main():
                     for typ in classify_twr(line):
                         add_row(rows, seen, icao, typ, freq)
 
-        # -------- PHONE FILTER (ONLY ATIS / AWOS / ASOS) --------
+        # -------- CLEAN PHONE FILTER --------
         with zf.open("APT.txt") as f:
             current_icao = None
 
@@ -156,18 +169,19 @@ def main():
                     if m4:
                         current_icao = m4.group(1)
 
-                u = line.upper()
-
                 if not current_icao:
                     continue
 
-                # ONLY keep useful weather phone lines
-                if ("ATIS" in u or "AWOS" in u or "ASOS" in u):
-                    phones = extract_phone(line)
-                    for p in phones:
-                        add_row(rows, seen, current_icao, "phone", p)
+                u = line.upper()
 
-    # -------- WRITE --------
+                # STRICT FILTER
+                if any(x in u for x in [" ATIS ", "AWOS", "ASOS"]):
+                    if "PHONE" in u or "TEL" in u:
+                        phones = extract_phone(line)
+                        for p in phones:
+                            add_row(rows, seen, current_icao, "phone", p)
+
+    # -------- WRITE CSV --------
     with open(OUT_CSV, "w") as f:
         f.write("icao,type,value\n")
         for icao, typ, val in rows:

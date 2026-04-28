@@ -55,6 +55,7 @@ def main():
             add_row(rows, seen, icao, typ, phone)
 
     with open(OUT_CSV, "w") as f:
+        # FORCE change every run
         f.write(f"# updated {datetime.datetime.utcnow()}\n")
         f.write("icao,type,value\n")
 

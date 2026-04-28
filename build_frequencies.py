@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 
-import csv
+import zipfile
 from pathlib import Path
 import datetime
+import re
 
 HERE = Path(__file__).resolve().parent
-AWOS_FILE = HERE / "AWOS.csv"
+NASR_ZIP = HERE / "NASR.zip"
 OUT_CSV = HERE / "airport_frequencies.csv"
 
 def add_row(rows, seen, icao, typ, val):
@@ -19,45 +20,65 @@ def main():
     rows = []
     seen = set()
 
-    if not AWOS_FILE.exists():
-        print("AWOS.csv NOT FOUND")
+    if not NASR_ZIP.exists():
+        print("NASR.zip missing")
         return
 
-    print("Reading AWOS.csv...")
+    with zipfile.ZipFile(NASR_ZIP) as zf:
 
-    with open(AWOS_FILE, newline="", encoding="utf-8") as f:
-        reader = csv.reader(f)
+        # 🔥 LIST FILES (debug once)
+        print("FILES IN ZIP:")
+        for name in zf.namelist():
+            if "AWOS" in name.upper():
+                print("FOUND:", name)
 
-        for r in reader:
-            if len(r) < 3:
-                continue
+        # 🔥 CORRECT FILE (FAA)
+        target = None
+        for name in zf.namelist():
+            if "AWOS" in name.upper():
+                target = name
+                break
 
-            ident = r[0].strip().upper()
-            kind = r[1].strip().upper()
-            phone1 = r[2].strip()
-            phone2 = r[3].strip() if len(r) > 3 else ""
+        if not target:
+            print("NO AWOS FILE FOUND")
+            return
 
-            if not ident:
-                continue
+        print("USING:", target)
 
-            # ICAO normalization
-            icao = "K" + ident if len(ident) == 3 else ident
+        with zf.open(target) as f:
+            for raw in f:
+                try:
+                    line = raw.decode("latin-1")
+                except:
+                    continue
 
-            if "AWOS" in kind:
-                typ = "awos_phone"
-            elif "ASOS" in kind:
-                typ = "asos_phone"
-            else:
-                continue
+                # FAA format example:
+                # IDENT TYPE ... PHONE
+                if "AWOS" not in line and "ASOS" not in line:
+                    continue
 
-            if phone1:
-                add_row(rows, seen, icao, typ, phone1)
+                # extract phone
+                match = re.search(r"\d{3}-\d{3}-\d{4}", line)
+                if not match:
+                    continue
 
-            if phone2:
-                add_row(rows, seen, icao, typ, phone2)
+                phone = match.group()
+
+                ident = line[0:4].strip().upper()
+
+                if not ident:
+                    continue
+
+                icao = "K" + ident if len(ident) == 3 else ident
+
+                if "AWOS" in line:
+                    typ = "awos_phone"
+                else:
+                    typ = "asos_phone"
+
+                add_row(rows, seen, icao, typ, phone)
 
     with open(OUT_CSV, "w") as f:
-        # FORCE UPDATE EVERY RUN
         f.write(f"# updated {datetime.datetime.utcnow()}\n")
         f.write("icao,type,value\n")
 

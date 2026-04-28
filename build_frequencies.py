@@ -4,6 +4,7 @@ import re
 import sys
 import zipfile
 from pathlib import Path
+import datetime
 
 HERE = Path(__file__).resolve().parent
 NASR_ZIP = HERE / "NASR.zip"
@@ -12,7 +13,12 @@ OUT_CSV = HERE / "airport_frequencies.csv"
 VHF_MIN = 118.000
 VHF_MAX = 136.975
 
+FREQ_RE = re.compile(r"(?:^|[^0-9])((?:\d{2,3})\.\d{1,3})(?:[^0-9]|$)")
+
 def norm_freq(s):
+    s = s.strip()
+    if not re.match(r"^\d{2,3}\.\d{1,3}$", s):
+        return None
     try:
         v = float(s)
     except:
@@ -21,14 +27,51 @@ def norm_freq(s):
         return None
     return "%.3f" % v
 
-def add_row(rows, seen, icao, typ, val):
-    if not icao or len(icao) != 4:
-        return
-    key = (icao, typ, val)
+def extract_vhf(line):
+    out = []
+    for m in FREQ_RE.finditer(line):
+        f = norm_freq(m.group(1))
+        if f:
+            out.append(f)
+    return out
+
+def add_row(rows, seen, icao, typ, value):
+    key = (icao, typ, value)
     if key in seen:
         return
     seen.add(key)
     rows.append(key)
+
+def classify_twr(line):
+    u = line.upper()
+    types = []
+
+    if "APCH" in u or "APP" in u:
+        types.append("approach")
+    if "DEP" in u:
+        types.append("departure")
+    if "GND" in u or "GROUND" in u:
+        types.append("ground")
+    if "CLNC" in u or "CLEAR" in u:
+        types.append("clearance")
+    if "CTR" in u or "CENTER" in u:
+        types.append("center")
+
+    if not types:
+        types.append("tower")
+
+    return list(dict.fromkeys(types))
+
+def pick_airport_ident(parts, ident3_to_icao):
+    for tok in parts:
+        t = tok.strip().upper().replace("*", "")
+        if len(t) == 3 and t in ident3_to_icao:
+            return ident3_to_icao[t]
+    for tok in parts:
+        t = tok.strip().upper().replace("*", "")
+        if len(t) == 4 and t.isalnum():
+            return t
+    return None
 
 def main():
     if not NASR_ZIP.exists():
@@ -41,7 +84,9 @@ def main():
 
     with zipfile.ZipFile(NASR_ZIP) as zf:
 
-        # ---------------- APT (mapping + CTAF/UNICOM) ----------------
+        # -------------------------
+        # APT.txt (UNICOM / CTAF)
+        # -------------------------
         with zf.open("APT.txt") as f:
             for raw in f:
                 try:
@@ -60,6 +105,7 @@ def main():
 
                 ident3 = m3.group(1)
                 icao = m4.group(1)
+
                 ident3_to_icao[ident3] = icao
 
                 if len(line) >= 995:
@@ -71,7 +117,9 @@ def main():
                     if ctaf:
                         add_row(rows, seen, icao, "ctaf", ctaf)
 
-        # ---------------- TWR (tower freq) ----------------
+        # -------------------------
+        # TWR.txt (Tower/Approach/etc)
+        # -------------------------
         if "TWR.txt" in zf.namelist():
             with zf.open("TWR.txt") as f:
                 for raw in f:
@@ -91,62 +139,21 @@ def main():
                     if not freq:
                         continue
 
-                    icao = None
-                    for tok in parts:
-                        t = tok.strip().upper()
-                        if len(t) == 3 and t in ident3_to_icao:
-                            icao = ident3_to_icao[t]
-                            break
-
+                    icao = pick_airport_ident(parts, ident3_to_icao)
                     if not icao:
                         continue
 
-                    add_row(rows, seen, icao, "tower", freq)
+                    for typ in classify_twr(line):
+                        add_row(rows, seen, icao, typ, freq)
 
-        # ---------------- AWOS / ASOS PHONES ----------------
-        if "AWOS.txt" in zf.namelist():
-            with zf.open("AWOS.txt") as f:
-                for raw in f:
-                    try:
-                        line = raw.decode("latin-1")
-                    except:
-                        continue
-
-                    parts = line.split("|")
-                    if len(parts) < 10:
-                        continue
-
-                    ident = parts[0].strip().upper()
-                    kind = parts[2].strip().upper()
-                    phone_raw = parts[9].strip()
-
-                    digits = re.sub(r"\D", "", phone_raw)
-                    if len(digits) != 10:
-                        continue
-
-                    phone = f"{digits[:3]}-{digits[3:6]}-{digits[6:]}"
-
-                    # 🔥 FIX: handle ICAO mapping correctly
-                    icao = ident3_to_icao.get(ident)
-                    if not icao:
-                        if len(ident) == 3:
-                            icao = "K" + ident
-                        else:
-                            continue
-
-                    if "AWOS" in kind:
-                        typ = "awos_phone"
-                    elif "ASOS" in kind:
-                        typ = "asos_phone"
-                    else:
-                        continue
-
-                    add_row(rows, seen, icao, typ, phone)
-
-    # ---------------- WRITE CSV ----------------
+    # -------------------------
+    # WRITE OUTPUT (FORCE UPDATE)
+    # -------------------------
     with open(OUT_CSV, "w") as f:
+        f.write(f"# updated {datetime.datetime.utcnow()}\n")
         f.write("icao,type,value\n")
-        for icao, typ, val in rows:
+
+        for icao, typ, val in sorted(rows):
             f.write(f"{icao},{typ},{val}\n")
 
 if __name__ == "__main__":

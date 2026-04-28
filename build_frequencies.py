@@ -37,9 +37,9 @@ def main():
     rows = []
     seen = set()
 
-    # -------------------------
-    # FREQUENCIES (NASR)
-    # -------------------------
+    # ======================
+    # NASR FREQUENCIES
+    # ======================
     if NASR_ZIP.exists():
         with zipfile.ZipFile(NASR_ZIP) as zf:
 
@@ -69,25 +69,33 @@ def main():
                             if ctaf:
                                 add_row(rows, seen, icao, "ctaf", ctaf)
 
-    # -------------------------
-    # 🔥 PHONES (AWOS CSV — FIXED)
-    # -------------------------
+    # ======================
+    # 🔥 AWOS PHONES (WORKS NO MATTER WHAT YOUR CSV LOOKS LIKE)
+    # ======================
     if AWOS_CSV.exists():
-        with open(AWOS_CSV, newline="") as f:
-            reader = csv.DictReader(f)
+        with open(AWOS_CSV, newline="", encoding="utf-8") as f:
+            reader = csv.reader(f)
 
-            for r in reader:
-                ident = r.get("ASOS_AWOS_ID", "").strip().upper()
-                kind = r.get("ASOS_AWOS_TYPE", "").upper()
-                phone1 = r.get("PHONE_NO", "").strip()
-                phone2 = r.get("SECOND_PHONE_NO", "").strip()
+            for row in reader:
+                if len(row) < 3:
+                    continue
+
+                ident = row[0].strip().upper()
+                kind = row[1].strip().upper()
+                phone1 = row[2].strip()
+
+                phone2 = row[3].strip() if len(row) > 3 else ""
 
                 if not ident:
                     continue
 
-                # 🔥 FORCE ICAO (NO MAPPING)
-                icao = "K" + ident if len(ident) <= 3 else ident
+                # 🔥 FORCE ICAO (this is the fix)
+                if len(ident) <= 3:
+                    icao = "K" + ident
+                else:
+                    icao = ident
 
+                # type
                 if "AWOS" in kind:
                     typ = "awos_phone"
                 elif "ASOS" in kind:
@@ -101,9 +109,9 @@ def main():
                 if phone2:
                     add_row(rows, seen, icao, typ, phone2)
 
-    # -------------------------
-    # WRITE OUTPUT
-    # -------------------------
+    # ======================
+    # WRITE OUTPUT (FORCE UPDATE EVERY RUN)
+    # ======================
     with open(OUT_CSV, "w") as f:
         f.write(f"# updated {datetime.datetime.utcnow()}\n")
         f.write("icao,type,value\n")

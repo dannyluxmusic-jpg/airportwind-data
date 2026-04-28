@@ -3,7 +3,7 @@ name: Update Airport Frequencies
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 6 * * *"
+    - cron: "0 6 */28 * *"   # every 28 days
 
 permissions:
   contents: write
@@ -13,44 +13,46 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
 
-      - name: Install pip
-        run: python -m pip install --upgrade pip
+      - run: python -m pip install --upgrade pip
 
+      # -------------------------
+      # DOWNLOAD NASR (AUTO)
+      # -------------------------
       - name: Download NASR
         run: |
-          URL=$(curl -fsSL "https://www.faa.gov/air_traffic/flight_info/aeronav/aero_data/NASR_Subscription" \
+          URL=$(curl -fsSL "https://www.faa.gov/air_traffic/flight_info/aeronav/aero_data/NASR_Subscription/" \
             | grep -Eo 'https://nfdc\.faa\.gov/webContent/28DaySub/28DaySubscription_Effective_[0-9\-]+\.zip' \
             | head -n 1)
 
-          echo "Downloading:"
-          echo "$URL"
-
+          echo "Downloading: $URL"
           curl -L -o NASR.zip "$URL"
 
-      - name: Debug
-        run: |
-          pwd
-          ls -la
-          head -5 build_frequencies.py
+      # -------------------------
+      # UNZIP NASR
+      # -------------------------
+      - name: Unzip NASR
+        run: unzip -o NASR.zip
 
-      - name: Run builder
-        run: python ./build_frequencies.py
+      # -------------------------
+      # BUILD CSV (THIS IS YOUR SCRIPT)
+      # -------------------------
+      - name: Build frequencies
+        run: python build_frequencies.py
 
+      # -------------------------
+      # COMMIT RESULT
+      # -------------------------
       - name: Commit + push
         run: |
           git config user.name "github-actions"
           git config user.email "actions@github.com"
 
           git add airport_frequencies.csv
-          git commit -m "Auto update airport frequencies" || echo "No changes"
-
-          git pull --rebase
+          git commit -m "Auto update airport frequencies" || exit 0
           git push

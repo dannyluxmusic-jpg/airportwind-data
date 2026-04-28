@@ -14,6 +14,10 @@ VHF_MAX = 136.975
 
 FREQ_RE = re.compile(r"(?:^|[^0-9])((?:\d{2,3})\.\d{1,3})(?:[^0-9]|$)")
 
+# -----------------------
+# BASIC HELPERS
+# -----------------------
+
 def norm_freq(s):
     s = s.strip()
     if not re.match(r"^\d{2,3}\.\d{1,3}$", s):
@@ -26,20 +30,24 @@ def norm_freq(s):
         return None
     return "%.3f" % v
 
-def extract_vhf(line):
+
+def extract_phone(line):
+    phones = re.findall(r'\b\d{3}[-\.\s]?\d{3}[-\.\s]?\d{4}\b', line)
     out = []
-    for m in FREQ_RE.finditer(line):
-        f = norm_freq(m.group(1))
-        if f:
-            out.append(f)
+    for p in phones:
+        p = re.sub(r'\D', '', p)
+        if len(p) == 10:
+            out.append(f"{p[0:3]}-{p[3:6]}-{p[6:10]}")
     return out
 
-def add_row(rows, seen, icao, typ, freq):
-    key = (icao, typ, freq)
+
+def add_row(rows, seen, icao, typ, val):
+    key = (icao, typ, val)
     if key in seen:
         return
     seen.add(key)
     rows.append(key)
+
 
 def classify_twr(line):
     u = line.upper()
@@ -61,6 +69,7 @@ def classify_twr(line):
 
     return list(dict.fromkeys(types))
 
+
 def pick_airport_ident(parts, ident3_to_icao):
     for tok in parts:
         t = tok.strip().upper().replace("*", "")
@@ -72,22 +81,10 @@ def pick_airport_ident(parts, ident3_to_icao):
             return t
     return None
 
-def weather_kind_from_line(filename, line):
-    u = line.upper()
 
-    if "ATIS" in u:
-        return "atis"
-    if "ASOS" in u:
-        return "asos"
-    if "AWOS" in u:
-        return "awos"
-
-    if filename.upper().startswith("AWOS"):
-        return "awos"
-    if filename.upper().startswith("WXL"):
-        return "atis"
-
-    return None
+# -----------------------
+# MAIN
+# -----------------------
 
 def main():
     if not NASR_ZIP.exists():
@@ -100,6 +97,9 @@ def main():
 
     with zipfile.ZipFile(NASR_ZIP) as zf:
 
+        # -----------------------
+        # APT FILE (UNICOM / CTAF + ICAO MAP)
+        # -----------------------
         with zf.open("APT.txt") as f:
             for raw in f:
                 try:
@@ -112,6 +112,7 @@ def main():
 
                 m3 = re.search(r"\bAIRPORT\s+([A-Z0-9]{3})\b", line)
                 m4 = re.search(r"\bL([A-Z0-9]{4})\b", line)
+
                 if not m3 or not m4:
                     continue
 
@@ -128,6 +129,9 @@ def main():
                     if ctaf:
                         add_row(rows, seen, icao, "ctaf", ctaf)
 
+        # -----------------------
+        # TWR FILE (FREQUENCIES)
+        # -----------------------
         if "TWR.txt" in zf.namelist():
             with zf.open("TWR.txt") as f:
                 for raw in f:
@@ -154,10 +158,39 @@ def main():
                     for typ in classify_twr(line):
                         add_row(rows, seen, icao, typ, freq)
 
+        # -----------------------
+        # PHONE NUMBERS (APT RMK LINES)
+        # -----------------------
+        with zf.open("APT.txt") as f:
+            current_icao = None
+
+            for raw in f:
+                try:
+                    line = raw.decode("latin-1")
+                except:
+                    continue
+
+                if line.startswith("APT") and " AIRPORT " in line:
+                    m4 = re.search(r"\bL([A-Z0-9]{4})\b", line)
+                    if m4:
+                        current_icao = m4.group(1)
+
+                if "PHONE" in line.upper() or "TEL" in line.upper():
+                    if not current_icao:
+                        continue
+
+                    phones = extract_phone(line)
+                    for p in phones:
+                        add_row(rows, seen, current_icao, "phone", p)
+
+    # -----------------------
+    # WRITE CSV
+    # -----------------------
     with open(OUT_CSV, "w") as f:
         f.write("icao,type,value\n")
         for icao, typ, val in rows:
             f.write(f"{icao},{typ},{val}\n")
+
 
 if __name__ == "__main__":
     main()

@@ -34,8 +34,16 @@ def extract_vhf(line):
             out.append(f)
     return out
 
-def add_row(rows, seen, icao, typ, freq):
-    key = (icao, typ, freq)
+def extract_label(line, freq):
+    try:
+        idx = line.index(freq)
+        label = line[idx + len(freq):].strip()
+        return label if label else ""
+    except:
+        return ""
+
+def add_row(rows, seen, icao, typ, freq, label=""):
+    key = (icao, typ, freq, label)
     if key in seen:
         return
     seen.add(key)
@@ -103,12 +111,8 @@ def main():
     with zipfile.ZipFile(NASR_ZIP) as zf:
 
         # ---------------------------
-        # APT.txt (Fixed-width UNICOM / CTAF)
+        # APT.txt (UNICOM / CTAF)
         # ---------------------------
-        if "APT.txt" not in zf.namelist():
-            print("ERROR: APT.txt missing")
-            sys.exit(1)
-
         print("Reading: APT.txt")
 
         with zf.open("APT.txt") as f:
@@ -118,44 +122,35 @@ def main():
                 except:
                     continue
 
-                if not line.startswith("APT"):
-                    continue
-                if " AIRPORT " not in line:
+                if not line.startswith("APT") or " AIRPORT " not in line:
                     continue
 
                 m3 = re.search(r"\bAIRPORT\s+([A-Z0-9]{3})\b", line)
-                if not m3:
-                    continue
-                ident3 = m3.group(1)
-
                 m4 = re.search(r"\bL([A-Z0-9]{4})\b", line)
-                if not m4:
+
+                if not m3 or not m4:
                     continue
+
+                ident3 = m3.group(1)
                 icao = m4.group(1)
 
                 ident3_to_icao[ident3] = icao
 
-                # FAA Layout_Data/apt_rf.txt positions:
-                # UNICOM freq: cols 982–988 (1-based)
-                # CTAF freq:   cols 989–995 (1-based)
-
                 if len(line) >= 995:
-                    unicom_raw = line[981:988]
-                    ctaf_raw   = line[988:995]
-
-                    unicom = norm_freq(unicom_raw)
-                    ctaf   = norm_freq(ctaf_raw)
+                    unicom = norm_freq(line[981:988])
+                    ctaf   = norm_freq(line[988:995])
 
                     if unicom:
-                        add_row(rows, seen, icao, "unicom", unicom)
+                        add_row(rows, seen, icao, "unicom", unicom, "UNICOM")
                     if ctaf:
-                        add_row(rows, seen, icao, "ctaf", ctaf)
+                        add_row(rows, seen, icao, "ctaf", ctaf, "CTAF")
 
         # ---------------------------
-        # TWR.txt
+        # TWR.txt (THIS IS THE BIG ONE)
         # ---------------------------
         if "TWR.txt" in zf.namelist():
             print("Reading: TWR.txt")
+
             with zf.open("TWR.txt") as f:
                 for raw in f:
                     try:
@@ -178,8 +173,10 @@ def main():
                     if not icao:
                         continue
 
+                    label = extract_label(line, freq)
+
                     for typ in classify_twr(line):
-                        add_row(rows, seen, icao, typ, freq)
+                        add_row(rows, seen, icao, typ, freq, label)
 
         # ---------------------------
         # Weather files
@@ -207,14 +204,14 @@ def main():
                         continue
 
                     for fr in extract_vhf(line):
-                        add_row(rows, seen, icao, kind, fr)
+                        add_row(rows, seen, icao, kind, fr, kind.upper())
 
     print("Writing:", OUT_CSV.name)
 
     with open(OUT_CSV, "w") as f:
-        f.write("icao,type,value\n")
-        for icao, typ, val in rows:
-            f.write("%s,%s,%s\n" % (icao, typ, val))
+        f.write("icao,type,value,label\n")
+        for icao, typ, val, label in rows:
+            f.write(f"{icao},{typ},{val},{label}\n")
 
     print("Done. Total rows:", len(rows))
 

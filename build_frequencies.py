@@ -37,13 +37,18 @@ def main():
     rows = []
     seen = set()
 
+    print("=== START BUILD ===")
+    print("Working dir:", HERE)
+    print("Looking for AWOS file at:", AWOS_CSV)
+
     # ======================
-    # NASR FREQUENCIES
+    # NASR FREQUENCIES (optional, keep your existing behavior)
     # ======================
     if NASR_ZIP.exists():
+        print("NASR.zip found")
         with zipfile.ZipFile(NASR_ZIP) as zf:
-
             if "APT.txt" in zf.namelist():
+                print("APT.txt found in NASR")
                 with zf.open("APT.txt") as f:
                     for raw in f:
                         try:
@@ -68,13 +73,21 @@ def main():
                                 add_row(rows, seen, icao, "unicom", unicom)
                             if ctaf:
                                 add_row(rows, seen, icao, "ctaf", ctaf)
+    else:
+        print("WARNING: NASR.zip NOT FOUND")
 
     # ======================
-    # 🔥 AWOS PHONES (WORKS NO MATTER WHAT YOUR CSV LOOKS LIKE)
+    # 🔥 AWOS CSV (THIS IS WHAT YOU CARE ABOUT)
     # ======================
-    if AWOS_CSV.exists():
+    if not AWOS_CSV.exists():
+        print("❌ AWOS.csv NOT FOUND — THIS IS YOUR PROBLEM")
+    else:
+        print("✅ AWOS.csv FOUND")
+
         with open(AWOS_CSV, newline="", encoding="utf-8") as f:
             reader = csv.reader(f)
+
+            count = 0
 
             for row in reader:
                 if len(row) < 3:
@@ -83,19 +96,17 @@ def main():
                 ident = row[0].strip().upper()
                 kind = row[1].strip().upper()
                 phone1 = row[2].strip()
-
                 phone2 = row[3].strip() if len(row) > 3 else ""
 
                 if not ident:
                     continue
 
-                # 🔥 FORCE ICAO (this is the fix)
+                # FORCE ICAO
                 if len(ident) <= 3:
                     icao = "K" + ident
                 else:
                     icao = ident
 
-                # type
                 if "AWOS" in kind:
                     typ = "awos_phone"
                 elif "ASOS" in kind:
@@ -105,12 +116,16 @@ def main():
 
                 if phone1:
                     add_row(rows, seen, icao, typ, phone1)
+                    count += 1
 
                 if phone2:
                     add_row(rows, seen, icao, typ, phone2)
+                    count += 1
+
+            print("Phones added:", count)
 
     # ======================
-    # WRITE OUTPUT (FORCE UPDATE EVERY RUN)
+    # WRITE OUTPUT
     # ======================
     with open(OUT_CSV, "w") as f:
         f.write(f"# updated {datetime.datetime.utcnow()}\n")
@@ -118,6 +133,9 @@ def main():
 
         for icao, typ, val in sorted(rows):
             f.write(f"{icao},{typ},{val}\n")
+
+    print("=== DONE ===")
+    print("Total rows:", len(rows))
 
 if __name__ == "__main__":
     main()

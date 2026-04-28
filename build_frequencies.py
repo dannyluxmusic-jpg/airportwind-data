@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 
-import csv
 import re
 import sys
 import zipfile
@@ -8,7 +7,6 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 NASR_ZIP = HERE / "NASR.zip"
-PHONES_CSV = HERE / "awos_asos_phones.csv"
 OUT_CSV = HERE / "airport_frequencies.csv"
 
 VHF_MIN = 118.000
@@ -41,10 +39,9 @@ def main():
     seen = set()
     ident3_to_icao = {}
 
-    # ---------------- NASR ----------------
     with zipfile.ZipFile(NASR_ZIP) as zf:
 
-        # APT mapping
+        # ---------------- APT (mapping + CTAF/UNICOM) ----------------
         with zf.open("APT.txt") as f:
             for raw in f:
                 try:
@@ -74,7 +71,7 @@ def main():
                     if ctaf:
                         add_row(rows, seen, icao, "ctaf", ctaf)
 
-        # TWR
+        # ---------------- TWR (tower freq) ----------------
         if "TWR.txt" in zf.namelist():
             with zf.open("TWR.txt") as f:
                 for raw in f:
@@ -106,20 +103,43 @@ def main():
 
                     add_row(rows, seen, icao, "tower", freq)
 
-    # ---------------- PHONES (TRUSTED) ----------------
-    if PHONES_CSV.exists():
-        with open(PHONES_CSV) as f:
-            reader = csv.DictReader(f)
-            for row in reader:
-                add_row(
-                    rows,
-                    seen,
-                    row["icao"].strip().upper(),
-                    row["type"].strip(),
-                    row["value"].strip()
-                )
+        # ---------------- AWOS / ASOS PHONES ----------------
+        if "AWOS.txt" in zf.namelist():
+            with zf.open("AWOS.txt") as f:
+                for raw in f:
+                    try:
+                        line = raw.decode("latin-1")
+                    except:
+                        continue
 
-    # ---------------- WRITE ----------------
+                    parts = line.split("|")
+                    if len(parts) < 10:
+                        continue
+
+                    ident = parts[0].strip().upper()
+                    kind = parts[2].strip().upper()
+                    phone_raw = parts[9].strip()
+
+                    digits = re.sub(r"\D", "", phone_raw)
+                    if len(digits) != 10:
+                        continue
+
+                    phone = f"{digits[:3]}-{digits[3:6]}-{digits[6:]}"
+
+                    icao = ident3_to_icao.get(ident)
+                    if not icao:
+                        continue
+
+                    if "AWOS" in kind:
+                        typ = "awos_phone"
+                    elif "ASOS" in kind:
+                        typ = "asos_phone"
+                    else:
+                        continue
+
+                    add_row(rows, seen, icao, typ, phone)
+
+    # ---------------- WRITE CSV ----------------
     with open(OUT_CSV, "w") as f:
         f.write("icao,type,value\n")
         for icao, typ, val in rows:

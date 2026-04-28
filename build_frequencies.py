@@ -13,6 +13,7 @@ VHF_MIN = 118.000
 VHF_MAX = 136.975
 
 FREQ_RE = re.compile(r"(?:^|[^0-9])((?:\d{2,3})\.\d{1,3})(?:[^0-9]|$)")
+PHONE_RE = re.compile(r"\b\d{3}[-\.]?\d{3}[-\.]?\d{4}\b")
 
 def norm_freq(s):
     s = s.strip()
@@ -34,8 +35,16 @@ def extract_vhf(line):
             out.append(f)
     return out
 
-def add_row(rows, seen, icao, typ, freq):
-    key = (icao, typ, freq)
+def extract_phone(line):
+    phones = []
+    for m in PHONE_RE.findall(line):
+        digits = re.sub(r"\D", "", m)
+        if len(digits) == 10:
+            phones.append(f"{digits[0:3]}-{digits[3:6]}-{digits[6:10]}")
+    return phones
+
+def add_row(rows, seen, icao, typ, value):
+    key = (icao, typ, value)
     if key in seen:
         return
     seen.add(key)
@@ -72,23 +81,6 @@ def pick_airport_ident(parts, ident3_to_icao):
             return t
     return None
 
-def weather_kind_from_line(filename, line):
-    u = line.upper()
-
-    if "ATIS" in u:
-        return "atis"
-    if "ASOS" in u:
-        return "asos"
-    if "AWOS" in u:
-        return "awos"
-
-    if filename.upper().startswith("AWOS"):
-        return "awos"
-    if filename.upper().startswith("WXL"):
-        return "atis"
-
-    return None
-
 def main():
     if not NASR_ZIP.exists():
         print("ERROR: NASR.zip not found")
@@ -102,13 +94,7 @@ def main():
 
     with zipfile.ZipFile(NASR_ZIP) as zf:
 
-        # ---------------------------
-        # APT.txt (Fixed-width UNICOM / CTAF)
-        # ---------------------------
-        if "APT.txt" not in zf.namelist():
-            print("ERROR: APT.txt missing")
-            sys.exit(1)
-
+        # -------- APT.txt --------
         print("Reading: APT.txt")
 
         with zf.open("APT.txt") as f:
@@ -120,42 +106,43 @@ def main():
 
                 if not line.startswith("APT"):
                     continue
-                if " AIRPORT " not in line:
-                    continue
 
+                # ICAO mapping
                 m3 = re.search(r"\bAIRPORT\s+([A-Z0-9]{3})\b", line)
-                if not m3:
-                    continue
-                ident3 = m3.group(1)
-
                 m4 = re.search(r"\bL([A-Z0-9]{4})\b", line)
-                if not m4:
+
+                if m3 and m4:
+                    ident3_to_icao[m3.group(1)] = m4.group(1)
+
+                # extract ICAO
+                icao = None
+                for k, v in ident3_to_icao.items():
+                    if k in line:
+                        icao = v
+                        break
+
+                if not icao:
                     continue
-                icao = m4.group(1)
 
-                ident3_to_icao[ident3] = icao
-
-                # FAA Layout_Data/apt_rf.txt positions:
-                # UNICOM freq: cols 982–988 (1-based)
-                # CTAF freq:   cols 989–995 (1-based)
-
+                # CTAF / UNICOM fixed positions
                 if len(line) >= 995:
-                    unicom_raw = line[981:988]
-                    ctaf_raw   = line[988:995]
-
-                    unicom = norm_freq(unicom_raw)
-                    ctaf   = norm_freq(ctaf_raw)
+                    unicom = norm_freq(line[981:988])
+                    ctaf = norm_freq(line[988:995])
 
                     if unicom:
                         add_row(rows, seen, icao, "unicom", unicom)
                     if ctaf:
                         add_row(rows, seen, icao, "ctaf", ctaf)
 
-        # ---------------------------
-        # TWR.txt
-        # ---------------------------
+                # PHONE extraction (NEW)
+                phones = extract_phone(line)
+                for p in phones:
+                    add_row(rows, seen, icao, "wx_phone", p)
+
+        # -------- TWR.txt --------
         if "TWR.txt" in zf.namelist():
             print("Reading: TWR.txt")
+
             with zf.open("TWR.txt") as f:
                 for raw in f:
                     try:
@@ -181,9 +168,7 @@ def main():
                     for typ in classify_twr(line):
                         add_row(rows, seen, icao, typ, freq)
 
-        # ---------------------------
-        # Weather files
-        # ---------------------------
+        # -------- Weather files --------
         for weather_file in ["AWOS.txt", "WXL.txt"]:
             if weather_file not in zf.namelist():
                 continue
@@ -197,24 +182,20 @@ def main():
                     except:
                         continue
 
-                    kind = weather_kind_from_line(weather_file, line)
-                    if not kind:
-                        continue
-
                     parts = line.split()
                     icao = pick_airport_ident(parts, ident3_to_icao)
                     if not icao:
                         continue
 
                     for fr in extract_vhf(line):
-                        add_row(rows, seen, icao, kind, fr)
+                        add_row(rows, seen, icao, "awos", fr)
 
     print("Writing:", OUT_CSV.name)
 
     with open(OUT_CSV, "w") as f:
         f.write("icao,type,value\n")
         for icao, typ, val in rows:
-            f.write("%s,%s,%s\n" % (icao, typ, val))
+            f.write(f"{icao},{typ},{val}\n")
 
     print("Done. Total rows:", len(rows))
 

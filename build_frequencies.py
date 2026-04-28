@@ -16,6 +16,8 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # IMPORTANT (fixes push issues)
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -51,21 +53,19 @@ jobs:
           python - << 'EOF'
           import csv
 
-          old_file = "airport_frequencies.csv"
-          new_file = "airport_frequencies.csv"
-
+          old_rows = []
           try:
-              with open(old_file) as f:
-                  old = list(csv.DictReader(f))
+              with open("airport_frequencies.csv") as f:
+                  old_rows = list(csv.DictReader(f))
           except:
-              old = []
+              pass
 
-          with open(new_file) as f:
-              new = list(csv.DictReader(f))
+          with open("airport_frequencies.csv") as f:
+              new_rows = list(csv.DictReader(f))
 
-          merged = {(r["icao"], r["type"], r["value"]): r for r in new}
+          merged = {(r["icao"], r["type"], r["value"]): r for r in new_rows}
 
-          for r in old:
+          for r in old_rows:
               if r["type"] == "phone":
                   key = (r["icao"], r["type"], r["value"])
                   merged[key] = r
@@ -77,15 +77,16 @@ jobs:
                   w.writerow(r)
           EOF
 
-      - name: Commit changes (only if changed)
+      - name: Commit changes (FINAL FIX)
         run: |
           git config user.name "github-actions"
           git config user.email "actions@github.com"
 
-          git pull --rebase
+          git fetch origin main
+          git reset --hard origin/main
 
           git add airport_frequencies.csv
           git diff --cached --quiet && echo "No changes to commit" && exit 0
 
           git commit -m "Auto update airport frequencies"
-          git push
+          git push origin HEAD:main

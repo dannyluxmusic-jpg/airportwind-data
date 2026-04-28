@@ -43,16 +43,16 @@ jobs:
 
           ls -lh NASR.zip
 
-      # 🔧 BUILD NEW DATA (TEMP ONLY)
+      # BUILD NEW DATA (TEMP FILE)
       - name: Build new frequencies (temp file)
         run: |
           python build_frequencies.py
           mv airport_frequencies.csv new_freqs.csv
 
-      # 🔧 MERGE WITH EXISTING (PRESERVE PHONES)
+      # MERGE WITH EXISTING (PRESERVE PHONES)
       - name: Merge with existing CSV (preserve phones)
         run: |
-          python3 <<EOF
+          cat << 'EOF' > merge.py
 import csv
 
 old = {}
@@ -90,6 +90,8 @@ with open("airport_frequencies.csv", "w", newline="") as f:
     writer.writerow(["icao","type","value"])
     writer.writerows(merged)
 EOF
+
+          python3 merge.py
 
       - name: Commit changes (only if changed)
         run: |

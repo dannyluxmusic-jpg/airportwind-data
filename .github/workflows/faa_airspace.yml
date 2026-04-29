@@ -1,94 +1,11 @@
-name: Update FAA Airspace v2
+name: FAA Airspace Test
 
 on:
   workflow_dispatch:
-    inputs:
-      force:
-        description: "Manual run"
-        required: false
-  schedule:
-    - cron: "0 6 * * 1"
 
 jobs:
-  update:
+  test:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
-
-      - name: Install tools
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y unzip gdal-bin python3-pip
-          pip install geopandas shapely fiona pyproj
-
-      - name: Download FAA NASR
-        run: |
-          curl -L \
-            -H "User-Agent: Mozilla/5.0" \
-            -H "Accept: application/zip" \
-            -o NASR.zip \
-            https://aeronav.faa.gov/aero_data/NASR_Subscription/NASR.zip
-
-          echo "Checking file..."
-          file NASR.zip
-
-          if file NASR.zip | grep -q "HTML"; then
-            echo "❌ FAA BLOCKED DOWNLOAD"
-            exit 1
-          fi
-
-      - name: Unzip NASR
-        run: unzip -o NASR.zip -d nasr
-
-      - name: Find shapefile
-        run: |
-          shp=$(find nasr -iname "*Class_Airspace.shp" | head -n 1)
-
-          echo "Found shapefile: $shp"
-
-          if [ -z "$shp" ]; then
-            echo "❌ Shapefile not found"
-            find nasr | head -50
-            exit 1
-          fi
-
-          echo "SHP_PATH=$shp" >> $GITHUB_ENV
-
-      - name: Convert to GeoJSON
-        run: |
-          ogr2ogr -f GeoJSON raw_airspace.geojson "$SHP_PATH"
-
-      - name: Filter Class B C D
-        run: |
-          python3 <<EOF
-import json
-
-with open("raw_airspace.geojson") as f:
-    data = json.load(f)
-
-filtered = []
-for ftr in data["features"]:
-    cls = (ftr["properties"].get("CLASS") or "").upper()
-    if cls in ["B", "C", "D"]:
-        filtered.append(ftr)
-
-data["features"] = filtered
-
-with open("usa_airspace.geojson", "w") as f:
-    json.dump(data, f)
-
-print("Saved", len(filtered), "features")
-EOF
-
-      - name: Commit updated file
-        run: |
-          git config user.name "github-actions"
-          git config user.email "actions@github.com"
-
-          git add usa_airspace.geojson
-
-          git commit -m "Update FAA airspace" || echo "No changes"
-
-          git push
+      - name: Hello
+        run: echo "Workflow is working"

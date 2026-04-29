@@ -20,11 +20,15 @@ def main():
     rows = []
     seen = set()
 
-    # unzip NASR
+    # -------------------------
+    # UNZIP NASR
+    # -------------------------
     with zipfile.ZipFile(NASR_ZIP) as z:
         z.extractall("nasr")
 
-    # find inner CSV zip
+    # -------------------------
+    # FIND INNER CSV ZIP
+    # -------------------------
     csv_zip = None
     for p in Path("nasr").rglob("*.zip"):
         if "CSV" in p.name.upper():
@@ -35,61 +39,84 @@ def main():
         print("NO CSV ZIP FOUND")
         return
 
-    # unzip inner CSV zip
+    # -------------------------
+    # UNZIP CSV DATA
+    # -------------------------
     with zipfile.ZipFile(csv_zip) as z:
         z.extractall("csv")
 
-    # -----------------------
-    # LOAD COM.csv (frequencies)
-    # -----------------------
+    # -------------------------
+    # LOAD COM.csv (FREQUENCIES)
+    # -------------------------
     com_path = next(Path("csv").rglob("COM.csv"), None)
 
     if com_path:
-        with open(com_path) as f:
-            reader = csv.DictReader(f)
-            for r in reader:
-                icao = r.get("ARPT_ID", "").strip()
-                freq = r.get("FREQ", "").strip()
-                typ = r.get("COMM_TYPE", "").lower()
+        print("Using COM:", com_path)
+
+        with open(com_path, newline='', encoding='latin-1') as f:
+            reader = csv.reader(f)
+            header = next(reader)
+
+            print("COM HEADER:", header)
+
+            for row in reader:
+                if len(row) < 5:
+                    continue
+
+                icao = row[0].strip()
+                freq = row[3].strip()
+                desc = row[4].lower()
 
                 if not icao or not freq:
                     continue
 
-                if "ground" in typ:
-                    t = "ground"
-                elif "tower" in typ:
-                    t = "tower"
-                elif "approach" in typ:
-                    t = "approach"
-                elif "departure" in typ:
-                    t = "departure"
-                elif "clearance" in typ:
-                    t = "clearance"
+                if "ground" in desc:
+                    typ = "ground"
+                elif "tower" in desc:
+                    typ = "tower"
+                elif "approach" in desc:
+                    typ = "approach"
+                elif "departure" in desc:
+                    typ = "departure"
+                elif "clearance" in desc:
+                    typ = "clearance"
                 else:
                     continue
 
-                add(rows, seen, icao, t, freq)
+                add(rows, seen, icao, typ, freq)
 
-    # -----------------------
-    # LOAD AWOS.csv (phones)
-    # -----------------------
+    # -------------------------
+    # LOAD AWOS.csv (PHONES)
+    # -------------------------
     awos_path = next(Path("csv").rglob("AWOS.csv"), None)
 
     if awos_path:
-        with open(awos_path) as f:
-            reader = csv.DictReader(f)
-            for r in reader:
-                icao = r.get("ARPT_ID", "").strip()
-                phone = r.get("PHONE", "").strip()
+        print("Using AWOS:", awos_path)
+
+        with open(awos_path, newline='', encoding='latin-1') as f:
+            reader = csv.reader(f)
+            header = next(reader)
+
+            print("AWOS HEADER:", header)
+
+            for row in reader:
+                if len(row) < 5:
+                    continue
+
+                icao = row[0].strip()
+                phone = row[-1].strip()
 
                 if not icao or not phone:
                     continue
 
+                if "-" not in phone:
+                    continue
+
                 add(rows, seen, icao, "awos_phone", phone)
 
-    # -----------------------
+    # -------------------------
     # WRITE OUTPUT
-    # -----------------------
+    # -------------------------
     with open(OUT, "w") as f:
         f.write(f"# updated {datetime.datetime.utcnow()}\n")
         f.write("icao,type,value\n")
@@ -97,7 +124,8 @@ def main():
         for r in sorted(rows):
             f.write(f"{r[0]},{r[1]},{r[2]}\n")
 
-    print("ROWS:", len(rows))
+    print("TOTAL ROWS:", len(rows))
+
 
 if __name__ == "__main__":
     main()

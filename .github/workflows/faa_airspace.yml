@@ -19,25 +19,24 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y unzip jq
 
-      # ✅ WORKING SOURCE (no FAA block)
-      - name: Download NASR (working mirror)
+      - name: Download Airspace (OpenAIP mirror)
         run: |
-          curl -L -o NASR.zip https://github.com/openaip/openaip-data/archive/refs/heads/main.zip
+          curl -L -o main.zip https://github.com/openaip/openaip-data/archive/refs/heads/main.zip
 
-      - name: Verify file
+      - name: Verify download
         run: |
-          file NASR.zip
+          file main.zip
           ls -lh
 
       - name: Unzip
-        run: unzip NASR.zip
+        run: unzip main.zip
 
-      - name: Move usable data
+      - name: Extract GeoJSON
         run: |
           mkdir -p airspace
           find . -name "*.geojson" -exec cp {} airspace/ \;
 
-      - name: Commit
+      - name: Commit and push
         run: |
           git config user.name "github-actions"
           git config user.email "actions@github.com"

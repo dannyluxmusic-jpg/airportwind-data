@@ -1,4 +1,4 @@
-name: Update FAA Airspace
+name: Update FAA Airspace v2
 
 on:
   workflow_dispatch:

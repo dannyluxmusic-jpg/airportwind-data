@@ -18,10 +18,18 @@ jobs:
 
       - name: Download FAA NASR
         run: |
-          curl -L -o nasr.zip https://aeronav.faa.gov/aero_data/NASR_Subscription/NASR.zip
+          curl -L \
+            -A "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)" \
+            -o nasr.zip \
+            https://aeronav.faa.gov/aero_data/NASR_Subscription/NASR.zip
 
           echo "Checking file..."
           file nasr.zip
+
+          if file nasr.zip | grep -q "HTML"; then
+            echo "ERROR: FAA blocked download (got HTML instead of ZIP)"
+            exit 1
+          fi
 
           echo "Unzipping..."
           unzip -q nasr.zip -d nasr

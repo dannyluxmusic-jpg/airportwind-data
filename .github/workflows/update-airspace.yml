@@ -16,27 +16,34 @@ jobs:
       - name: Install tools
         run: |
           sudo apt-get update
-          sudo apt-get install -y unzip gdal-bin python3-pip
+          sudo apt-get install -y unzip gdal-bin curl
 
+      # ✅ FIXED DOWNLOAD (no python, no blocking)
       - name: Download NASR
         run: |
-          python3 <<EOF
-import urllib.request
-url = "https://aeronav.faa.gov/aero_data/NASR_Subscription/NASR.zip"
-urllib.request.urlretrieve(url, "NASR.zip")
-print("Downloaded NASR.zip")
-EOF
+          curl -L \
+            -H "User-Agent: Mozilla/5.0" \
+            -o NASR.zip \
+            https://aeronav.faa.gov/aero_data/NASR_Subscription/NASR.zip
+
+          echo "Checking file..."
+          file NASR.zip
 
       - name: Unzip
         run: unzip -o NASR.zip -d nasr
 
-      - name: Find airspace shapefile
+      # ✅ DEBUG so we SEE what's happening
+      - name: List files
+        run: |
+          echo "FILES:"
+          find nasr | head -100
+
+      - name: Find shapefile
         run: |
           shp=$(find nasr -iname "*.shp" | grep -i airspace | head -n 1)
 
           if [ -z "$shp" ]; then
-            echo "❌ No airspace shapefile found"
-            find nasr | head -200
+            echo "❌ No airspace file found"
             exit 1
           fi
 

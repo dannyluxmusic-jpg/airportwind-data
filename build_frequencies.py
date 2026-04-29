@@ -121,7 +121,7 @@ def main():
         print("NO CSV ZIP FOUND")
     
        # -------------------------
-    # PHONES (AWOS.csv) — FINAL WORKING FIX
+    # PHONES (AWOS.csv) — EXACT ORIGINAL WORKING VERSION
     # -------------------------
 
     awos_path = next(Path("csv").rglob("AWOS.csv"), None)
@@ -133,38 +133,23 @@ def main():
             reader = csv.DictReader(f)
 
             for row in reader:
-                full_text = " ".join(str(v) for v in row.values()).upper()
 
-                # ✅ extract airport ID from text (this is the key)
-                match = re.search(r"\b[K]?[A-Z0-9]{3,4}\b", full_text)
+                ident = (row.get("ARPT_ID") or "").strip().upper()
+                phone = (row.get("PHONE_NO") or "").strip()
 
-                if not match:
+                if not ident or not phone:
                     continue
-
-                ident = match.group()
 
                 if len(ident) == 3:
                     ident = "K" + ident
 
-                # reject junk like dates
-                if not ident.startswith("K"):
-                    continue
-
-                # ✅ extract phone
-                phone_match = re.search(r"\d{3}-\d{3}-\d{4}", full_text)
-
-                if not phone_match:
-                    continue
-
-                phone = phone_match.group()
-
-                if "ASOS" in full_text:
+                if "ASOS" in str(row).upper():
                     typ = "asos_phone"
                 else:
                     typ = "awos_phone"
 
                 add(rows, seen, ident, typ, phone)
-
+                
     # -------------------------
     # WRITE OUTPUT
     # -------------------------

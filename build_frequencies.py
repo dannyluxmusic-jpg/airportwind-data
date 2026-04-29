@@ -1,201 +1,59 @@
 #!/usr/bin/env python3
 
-import csv
-import datetime
-import re
 import zipfile
 from pathlib import Path
+import datetime
+import re
+import csv
 
 HERE = Path(__file__).resolve().parent
 NASR_ZIP = HERE / "NASR.zip"
 OUT = HERE / "airport_frequencies.csv"
 
-def clean(s):
-    return (s or "").strip().strip('"').strip()
-
-def norm_header(s):
-    return re.sub(r"[^A-Z0-9]", "", clean(s).upper())
-
-def site_keys(s):
-    s = clean(s).upper()
-    if not s:
-        return []
-    keys = {s, s.rstrip(".")}
-    m = re.match(r"^(\d{5})(?:\.\d+)?", s.rstrip("."))
-    if m:
-        keys.add(m.group(1))
-    return list(keys)
-
-def norm_airport_id(s):
-    s = clean(s).upper()
-    if not s:
-        return ""
-    if len(s) == 4:
-        return s
-    if len(s) == 3:
-        return "K" + s
-    return s
-
-def norm_freq(s):
-    s = clean(s)
-    try:
-        v = float(s)
-    except:
-        return None
-    if 118.000 <= v <= 136.975:
-        return f"{v:.3f}"
-    return None
-
 def add(rows, seen, icao, typ, val):
-    icao = clean(icao).upper()
-    typ = clean(typ).lower()
-    val = clean(val)
-
-    if not icao or not typ or not val:
-        return
-
     key = (icao, typ, val)
     if key in seen:
         return
-
     seen.add(key)
     rows.append(key)
-
-def find_file(root, name):
-    return next(Path(root).rglob(name), None)
-
-def row_get(row, header_map, names):
-    for name in names:
-        key = norm_header(name)
-        if key in header_map:
-            return clean(row.get(header_map[key], ""))
-    return ""
-
-def classify_comm(text):
-    u = text.upper()
-
-    if "ATIS" in u:
-        return "atis"
-    if "AWOS" in u:
-        return "awos"
-    if "ASOS" in u:
-        return "asos"
-    if "UNICOM" in u:
-        return "unicom"
-    if "CTAF" in u:
-        return "ctaf"
-    if "GROUND" in u or "GND" in u:
-        return "ground"
-    if "CLEARANCE" in u or "CLNC" in u or "DELIVERY" in u:
-        return "clearance"
-    if "TOWER" in u or "TWR" in u:
-        return "tower"
-    if "APPROACH" in u or "APCH" in u or "APP" in u:
-        return "approach"
-    if "DEPARTURE" in u or "DEP" in u:
-        return "departure"
-    if "CENTER" in u or "CTR" in u:
-        return "center"
-
-    return ""
 
 def main():
     rows = []
     seen = set()
 
+    # -------------------------
+    # UNZIP NASR
+    # -------------------------
     with zipfile.ZipFile(NASR_ZIP) as z:
         z.extractall("nasr")
 
-    csv_zip = None
-    for p in Path("nasr").rglob("*.zip"):
-        if "CSV" in p.name.upper():
-            csv_zip = p
-            break
-
-    if not csv_zip:
-        print("NO CSV ZIP FOUND")
-        return
-
-    with zipfile.ZipFile(csv_zip) as z:
-        z.extractall("csv")
-
-    apt_path = find_file("csv", "APT.csv")
-    com_path = find_file("csv", "COM.csv")
-    awos_path = find_file("csv", "AWOS.csv")
-
-    site_to_airport = {}
-
     # -------------------------
-    # APT.csv → SITE_NO to airport ID map
+    # FREQUENCIES (WORKING LOGIC)
     # -------------------------
-    if apt_path:
-        print("Using APT:", apt_path)
 
-        with open(apt_path, newline="", encoding="latin-1") as f:
-            reader = csv.DictReader(f)
-            header_map = {norm_header(h): h for h in reader.fieldnames or []}
-            print("APT HEADER:", reader.fieldnames)
+    # TWR.txt → tower / ground / approach / departure / clearance
+    for name in Path("nasr").rglob("TWR.txt"):
+        print("Using TWR:", name)
 
-            for row in reader:
-                site = row_get(row, header_map, [
-                    "SITE_NO", "ARPT_SITE_NO", "AIRPORT_SITE_NO", "LANDING_FACILITY_SITE_NO"
-                ])
+        with open(name, encoding="latin-1") as f:
+            for line in f:
 
-                ident = row_get(row, header_map, [
-                    "ICAO_ID", "ICAO", "ARPT_ID", "LOC_ID", "FAA_ID", "LID"
-                ])
-
-                ident = norm_airport_id(ident)
-
-                if site and ident:
-                    for k in site_keys(site):
-                        site_to_airport[k] = ident
-
-                # CTAF/UNICOM if present in APT.csv
-                for h in reader.fieldnames or []:
-                    hu = h.upper()
-                    val = norm_freq(row.get(h, ""))
-
-                    if not val:
-                        continue
-
-                    if "CTAF" in hu:
-                        add(rows, seen, ident, "ctaf", val)
-                    elif "UNICOM" in hu:
-                        add(rows, seen, ident, "unicom", val)
-
-       # -------------------------
-    # COM.csv → radio frequencies (FINAL FIX)
-    # -------------------------
-    if com_path:
-        print("Using COM:", com_path)
-
-        with open(com_path, newline="", encoding="latin-1") as f:
-            reader = csv.DictReader(f)
-
-            for row in reader:
-
-                # ✅ airport ID (this part is correct now)
-                icao = (
-                    row.get("ARPT_ID")
-                    or row.get("ICAO_ID")
-                    or row.get("LOC_ID")
-                    or row.get("FAA_ID")
-                    or ""
-                ).strip().upper()
-
-                if not icao:
+                parts = line.split()
+                if len(parts) < 3:
                     continue
 
-                # ✅ FIND FREQUENCY ANYWHERE IN ROW
+                ident = parts[0].strip().upper()
+
+                if len(ident) == 3:
+                    ident = "K" + ident
+
+                # find frequency
                 freq = None
-                for v in row.values():
-                    if not v:
-                        continue
+                for p in parts:
                     try:
-                        fval = float(v)
-                        if 118.0 <= fval <= 136.975:
-                            freq = f"{fval:.3f}"
+                        v = float(p)
+                        if 118.0 <= v <= 136.975:
+                            freq = f"{v:.3f}"
                             break
                     except:
                         continue
@@ -203,91 +61,110 @@ def main():
                 if not freq:
                     continue
 
-                # ✅ classify
-                desc = " ".join(str(v) for v in row.values()).upper()
+                u = line.upper()
 
-                if "GROUND" in desc or "GND" in desc:
+                if "GND" in u:
                     typ = "ground"
-                elif "TOWER" in desc or "TWR" in desc:
-                    typ = "tower"
-                elif "APPROACH" in desc or "APP" in desc:
-                    typ = "approach"
-                elif "DEPARTURE" in desc or "DEP" in desc:
-                    typ = "departure"
-                elif "CLEARANCE" in desc or "CLNC" in desc:
+                elif "CLNC" in u or "CLEAR" in u:
                     typ = "clearance"
-                elif "CTAF" in desc:
-                    typ = "ctaf"
-                elif "UNICOM" in desc:
-                    typ = "unicom"
+                elif "APP" in u:
+                    typ = "approach"
+                elif "DEP" in u:
+                    typ = "departure"
                 else:
-                    continue
+                    typ = "tower"
 
-                add(rows, seen, icao, typ, freq)
+                add(rows, seen, ident, typ, freq)
+
+    # APT.txt → CTAF / UNICOM
+    for name in Path("nasr").rglob("APT.txt"):
+        print("Using APT:", name)
+
+        with open(name, encoding="latin-1") as f:
+            for line in f:
+
+                ident = line[27:31].strip().upper()
+
+                if len(ident) == 3:
+                    ident = "K" + ident
+
+                try:
+                    unicom = float(line[981:988])
+                    if 118.0 <= unicom <= 136.975:
+                        add(rows, seen, ident, "unicom", f"{unicom:.3f}")
+                except:
+                    pass
+
+                try:
+                    ctaf = float(line[988:995])
+                    if 118.0 <= ctaf <= 136.975:
+                        add(rows, seen, ident, "ctaf", f"{ctaf:.3f}")
+                except:
+                    pass
 
     # -------------------------
-    # AWOS.csv → AWOS/ASOS phone numbers
+    # PHONES (AWOS.csv)
     # -------------------------
-    if awos_path:
-        print("Using AWOS:", awos_path)
 
-        with open(awos_path, newline="", encoding="latin-1") as f:
-            reader = csv.DictReader(f)
-            header_map = {norm_header(h): h for h in reader.fieldnames or []}
-            print("AWOS HEADER:", reader.fieldnames)
+    # find CSV zip
+    csv_zip = None
+    for p in Path("nasr").rglob("*.zip"):
+        if "CSV" in p.name.upper():
+            csv_zip = p
+            break
 
-            for row in reader:
-                site = row_get(row, header_map, [
-                    "SITE_NO", "ARPT_SITE_NO", "AIRPORT_SITE_NO", "LANDING_FACILITY_SITE_NO"
-                ])
+    if csv_zip:
+        with zipfile.ZipFile(csv_zip) as z:
+            z.extractall("csv")
 
-                icao = ""
-                for k in site_keys(site):
-                    if k in site_to_airport:
-                        icao = site_to_airport[k]
-                        break
+        awos_path = next(Path("csv").rglob("AWOS.csv"), None)
 
-                if not icao:
-                    ident = row_get(row, header_map, [
-                        "ASOS_AWOS_ID", "AWOS_ID", "ARPT_ID", "LOC_ID", "FAA_ID", "LID"
-                    ])
-                    icao = norm_airport_id(ident)
+        if awos_path:
+            print("Using AWOS:", awos_path)
 
-                if not icao:
-                    continue
+            with open(awos_path, newline="", encoding="latin-1") as f:
+                reader = csv.DictReader(f)
 
-                kind_text = " ".join(clean(v) for v in row.values()).upper()
+                for row in reader:
+                    ident = (
+                        row.get("ARPT_ID")
+                        or row.get("ICAO_ID")
+                        or row.get("LOC_ID")
+                        or ""
+                    ).strip().upper()
 
-                if "ASOS" in kind_text:
-                    typ = "asos_phone"
-                elif "AWOS" in kind_text:
-                    typ = "awos_phone"
-                else:
-                    continue
+                    if len(ident) == 3:
+                        ident = "K" + ident
 
-                phone_cols = [
-                    "PHONE_NO", "SECOND_PHONE_NO", "PHONE", "PHONE_NUMBER",
-                    "TEL", "TELEPHONE"
-                ]
+                    if not ident:
+                        continue
 
-                phones = []
-                for col in phone_cols:
-                    val = row_get(row, header_map, [col])
-                    if val:
-                        phones.append(val)
+                    for v in row.values():
+                        if not v:
+                            continue
 
-                for phone in phones:
-                    if re.search(r"\d{3}[-)\s.]?\d{3}[-.\s]?\d{4}", phone):
-                        add(rows, seen, icao, typ, phone)
+                        if re.search(r"\d{3}-\d{3}-\d{4}", str(v)):
+                            phone = str(v).strip()
 
+                            if "ASOS" in str(row).upper():
+                                typ = "asos_phone"
+                            else:
+                                typ = "awos_phone"
+
+                            add(rows, seen, ident, typ, phone)
+
+    # -------------------------
+    # WRITE OUTPUT
+    # -------------------------
     with open(OUT, "w") as f:
         f.write(f"# updated {datetime.datetime.utcnow()}\n")
         f.write("icao,type,value\n")
 
-        for icao, typ, val in sorted(rows):
-            f.write(f"{icao},{typ},{val}\n")
+        for r in sorted(rows):
+            f.write(f"{r[0]},{r[1]},{r[2]}\n")
 
     print("TOTAL ROWS:", len(rows))
+
 
 if __name__ == "__main__":
     main()

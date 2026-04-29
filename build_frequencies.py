@@ -102,53 +102,45 @@ def main():
                 except:
                     pass
 
-        # -------------------------
-    # PHONES (AWOS.csv) — FIXED
+      # -------------------------
+    # PHONES (AWOS.csv) — RESTORE WORKING VERSION
     # -------------------------
 
-    csv_zip = None
-    for p in Path("nasr").rglob("*.zip"):
-        if "CSV" in p.name.upper():
-            csv_zip = p
-            break
+    awos_path = next(Path("csv").rglob("AWOS.csv"), None)
 
-    if csv_zip:
-        with zipfile.ZipFile(csv_zip) as z:
-            z.extractall("csv")
+    if awos_path:
+        print("Using AWOS:", awos_path)
 
-        awos_path = next(Path("csv").rglob("AWOS.csv"), None)
+        with open(awos_path, newline="", encoding="latin-1") as f:
+            reader = csv.DictReader(f)
 
-        if awos_path:
-            print("Using AWOS:", awos_path)
+            for row in reader:
+                ident = (
+                    row.get("ARPT_ID")
+                    or row.get("ICAO_ID")
+                    or row.get("LOC_ID")
+                    or ""
+                ).strip().upper()
 
-            with open(awos_path, newline="", encoding="latin-1") as f:
-                reader = csv.DictReader(f)
+                if len(ident) == 3:
+                    ident = "K" + ident
 
-                for row in reader:
-                    full_text = " ".join(str(v) for v in row.values()).upper()
+                if not ident:
+                    continue
 
-                    # ✅ find ICAO like KXXX
-                    match = re.search(r"\bK[A-Z0-9]{3}\b", full_text)
-
-                    if not match:
+                for v in row.values():
+                    if not v:
                         continue
 
-                    ident = match.group()
+                    if re.search(r"\d{3}-\d{3}-\d{4}", str(v)):
+                        phone = str(v).strip()
 
-                    # ✅ find phone
-                    phone_match = re.search(r"\d{3}-\d{3}-\d{4}", full_text)
+                        if "ASOS" in str(row).upper():
+                            typ = "asos_phone"
+                        else:
+                            typ = "awos_phone"
 
-                    if not phone_match:
-                        continue
-
-                    phone = phone_match.group()
-
-                    if "ASOS" in full_text:
-                        typ = "asos_phone"
-                    else:
-                        typ = "awos_phone"
-
-                    add(rows, seen, ident, typ, phone)
+                        add(rows, seen, ident, typ, phone)
 
     # -------------------------
     # WRITE OUTPUT

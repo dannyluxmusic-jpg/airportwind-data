@@ -51,21 +51,13 @@ def main():
     com_path = next(Path("csv").rglob("COM.csv"), None)
 
     if com_path:
-        print("Using COM:", com_path)
-
         with open(com_path, newline='', encoding='latin-1') as f:
-            reader = csv.reader(f)
-            header = next(reader)
+            reader = csv.DictReader(f)
 
-            print("COM HEADER:", header)
-
-            for row in reader:
-                if len(row) < 5:
-                    continue
-
-                icao = row[0].strip()
-                freq = row[3].strip()
-                desc = row[4].lower()
+            for r in reader:
+                icao = r.get("ARPT_ID", "").strip()
+                freq = r.get("FREQ", "").strip()
+                desc = r.get("COMM_TYPE", "").lower()
 
                 if not icao or not freq:
                     continue
@@ -91,20 +83,12 @@ def main():
     awos_path = next(Path("csv").rglob("AWOS.csv"), None)
 
     if awos_path:
-        print("Using AWOS:", awos_path)
-
         with open(awos_path, newline='', encoding='latin-1') as f:
-            reader = csv.reader(f)
-            header = next(reader)
+            reader = csv.DictReader(f)
 
-            print("AWOS HEADER:", header)
-
-            for row in reader:
-                if len(row) < 5:
-                    continue
-
-                icao = row[0].strip()
-                phone = row[-1].strip()
+            for r in reader:
+                icao = r.get("ARPT_ID", "").strip()
+                phone = r.get("PHONE_NO", "").strip()
 
                 if not icao or not phone:
                     continue

@@ -16,6 +16,12 @@ def add(rows, seen, icao, typ, val):
     seen.add(key)
     rows.append(key)
 
+def find_column(header, options):
+    for opt in options:
+        if opt in header:
+            return opt
+    return None
+
 def main():
     rows = []
     seen = set()
@@ -27,7 +33,7 @@ def main():
         z.extractall("nasr")
 
     # -------------------------
-    # FIND INNER CSV ZIP
+    # FIND CSV ZIP
     # -------------------------
     csv_zip = None
     for p in Path("nasr").rglob("*.zip"):
@@ -46,18 +52,27 @@ def main():
         z.extractall("csv")
 
     # -------------------------
-    # LOAD COM.csv (FREQUENCIES)
+    # COM.csv (FREQUENCIES)
     # -------------------------
     com_path = next(Path("csv").rglob("COM.csv"), None)
 
     if com_path:
+        print("Using COM:", com_path)
+
         with open(com_path, newline='', encoding='latin-1') as f:
             reader = csv.DictReader(f)
+            header = reader.fieldnames
+
+            print("COM HEADER:", header)
+
+            icao_col = find_column(header, ["ARPT_ID", "APT_ID", "SITE_NO"])
+            freq_col = find_column(header, ["FREQ", "FREQUENCY"])
+            type_col = find_column(header, ["COMM_TYPE", "TYPE", "COMM_NAME"])
 
             for r in reader:
-                icao = r.get("ARPT_ID", "").strip()
-                freq = r.get("FREQ", "").strip()
-                desc = r.get("COMM_TYPE", "").lower()
+                icao = (r.get(icao_col) or "").strip()
+                freq = (r.get(freq_col) or "").strip()
+                desc = (r.get(type_col) or "").lower()
 
                 if not icao or not freq:
                     continue
@@ -78,17 +93,25 @@ def main():
                 add(rows, seen, icao, typ, freq)
 
     # -------------------------
-    # LOAD AWOS.csv (PHONES)
+    # AWOS.csv (PHONES)
     # -------------------------
     awos_path = next(Path("csv").rglob("AWOS.csv"), None)
 
     if awos_path:
+        print("Using AWOS:", awos_path)
+
         with open(awos_path, newline='', encoding='latin-1') as f:
             reader = csv.DictReader(f)
+            header = reader.fieldnames
+
+            print("AWOS HEADER:", header)
+
+            icao_col = find_column(header, ["ARPT_ID", "APT_ID", "SITE_NO"])
+            phone_col = find_column(header, ["PHONE_NO", "PHONE", "TEL"])
 
             for r in reader:
-                icao = r.get("ARPT_ID", "").strip()
-                phone = r.get("PHONE_NO", "").strip()
+                icao = (r.get(icao_col) or "").strip()
+                phone = (r.get(phone_col) or "").strip()
 
                 if not icao or not phone:
                     continue

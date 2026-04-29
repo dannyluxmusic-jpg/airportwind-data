@@ -1,4 +1,4 @@
-# updated 2026-04-29 14:16:31.369463
+# updated 2026-04-29 14:20:16.940177
 icao,type,value
 00OI,unicom,123.050
 00TX,unicom,122.725
@@ -3856,7 +3856,6 @@ KAK5,ctaf,122.500
 KAK7,ctaf,122.900
 KAK8,ctaf,123.600
 KAKA,ctaf,122.900
-KAKE,awos_phone,907-785-3124
 KAKH,ctaf,123.000
 KAKH,unicom,123.000
 KAKI,ctaf,122.900
@@ -3873,7 +3872,6 @@ KAKQ,unicom,122.800
 KAKR,ctaf,123.075
 KAKR,unicom,123.075
 KAKW,ctaf,120.900
-KALB,awos_phone,815-748-2350
 KALB,unicom,122.950
 KALI,ctaf,123.000
 KALI,unicom,123.000
@@ -4635,7 +4633,6 @@ KCON,ctaf,122.700
 KCON,unicom,122.700
 KCOQ,ctaf,122.800
 KCOQ,unicom,122.800
-KCOS,asos_phone,719-637-9696
 KCOS,unicom,122.950
 KCOT,ctaf,122.700
 KCOT,unicom,122.700
@@ -5219,7 +5216,6 @@ KENL,ctaf,122.800
 KENL,unicom,122.800
 KENM,ctaf,122.900
 KENN,ctaf,122.100
-KENT,awos_phone,330-346-1497
 KENV,ctaf,122.800
 KENV,unicom,122.800
 KENW,ctaf,118.600
@@ -6204,7 +6200,6 @@ KILE,unicom,122.700
 KILG,ctaf,126.000
 KILG,unicom,122.950
 KILI,ctaf,123.600
-KILL,awos_phone,252-449-0698
 KILM,ctaf,119.900
 KILM,unicom,122.950
 KIML,ctaf,122.800
@@ -6224,9 +6219,6 @@ KIN9,ctaf,122.900
 KIND,unicom,122.950
 KINF,ctaf,122.725
 KINF,unicom,122.725
-KING,asos_phone,907-246-7506
-KING,awos_phone,831-386-7456
-KING,awos_phone,907-497-4279
 KINJ,ctaf,122.900
 KINK,ctaf,123.000
 KINK,unicom,123.000
@@ -7425,7 +7417,6 @@ KNM1,ctaf,122.900
 KNM2,ctaf,122.900
 KNOW,ctaf,122.975
 KNOW,unicom,122.975
-KNOX,awos_phone,574-772-2041
 KNQA,ctaf,120.250
 KNQA,unicom,122.950
 KNRN,ctaf,122.900
@@ -7609,7 +7600,6 @@ KOMK,ctaf,122.800
 KOMK,unicom,122.800
 KOMN,ctaf,119.075
 KOMN,unicom,123.050
-KONA,asos_phone,808-329-0412
 KONA,ctaf,122.800
 KONA,unicom,122.800
 KONL,ctaf,122.800

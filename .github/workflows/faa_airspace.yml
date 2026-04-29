@@ -1,0 +1,46 @@
+name: Update Airspace
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y unzip jq
+
+      # ✅ WORKING SOURCE (no FAA block)
+      - name: Download NASR (working mirror)
+        run: |
+          curl -L -o NASR.zip https://github.com/openaip/openaip-data/archive/refs/heads/main.zip
+
+      - name: Verify file
+        run: |
+          file NASR.zip
+          ls -lh
+
+      - name: Unzip
+        run: unzip NASR.zip
+
+      - name: Move usable data
+        run: |
+          mkdir -p airspace
+          find . -name "*.geojson" -exec cp {} airspace/ \;
+
+      - name: Commit
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add airspace
+          git commit -m "Update airspace data" || echo "No changes"
+          git push

@@ -1,62 +1,22 @@
-name: Update FAA Airspace
+- name: Download FAA NASR (real data)
+  run: |
+    curl -L \
+      -H "User-Agent: Mozilla/5.0" \
+      -o NASR.zip \
+      https://aeronav.faa.gov/aero_data/NASR_Subscription/NASR.zip
 
-on:
-  workflow_dispatch:
+- name: Unzip
+  run: unzip -o NASR.zip -d nasr
 
-jobs:
-  update:
-    runs-on: ubuntu-latest
+- name: Find airspace shapefile
+  run: |
+    shp=$(find nasr -iname "*.shp" | grep -i airspace | head -n 1)
 
-    permissions:
-      contents: write
+    if [ -z "$shp" ]; then
+      echo "❌ NO AIRSPACE FILE FOUND"
+      find nasr | head -100
+      exit 1
+    fi
 
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Install tools
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y unzip gdal-bin python3-pip
-          pip install geopandas shapely fiona pyproj
-
-      - name: Download FAA NASR
-        run: |
-          curl -L \
-            -H "User-Agent: Mozilla/5.0" \
-            -H "Accept: application/zip" \
-            -o NASR.zip \
-            https://aeronav.faa.gov/aero_data/NASR_Subscription/NASR.zip
-
-      - name: Unzip
-        run: unzip -o NASR.zip -d nasr
-
-      - name: Convert shapefile
-        run: |
-          shp=$(find nasr -iname "*Class_Airspace.shp" | head -n 1)
-          echo "Using: $shp"
-          ogr2ogr -f GeoJSON usa_airspace.geojson "$shp"
-
-      - name: Filter B/C/D
-        run: |
-          python3 <<EOF
-import json
-with open("usa_airspace.geojson") as f:
-    data = json.load(f)
-
-data["features"] = [
-    f for f in data["features"]
-    if (f["properties"].get("CLASS") or "").upper() in ["B","C","D"]
-]
-
-with open("usa_airspace.geojson","w") as f:
-    json.dump(data,f)
-EOF
-
-      - name: Commit
-        run: |
-          git config user.name "github-actions"
-          git config user.email "actions@github.com"
-
-          git add usa_airspace.geojson
-          git commit -m "Update FAA airspace" || echo "No changes"
-          git push
+    echo "Using: $shp"
+    ogr2ogr -f GeoJSON usa_airspace.geojson "$shp"

@@ -164,8 +164,8 @@ def main():
                     elif "UNICOM" in hu:
                         add(rows, seen, ident, "unicom", val)
 
-    # -------------------------
-    # COM.csv → radio frequencies
+        # -------------------------
+    # COM.csv → radio frequencies (FIXED)
     # -------------------------
     if com_path:
         print("Using COM:", com_path)
@@ -176,36 +176,26 @@ def main():
             print("COM HEADER:", reader.fieldnames)
 
             for row in reader:
-                site = row_get(row, header_map, [
-                    "SITE_NO", "ARPT_SITE_NO", "AIRPORT_SITE_NO", "LANDING_FACILITY_SITE_NO"
+
+                # ✅ DIRECT airport ID (not SITE_NO)
+                icao = row_get(row, header_map, [
+                    "ARPT_ID", "ICAO_ID", "LOC_ID", "FAA_ID", "LID"
                 ])
-
-                icao = ""
-                for k in site_keys(site):
-                    if k in site_to_airport:
-                        icao = site_to_airport[k]
-                        break
-
-                if not icao:
-                    icao = norm_airport_id(row_get(row, header_map, [
-                        "ICAO_ID", "ICAO", "ARPT_ID", "LOC_ID", "FAA_ID", "LID"
-                    ]))
+                icao = norm_airport_id(icao)
 
                 if not icao:
                     continue
 
-                freq = row_get(row, header_map, ["FREQ", "FREQUENCY", "COMM_FREQ"])
+                # ✅ frequency
+                freq = row_get(row, header_map, [
+                    "FREQ", "FREQUENCY", "COMM_FREQ"
+                ])
                 freq = norm_freq(freq)
 
                 if not freq:
-                    for v in row.values():
-                        freq = norm_freq(v)
-                        if freq:
-                            break
-
-                if not freq:
                     continue
 
+                # ✅ description → type
                 desc = " ".join(clean(v) for v in row.values())
                 typ = classify_comm(desc)
 

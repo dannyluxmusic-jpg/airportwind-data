@@ -18,13 +18,19 @@ jobs:
 
       - name: Download FAA NASR
         run: |
-          curl -L -o nasr.zip https://www.faa.gov/air_traffic/flight_info/aeronav/aero_data/NASR_Subscription/NASR.zip
-          unzip nasr.zip -d nasr
+          curl -L -o nasr.zip https://aeronav.faa.gov/aero_data/NASR_Subscription/NASR.zip
+
+          echo "Checking file..."
+          file nasr.zip
+
+          echo "Unzipping..."
+          unzip -q nasr.zip -d nasr
 
       - name: Find and convert shapefile
         run: |
           FILE=$(find nasr -name "Class_Airspace.shp" | head -n 1)
-          echo "Found shapefile at $FILE"
+
+          echo "Found shapefile: $FILE"
 
           if [ -z "$FILE" ]; then
             echo "ERROR: Shapefile not found"

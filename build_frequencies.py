@@ -102,11 +102,10 @@ def main():
                 except:
                     pass
 
-    # -------------------------
-    # PHONES (AWOS.csv)
+        # -------------------------
+    # PHONES (AWOS.csv) — FIXED
     # -------------------------
 
-    # find CSV zip
     csv_zip = None
     for p in Path("nasr").rglob("*.zip"):
         if "CSV" in p.name.upper():
@@ -126,32 +125,30 @@ def main():
                 reader = csv.DictReader(f)
 
                 for row in reader:
-                    ident = (
-                        row.get("ARPT_ID")
-                        or row.get("ICAO_ID")
-                        or row.get("LOC_ID")
-                        or ""
-                    ).strip().upper()
+                    full_text = " ".join(str(v) for v in row.values()).upper()
 
-                    if len(ident) == 3:
-                        ident = "K" + ident
+                    # ✅ find ICAO like KXXX
+                    match = re.search(r"\bK[A-Z0-9]{3}\b", full_text)
 
-                    if not ident:
+                    if not match:
                         continue
 
-                    for v in row.values():
-                        if not v:
-                            continue
+                    ident = match.group()
 
-                        if re.search(r"\d{3}-\d{3}-\d{4}", str(v)):
-                            phone = str(v).strip()
+                    # ✅ find phone
+                    phone_match = re.search(r"\d{3}-\d{3}-\d{4}", full_text)
 
-                            if "ASOS" in str(row).upper():
-                                typ = "asos_phone"
-                            else:
-                                typ = "awos_phone"
+                    if not phone_match:
+                        continue
 
-                            add(rows, seen, ident, typ, phone)
+                    phone = phone_match.group()
+
+                    if "ASOS" in full_text:
+                        typ = "asos_phone"
+                    else:
+                        typ = "awos_phone"
+
+                    add(rows, seen, ident, typ, phone)
 
     # -------------------------
     # WRITE OUTPUT

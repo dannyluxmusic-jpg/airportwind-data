@@ -164,7 +164,7 @@ def main():
                     elif "UNICOM" in hu:
                         add(rows, seen, ident, "unicom", val)
 
-        # -------------------------
+      # -------------------------
     # COM.csv → radio frequencies (FIXED)
     # -------------------------
     if com_path:

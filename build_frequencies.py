@@ -164,55 +164,80 @@ def main():
                     elif "UNICOM" in hu:
                         add(rows, seen, ident, "unicom", val)
 
+       # -------------------------
+    # FREQUENCIES (ADD ONLY — DO NOT TOUCH PHONES)
     # -------------------------
-    # COM.csv → radio frequencies
-    # -------------------------
-    if com_path:
-        print("Using COM:", com_path)
 
-        with open(com_path, newline="", encoding="latin-1") as f:
-            reader = csv.DictReader(f)
-            header_map = {norm_header(h): h for h in reader.fieldnames or []}
-            print("COM HEADER:", reader.fieldnames)
+    # TWR.txt → tower / ground / approach / departure / clearance
+    for name in Path("nasr").rglob("TWR.txt"):
+        print("Using TWR:", name)
 
-            for row in reader:
-                site = row_get(row, header_map, [
-                    "SITE_NO", "ARPT_SITE_NO", "AIRPORT_SITE_NO", "LANDING_FACILITY_SITE_NO"
-                ])
+        with open(name, encoding="latin-1") as f:
+            for line in f:
 
-                icao = ""
-                for k in site_keys(site):
-                    if k in site_to_airport:
-                        icao = site_to_airport[k]
-                        break
-
-                if not icao:
-                    icao = norm_airport_id(row_get(row, header_map, [
-                        "ICAO_ID", "ICAO", "ARPT_ID", "LOC_ID", "FAA_ID", "LID"
-                    ]))
-
-                if not icao:
+                parts = line.split()
+                if len(parts) < 3:
                     continue
 
-                freq = row_get(row, header_map, ["FREQ", "FREQUENCY", "COMM_FREQ"])
-                freq = norm_freq(freq)
+                ident = parts[0].strip().upper()
 
-                if not freq:
-                    for v in row.values():
-                        freq = norm_freq(v)
-                        if freq:
+                if len(ident) == 3:
+                    ident = "K" + ident
+
+                # find frequency in line
+                freq = None
+                for p in parts:
+                    try:
+                        v = float(p)
+                        if 118.0 <= v <= 136.975:
+                            freq = f"{v:.3f}"
                             break
+                    except:
+                        continue
 
                 if not freq:
                     continue
 
-                desc = " ".join(clean(v) for v in row.values())
-                typ = classify_comm(desc)
+                u = line.upper()
 
-                if not typ:
-                    continue
+                if "GND" in u:
+                    typ = "ground"
+                elif "CLNC" in u or "CLEAR" in u:
+                    typ = "clearance"
+                elif "APP" in u:
+                    typ = "approach"
+                elif "DEP" in u:
+                    typ = "departure"
+                else:
+                    typ = "tower"
 
-                add(rows, seen, icao, typ, freq)
+                add(rows, seen, ident, typ, freq)
+
+    # APT.txt → CTAF / UNICOM
+    for name in Path("nasr").rglob("APT.txt"):
+        print("Using APT:", name)
+
+        with open(name, encoding="latin-1") as f:
+            for line in f:
+
+                ident = line[27:31].strip().upper()
+
+                if len(ident) == 3:
+                    ident = "K" + ident
+
+                try:
+                    unicom = float(line[981:988])
+                    if 118.0 <= unicom <= 136.975:
+                        add(rows, seen, ident, "unicom", f"{unicom:.3f}")
+                except:
+                    pass
+
+                try:
+                    ctaf = float(line[988:995])
+                    if 118.0 <= ctaf <= 136.975:
+                        add(rows, seen, ident, "ctaf", f"{ctaf:.3f}")
+                except:
+                    pass
 
     # -------------------------
     # AWOS.csv → AWOS/ASOS phone numbers

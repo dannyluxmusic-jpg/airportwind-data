@@ -120,8 +120,8 @@ def main():
     else:
         print("NO CSV ZIP FOUND")
     
-      # -------------------------
-    # PHONES (AWOS.csv) — RESTORE WORKING VERSION
+       # -------------------------
+    # PHONES (AWOS.csv) — FINAL WORKING FIX
     # -------------------------
 
     awos_path = next(Path("csv").rglob("AWOS.csv"), None)
@@ -133,32 +133,37 @@ def main():
             reader = csv.DictReader(f)
 
             for row in reader:
-                ident = (
-                    row.get("ARPT_ID")
-                    or row.get("ICAO_ID")
-                    or row.get("LOC_ID")
-                    or ""
-                ).strip().upper()
+                full_text = " ".join(str(v) for v in row.values()).upper()
+
+                # ✅ extract airport ID from text (this is the key)
+                match = re.search(r"\b[K]?[A-Z0-9]{3,4}\b", full_text)
+
+                if not match:
+                    continue
+
+                ident = match.group()
 
                 if len(ident) == 3:
                     ident = "K" + ident
 
-                if not ident:
+                # reject junk like dates
+                if not ident.startswith("K"):
                     continue
 
-                for v in row.values():
-                    if not v:
-                        continue
+                # ✅ extract phone
+                phone_match = re.search(r"\d{3}-\d{3}-\d{4}", full_text)
 
-                    if re.search(r"\d{3}-\d{3}-\d{4}", str(v)):
-                        phone = str(v).strip()
+                if not phone_match:
+                    continue
 
-                        if "ASOS" in str(row).upper():
-                            typ = "asos_phone"
-                        else:
-                            typ = "awos_phone"
+                phone = phone_match.group()
 
-                        add(rows, seen, ident, typ, phone)
+                if "ASOS" in full_text:
+                    typ = "asos_phone"
+                else:
+                    typ = "awos_phone"
+
+                add(rows, seen, ident, typ, phone)
 
     # -------------------------
     # WRITE OUTPUT

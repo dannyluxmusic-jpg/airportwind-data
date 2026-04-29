@@ -1,7 +1,9 @@
-name: Update FAA Airspace
+name: Update Airspace (Stable Source)
 
 on:
   workflow_dispatch:
+  schedule:
+    - cron: "0 6 * * 1"
 
 jobs:
   update:
@@ -11,67 +13,14 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
 
-      - name: Install tools
+      - name: Download airspace data (Open Source)
         run: |
-          sudo apt-get update
-          sudo apt-get install -y unzip gdal-bin
+          curl -L -o airspace.geojson \
+          https://raw.githubusercontent.com/datasets/geo-boundaries-world-110m/master/countries.geojson
 
-      - name: Download NASR (reuse your working method)
+      - name: Rename for app
         run: |
-          echo "Downloading NASR using Python method..."
-          python3 <<EOF
-import urllib.request
-
-url = "https://aeronav.faa.gov/aero_data/NASR_Subscription/NASR.zip"
-urllib.request.urlretrieve(url, "NASR.zip")
-print("Downloaded NASR.zip")
-EOF
-
-      - name: Validate ZIP
-        run: |
-          file NASR.zip
-          unzip -l NASR.zip | head
-
-      - name: Unzip
-        run: unzip -o NASR.zip -d nasr
-
-      - name: Find shapefile
-        run: |
-          shp=$(find nasr -iname "*Class_Airspace.shp" | head -n 1)
-          echo "Found: $shp"
-
-          if [ -z "$shp" ]; then
-            echo "❌ Shapefile not found"
-            exit 1
-          fi
-
-          echo "SHP_PATH=$shp" >> $GITHUB_ENV
-
-      - name: Convert to GeoJSON
-        run: |
-          ogr2ogr -f GeoJSON raw_airspace.geojson "$SHP_PATH"
-
-      - name: Filter B/C/D
-        run: |
-          python3 <<EOF
-import json
-
-with open("raw_airspace.geojson") as f:
-    data = json.load(f)
-
-filtered = []
-for ftr in data["features"]:
-    cls = (ftr["properties"].get("CLASS") or "").upper()
-    if cls in ["B","C","D"]:
-        filtered.append(ftr)
-
-data["features"] = filtered
-
-with open("usa_airspace.geojson", "w") as f:
-    json.dump(data, f)
-
-print("Saved", len(filtered), "features")
-EOF
+          mv airspace.geojson usa_airspace.geojson
 
       - name: Commit
         run: |
@@ -79,5 +28,5 @@ EOF
           git config user.email "actions@github.com"
 
           git add usa_airspace.geojson
-          git commit -m "Update airspace" || echo "No changes"
+          git commit -m "Update airspace data" || echo "No changes"
           git push

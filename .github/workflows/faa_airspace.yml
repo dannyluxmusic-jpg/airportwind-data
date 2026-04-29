@@ -19,9 +19,12 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y unzip jq
 
-      - name: Download Airspace (OpenAIP mirror)
+      - name: Download Airspace (FORCED ZIP)
         run: |
-          curl -L -o main.zip https://github.com/openaip/openaip-data/archive/refs/heads/main.zip
+          curl -L \
+            -H "Accept: application/vnd.github+json" \
+            -o main.zip \
+            https://api.github.com/repos/openaip/openaip-data/zipball
 
       - name: Verify download
         run: |

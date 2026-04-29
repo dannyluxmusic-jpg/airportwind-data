@@ -164,42 +164,63 @@ def main():
                     elif "UNICOM" in hu:
                         add(rows, seen, ident, "unicom", val)
 
-      # -------------------------
-    # COM.csv → radio frequencies (FIXED)
+       # -------------------------
+    # COM.csv → radio frequencies (FINAL FIX)
     # -------------------------
     if com_path:
         print("Using COM:", com_path)
 
         with open(com_path, newline="", encoding="latin-1") as f:
             reader = csv.DictReader(f)
-            header_map = {norm_header(h): h for h in reader.fieldnames or []}
-            print("COM HEADER:", reader.fieldnames)
 
             for row in reader:
 
-                # ✅ DIRECT airport ID (not SITE_NO)
-                icao = row_get(row, header_map, [
-                    "ARPT_ID", "ICAO_ID", "LOC_ID", "FAA_ID", "LID"
-                ])
-                icao = norm_airport_id(icao)
+                # ✅ airport ID (this part is correct now)
+                icao = (
+                    row.get("ARPT_ID")
+                    or row.get("ICAO_ID")
+                    or row.get("LOC_ID")
+                    or row.get("FAA_ID")
+                    or ""
+                ).strip().upper()
 
                 if not icao:
                     continue
 
-                # ✅ frequency
-                freq = row_get(row, header_map, [
-                    "FREQ", "FREQUENCY", "COMM_FREQ"
-                ])
-                freq = norm_freq(freq)
+                # ✅ FIND FREQUENCY ANYWHERE IN ROW
+                freq = None
+                for v in row.values():
+                    if not v:
+                        continue
+                    try:
+                        fval = float(v)
+                        if 118.0 <= fval <= 136.975:
+                            freq = f"{fval:.3f}"
+                            break
+                    except:
+                        continue
 
                 if not freq:
                     continue
 
-                # ✅ description → type
-                desc = " ".join(clean(v) for v in row.values())
-                typ = classify_comm(desc)
+                # ✅ classify
+                desc = " ".join(str(v) for v in row.values()).upper()
 
-                if not typ:
+                if "GROUND" in desc or "GND" in desc:
+                    typ = "ground"
+                elif "TOWER" in desc or "TWR" in desc:
+                    typ = "tower"
+                elif "APPROACH" in desc or "APP" in desc:
+                    typ = "approach"
+                elif "DEPARTURE" in desc or "DEP" in desc:
+                    typ = "departure"
+                elif "CLEARANCE" in desc or "CLNC" in desc:
+                    typ = "clearance"
+                elif "CTAF" in desc:
+                    typ = "ctaf"
+                elif "UNICOM" in desc:
+                    typ = "unicom"
+                else:
                     continue
 
                 add(rows, seen, icao, typ, freq)

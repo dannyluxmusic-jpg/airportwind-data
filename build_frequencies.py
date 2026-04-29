@@ -102,6 +102,24 @@ def main():
                 except:
                     pass
 
+    # -------------------------
+    # UNZIP CSV_Data (THIS IS WHAT'S MISSING)
+    # -------------------------
+
+    csv_zip = None
+    for p in Path("nasr").rglob("*.zip"):
+        if "CSV" in p.name.upper():
+            csv_zip = p
+            break
+
+    if csv_zip:
+        print("Using CSV ZIP:", csv_zip)
+
+        with zipfile.ZipFile(csv_zip) as z:
+            z.extractall("csv")
+    else:
+        print("NO CSV ZIP FOUND")
+    
       # -------------------------
     # PHONES (AWOS.csv) — RESTORE WORKING VERSION
     # -------------------------

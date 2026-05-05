@@ -1,0 +1,110 @@
+========================================
+FILE 1: .github/workflows/update_airspace.yml
+========================================
+
+name: Update Airspace
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gdal-bin
+          pip install geopandas shapely fiona pyproj
+
+      - name: Download FAA NASR
+        run: |
+          curl -o nasr.zip https://aeronav.faa.gov/aero_data/NASR_Subscription/NASR.zip
+          unzip nasr.zip -d nasr
+
+      - name: Locate Class Airspace
+        run: |
+          find nasr -name "Class_Airspace.shp"
+
+      - name: Build GeoJSON with vertical data
+        run: |
+          python build_airspace.py
+
+      - name: Move output
+        run: |
+          mkdir -p airspace
+          mv airspace_final.geojson airspace/
+
+      - name: Commit and push
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add airspace
+          git commit -m "Update FAA airspace with vertical data" || echo "No changes"
+          git push
+
+
+========================================
+FILE 2: build_airspace.py (repo root)
+========================================
+
+import geopandas as gpd
+import json
+import os
+
+# 🔍 Find shapefile dynamically
+shp_path = None
+for root, dirs, files in os.walk("nasr"):
+    for file in files:
+        if file == "Class_Airspace.shp":
+            shp_path = os.path.join(root, file)
+            break
+
+if not shp_path:
+    raise Exception("❌ Class_Airspace.shp not found")
+
+print("✅ Using shapefile:", shp_path)
+
+gdf = gpd.read_file(shp_path)
+
+def convert_alt(val, uom):
+    if val is None:
+        return 0
+    if uom == "FL":
+        return val * 100
+    return val
+
+features = []
+
+for _, row in gdf.iterrows():
+    geom = row.geometry.__geo_interface__
+
+    lower = convert_alt(row.get("LOWER_VAL"), row.get("LOWER_UOM"))
+    upper = convert_alt(row.get("UPPER_VAL"), row.get("UPPER_UOM"))
+
+    features.append({
+        "type": "Feature",
+        "geometry": geom,
+        "properties": {
+            "class": row.get("CLASS", ""),
+            "lower": lower,
+            "upper": upper
+        }
+    })
+
+geojson = {
+    "type": "FeatureCollection",
+    "features": features
+}
+
+with open("airspace_final.geojson", "w") as f:
+    json.dump(geojson, f)
+
+print("✅ airspace_final.geojson created with vertical data")

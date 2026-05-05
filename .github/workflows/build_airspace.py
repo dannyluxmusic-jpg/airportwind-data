@@ -1,73 +1,44 @@
-#!/usr/bin/env python3
-
+import geopandas as gpd
 import json
-import shutil
-import subprocess
-import zipfile
-from pathlib import Path
+import os
 
-HERE = Path(__file__).resolve().parent
-NASR_ZIP = HERE / "NASR.zip"
-WORK = HERE / "airspace_work"
-OUT = HERE / "usa_airspace.geojson"
+🔍 Find shapefile dynamically
 
-KEEP_CLASSES = {"B", "C", "D"}
+shp_path = None
+for root, dirs, files in os.walk(“nasr”):
+for file in files:
+if file == “Class_Airspace.shp”:
+shp_path = os.path.join(root, file)
+break
 
-def main():
-    if not NASR_ZIP.exists():
-        raise FileNotFoundError("NASR.zip not found")
+if not shp_path:
+raise Exception(“❌ Class_Airspace.shp not found”)
 
-    if WORK.exists():
-        shutil.rmtree(WORK)
+print(“✅ Using shapefile:”, shp_path)
 
-    WORK.mkdir()
+gdf = gpd.read_file(shp_path)
 
-    with zipfile.ZipFile(NASR_ZIP) as z:
-        z.extractall(WORK)
+def convert_alt(val, uom):
+if val is None:
+return 0
+if uom == “FL”:
+return val * 100
+return val
 
-    shp = next(WORK.rglob("Class_Airspace.shp"), None)
+features = []
 
-    if not shp:
-        print("Available SHP files:")
-        for p in WORK.rglob("*.shp"):
-            print(p)
-        raise FileNotFoundError("Class_Airspace.shp not found")
+for _, row in gdf.iterrows():
+geom = row.geometry.geo_interface
 
-    raw = WORK / "raw_airspace.geojson"
+lower = convert_alt(row.get("LOWER_VAL"), row.get("LOWER_UOM"))
+upper = convert_alt(row.get("UPPER_VAL"), row.get("UPPER_UOM"))
 
-    subprocess.run([
-        "ogr2ogr",
-        "-f", "GeoJSON",
-        str(raw),
-        str(shp)
-    ], check=True)
-
-    with open(raw, "r", encoding="utf-8") as f:
-        data = json.load(f)
-
-    filtered = []
-    for feature in data.get("features", []):
-        props = feature.get("properties", {}) or {}
-
-        cls = (
-            props.get("CLASS")
-            or props.get("AIRSPACE_CLASS")
-            or props.get("TYPE_CODE")
-            or ""
-        )
-
-        cls = str(cls).strip().upper().replace("CLASS ", "")
-
-        if cls in KEEP_CLASSES:
-            filtered.append(feature)
-
-    data["features"] = filtered
-
-    with open(OUT, "w", encoding="utf-8") as f:
-        json.dump(data, f, separators=(",", ":"))
-
-    print(f"Found shapefile: {shp}")
-    print(f"Saved {len(filtered)} Class B/C/D features to {OUT}")
-
-if __name__ == "__main__":
-    main()
+features.append({
+    "type": "Feature",
+    "geometry": geom,
+    "properties": {
+        "class": row.get("CLASS", ""),
+        "lower": lower,
+        "upper": upper
+    }
+})

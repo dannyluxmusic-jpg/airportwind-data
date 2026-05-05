@@ -16,18 +16,14 @@ jobs:
       - name: Install deps
         run: |
           sudo apt-get update
-          sudo apt-get install -y gdal-bin unzip curl grep
+          sudo apt-get install -y gdal-bin unzip curl
           pip install geopandas shapely fiona pyproj
 
-      - name: Download FAA NASR (FINAL FIX)
+      - name: Download FAA NASR (WORKING FINAL)
         run: |
-          curl -L "https://www.faa.gov/air_traffic/flight_info/aeronav/aero_data/NASR_Subscription/" -o index.html
-
-          ZIP_URL=$(grep -o 'https://[^"]*NASR[^"]*\.zip' index.html | head -n 1)
-
-          echo "Found ZIP: $ZIP_URL"
-
-          curl -L -A "Mozilla/5.0" -o nasr.zip "$ZIP_URL"
+          curl -L -A "Mozilla/5.0" \
+          https://aeronav.faa.gov/Upload_313-d/supplements/NASR.zip \
+          -o nasr.zip
 
           file nasr.zip
           ls -lh nasr.zip

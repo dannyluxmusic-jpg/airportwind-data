@@ -1,31 +1,47 @@
 name: Update Airspace
 
 on:
-  workflow_dispatch:
+workflow_dispatch:
 
 permissions:
-  contents: write
+contents: write
 
 jobs:
-  update:
-    runs-on: ubuntu-latest
+update:
+runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+steps:
+  - name: Checkout
+    uses: actions/checkout@v4
 
-      - name: Ensure airspace folder
-        run: |
-          mkdir -p airspace
+  - name: Install dependencies
+    run: |
+      sudo apt-get update
+      sudo apt-get install -y gdal-bin
+      pip install geopandas shapely fiona pyproj
 
-      - name: Copy existing airspace file
-        run: |
-          cp usa_airspace.geojson airspace/ || echo "No file found"
+  - name: Download FAA NASR
+    run: |
+      curl -o nasr.zip https://aeronav.faa.gov/aero_data/NASR_Subscription/NASR.zip
+      unzip nasr.zip -d nasr
 
-      - name: Commit and push
-        run: |
-          git config user.name "github-actions"
-          git config user.email "actions@github.com"
-          git add airspace
-          git commit -m "Refresh airspace data" || echo "No changes"
-          git push
+  - name: Locate Class Airspace
+    run: |
+      find nasr -name "Class_Airspace.shp"
+
+  - name: Build GeoJSON with vertical data
+    run: |
+      python build_airspace.py
+
+  - name: Move output
+    run: |
+      mkdir -p airspace
+      mv airspace_final.geojson airspace/
+
+  - name: Commit and push
+    run: |
+      git config user.name "github-actions"
+      git config user.email "actions@github.com"
+      git add airspace
+      git commit -m "Update FAA airspace with vertical data" || echo "No changes"
+      git push

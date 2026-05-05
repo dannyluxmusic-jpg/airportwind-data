@@ -13,37 +13,15 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install deps
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y gdal-bin unzip curl
-          pip install geopandas shapely fiona pyproj
-
-      - name: Download FAA NASR (WORKING FINAL)
-        run: |
-          curl -L -A "Mozilla/5.0" \
-          https://aeronav.faa.gov/Upload_313-d/supplements/NASR.zip \
-          -o nasr.zip
-
-          file nasr.zip
-          ls -lh nasr.zip
-
-      - name: Unzip NASR
-        run: |
-          unzip nasr.zip -d nasr
-
-      - name: Build airspace
-        run: python build_airspace.py
-
-      - name: Save output
+      - name: Copy existing airspace (stable)
         run: |
           mkdir -p airspace
-          mv airspace_final.geojson airspace/
+          cp usa_airspace.geojson airspace/ || echo "No file found"
 
       - name: Commit
         run: |
           git config user.name "github-actions"
           git config user.email "actions@github.com"
           git add airspace
-          git commit -m "Airspace update v2 (real vertical data)" || echo "No changes"
+          git commit -m "Use existing airspace data" || echo "No changes"
           git push

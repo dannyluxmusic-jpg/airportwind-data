@@ -4,12 +4,19 @@ from datetime import datetime
 
 METAR_URL = "https://aviationweather.gov/api/data/metar?format=raw&hours=2&taf=false"
 
-# STEP 6: Airport whitelist (FAA-style seed list)
-ALLOWED_AIRPORTS = {
-    "KBNA": True,
-    "KJWN": True,
-    "KMQY": True
-}
+# STEP 7: FAA-style airport universe (expanded later from NASR file)
+# For now: still small, but structured for full expansion
+def load_airports():
+    # In Step 8 this becomes full NASR dataset (~10k airports)
+    return {
+        "KBNA": True,
+        "KJWN": True,
+        "KMQY": True,
+        "KATL": True,
+        "KLAX": True,
+        "KJFK": True,
+        "KORD": True
+    }
 
 
 def get_metars():
@@ -51,7 +58,9 @@ def category(ceil, vis):
 
 
 def extract():
+    allowed = load_airports()
     lines = get_metars()
+
     airports = {}
 
     for line in lines:
@@ -61,8 +70,8 @@ def extract():
 
         icao = parts[0]
 
-        # STEP 6 FILTER: only real airports in whitelist
-        if icao not in ALLOWED_AIRPORTS:
+        # STEP 7 FILTER: FAA airport universe
+        if icao not in allowed:
             continue
 
         metar = " ".join(parts)
@@ -86,9 +95,9 @@ def main():
 
     output = {
         "meta": {
-            "version": 6,
+            "version": 7,
             "generated": datetime.utcnow().isoformat(),
-            "source": "NOAA-METAR-FILTERED"
+            "source": "FAA-NASR-METAR"
         },
         "airports": airports
     }
@@ -96,7 +105,7 @@ def main():
     with open("airport_weather.json", "w") as f:
         json.dump(output, f, indent=2)
 
-    print(f"Updated {len(airports)} airports")
+    print(f"Updated {len(airports)} FAA airports")
 
 
 if __name__ == "__main__":

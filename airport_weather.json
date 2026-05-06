@@ -1,14 +1,24 @@
 {
   "meta": {
     "version": 2,
-    "status": "DEBUG_RUN",
-    "note": "if you see this in GitHub, script is working"
+    "generated": "2026-05-06T19:45:56.170833",
+    "source": "GITHUB_ACTIONS_V2"
   },
   "airports": {
-    "TEST": {
-      "cat": "VFR",
-      "lat": 0,
-      "lon": 0
+    "KJFK": {
+      "lat": 40.6413,
+      "lon": -73.7781,
+      "cat": "VFR"
+    },
+    "KLAX": {
+      "lat": 33.9425,
+      "lon": -118.4081,
+      "cat": "MVFR"
+    },
+    "KJWN": {
+      "lat": 36.1824,
+      "lon": -86.8867,
+      "cat": "IFR"
     }
   }
 }

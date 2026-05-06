@@ -1,8 +1,15 @@
 {
   "meta": {
-    "version": 8,
-    "generated": "2026-05-06T17:59:11.737001",
-    "source": "FAA-NASR-METAR-LIVE"
+    "version": 2,
+    "generated": "2026-05-06T18:29:15.091977",
+    "source": "NOAA-METAR"
   },
-  "airports": {}
+  "airports": {
+    "Must": {
+      "cat": "VFR",
+      "ceil": 10000,
+      "vis": 10,
+      "wx": ""
+    }
+  }
 }

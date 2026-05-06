@@ -1,15 +1,13 @@
 {
   "meta": {
-    "version": 2,
-    "generated": "2026-05-06T18:29:15.091977",
-    "source": "NOAA-METAR"
+    "test": true
   },
   "airports": {
-    "Must": {
-      "cat": "VFR",
-      "ceil": 10000,
-      "vis": 10,
-      "wx": ""
+    "TEST1": {
+      "cat": "VFR"
+    },
+    "TEST2": {
+      "cat": "IFR"
     }
   }
 }

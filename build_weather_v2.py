@@ -1,23 +1,21 @@
-print("🔥 V2 SCRIPT EXECUTING")
-
 import json
+import os
 
-print("STEP 1 REACHED")
+print("🔥 V2 FILE IS DEFINITELY RUNNING")
+print("FILE PATH:", __file__)
+print("WORKING DIR:", os.getcwd())
 
 data = {
     "meta": {
         "version": 2,
-        "generated": "TEST",
-        "source": "FORCED_DEBUG"
+        "proof": "THIS FILE EXECUTED",
     },
     "airports": {
-        "TEST": {"cat": "VFR"}
+        "PROOF": {"cat": "VFR"}
     }
 }
-
-print("STEP 2 REACHED")
 
 with open("airport_weather.json", "w") as f:
     json.dump(data, f, indent=2)
 
-print("STEP 3 FILE WRITTEN")
+print("✅ FILE WRITTEN SUCCESSFULLY")

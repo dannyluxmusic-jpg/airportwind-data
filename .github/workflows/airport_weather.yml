@@ -27,12 +27,21 @@ jobs:
       - name: Run weather builder V2
         run: python build_weather_v2.py
 
-      - name: Debug output
+      # 🔥 FULL DEBUG BLOCK (THIS IS WHAT WE NEEDED)
+      - name: Debug output (FULL TRACE)
         run: |
-          echo "=== FILE CHECK ==="
+          echo "========================"
+          echo "WORKING DIRECTORY"
+          pwd
+          echo "========================"
+          echo "FULL FILE TREE"
           ls -R
-          echo "=== JSON CONTENT ==="
+          echo "========================"
+          echo "JSON CONTENT (if exists)"
           cat airport_weather.json || echo "NO FILE FOUND"
+          echo "========================"
+          echo "FILE LOCATION CHECK"
+          find . -name "airport_weather.json"
 
       - name: Commit changes
         run: |
@@ -41,8 +50,8 @@ jobs:
 
           git add airport_weather.json
 
+          echo "GIT STATUS:"
           git status
 
           git commit -m "update weather cache v2" || echo "NO CHANGES"
-
           git push || echo "NO PUSH"

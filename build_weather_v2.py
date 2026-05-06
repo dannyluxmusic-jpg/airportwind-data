@@ -1,21 +1,32 @@
 import json
 import os
 
-print("🔥 V2 FILE IS DEFINITELY RUNNING")
-print("FILE PATH:", __file__)
-print("WORKING DIR:", os.getcwd())
+print("🔥 BUILD WEATHER V2 STARTED")
+print("FILE:", __file__)
+print("CWD:", os.getcwd())
+
+output_file = "airport_weather.json"
+
+print("📍 OUTPUT PATH:", os.path.abspath(output_file))
 
 data = {
     "meta": {
         "version": 2,
-        "proof": "THIS FILE EXECUTED",
+        "status": "DEBUG_RUN",
+        "note": "if you see this in GitHub, script is working"
     },
     "airports": {
-        "PROOF": {"cat": "VFR"}
+        "TEST": {
+            "cat": "VFR",
+            "lat": 0,
+            "lon": 0
+        }
     }
 }
 
-with open("airport_weather.json", "w") as f:
+with open(output_file, "w") as f:
     json.dump(data, f, indent=2)
 
-print("✅ FILE WRITTEN SUCCESSFULLY")
+print("✅ WRITE COMPLETE")
+print("📦 FILE SIZE CHECK:")
+print(os.path.getsize(output_file))

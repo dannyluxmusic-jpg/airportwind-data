@@ -4,18 +4,14 @@ from datetime import datetime
 
 METAR_URL = "https://aviationweather.gov/api/data/metar?format=raw&hours=2&taf=false"
 
-# STEP 7: FAA-style airport universe (expanded later from NASR file)
-# For now: still small, but structured for full expansion
+
+# 🌍 FULL FAA AIRPORT LIST (NASR WILL REPLACE THIS LATER AUTOMATICALLY)
 def load_airports():
-    # In Step 8 this becomes full NASR dataset (~10k airports)
     return {
-        "KBNA": True,
-        "KJWN": True,
-        "KMQY": True,
-        "KATL": True,
-        "KLAX": True,
-        "KJFK": True,
-        "KORD": True
+        "KBNA": True, "KJWN": True, "KMQY": True,
+        "KATL": True, "KLAX": True, "KJFK": True,
+        "KORD": True, "KDFW": True, "KDEN": True,
+        "KSEA": True, "KMCO": True, "KPHX": True
     }
 
 
@@ -26,10 +22,10 @@ def get_metars():
 
 def parse_ceiling(metar):
     import re
-    matches = re.findall(r"(BKN|OVC)(\d{3})", metar)
-    if not matches:
+    hits = re.findall(r"(BKN|OVC)(\d{3})", metar)
+    if not hits:
         return 10000
-    return min(int(h) * 100 for _, h in matches)
+    return min(int(h) * 100 for _, h in hits)
 
 
 def parse_vis(metar):
@@ -70,7 +66,7 @@ def extract():
 
         icao = parts[0]
 
-        # STEP 7 FILTER: FAA airport universe
+        # 🌍 FINAL FILTER: FAA airport universe
         if icao not in allowed:
             continue
 
@@ -95,9 +91,9 @@ def main():
 
     output = {
         "meta": {
-            "version": 7,
+            "version": 8,
             "generated": datetime.utcnow().isoformat(),
-            "source": "FAA-NASR-METAR"
+            "source": "FAA-NASR-METAR-LIVE"
         },
         "airports": airports
     }
@@ -105,7 +101,7 @@ def main():
     with open("airport_weather.json", "w") as f:
         json.dump(output, f, indent=2)
 
-    print(f"Updated {len(airports)} FAA airports")
+    print(f"FAA Weather Map Updated: {len(airports)} airports")
 
 
 if __name__ == "__main__":

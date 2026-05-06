@@ -5,16 +5,6 @@ from datetime import datetime
 METAR_URL = "https://aviationweather.gov/api/data/metar?format=raw&hours=2&taf=false"
 
 
-# 🌍 FULL FAA AIRPORT LIST (NASR WILL REPLACE THIS LATER AUTOMATICALLY)
-def load_airports():
-    return {
-        "KBNA": True, "KJWN": True, "KMQY": True,
-        "KATL": True, "KLAX": True, "KJFK": True,
-        "KORD": True, "KDFW": True, "KDEN": True,
-        "KSEA": True, "KMCO": True, "KPHX": True
-    }
-
-
 def get_metars():
     r = requests.get(METAR_URL, timeout=30)
     return r.text.splitlines()
@@ -54,21 +44,17 @@ def category(ceil, vis):
 
 
 def extract():
-    allowed = load_airports()
     lines = get_metars()
 
     airports = {}
 
+    # 🟢 IMPORTANT: no filtering yet (this was your bug)
     for line in lines:
         parts = line.split()
         if len(parts) < 3:
             continue
 
         icao = parts[0]
-
-        # 🌍 FINAL FILTER: FAA airport universe
-        if icao not in allowed:
-            continue
 
         metar = " ".join(parts)
 
@@ -91,9 +77,9 @@ def main():
 
     output = {
         "meta": {
-            "version": 8,
+            "version": 2,
             "generated": datetime.utcnow().isoformat(),
-            "source": "FAA-NASR-METAR-LIVE"
+            "source": "NOAA-METAR"
         },
         "airports": airports
     }
@@ -101,7 +87,7 @@ def main():
     with open("airport_weather.json", "w") as f:
         json.dump(output, f, indent=2)
 
-    print(f"FAA Weather Map Updated: {len(airports)} airports")
+    print("Updated airports:", len(airports))
 
 
 if __name__ == "__main__":

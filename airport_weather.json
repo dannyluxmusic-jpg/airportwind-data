@@ -1,11 +1,10 @@
 {
   "meta": {
     "version": 2,
-    "generated": "TEST",
-    "source": "FORCED_DEBUG"
+    "proof": "THIS FILE EXECUTED"
   },
   "airports": {
-    "TEST": {
+    "PROOF": {
       "cat": "VFR"
     }
   }

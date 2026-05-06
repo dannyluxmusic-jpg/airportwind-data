@@ -3,25 +3,21 @@ from datetime import datetime
 
 def main():
 
-    # SIMPLE BUT VALID AIRPORT DATA (proves pipeline works)
     airports = {
         "KJFK": {
             "lat": 40.6413,
             "lon": -73.7781,
-            "cat": "VFR",
-            "metar": "OK"
+            "cat": "VFR"
         },
         "KLAX": {
             "lat": 33.9425,
             "lon": -118.4081,
-            "cat": "VFR",
-            "metar": "OK"
+            "cat": "VFR"
         },
         "KJWN": {
             "lat": 36.1824,
             "lon": -86.8867,
-            "cat": "VFR",
-            "metar": "OK"
+            "cat": "VFR"
         }
     }
 
@@ -29,7 +25,7 @@ def main():
         "meta": {
             "version": 1,
             "generated": datetime.utcnow().isoformat(),
-            "source": "DEBUG_STATIC"
+            "source": "STATIC_TEST"
         },
         "airports": airports
     }
@@ -37,7 +33,7 @@ def main():
     with open("airport_weather.json", "w") as f:
         json.dump(output, f, indent=2)
 
-    print("✅ AIRPORTS WRITTEN:", len(airports))
+    print("AIRPORTS WRITTEN:", len(airports))
 
 
 if __name__ == "__main__":

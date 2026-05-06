@@ -24,15 +24,15 @@ jobs:
       - name: Install dependencies
         run: pip install requests
 
-      - name: Run weather builder
-        run: python .github/workflows/build_weather.py
+      - name: Run weather builder V2
+        run: python build_weather_v2.py
 
       - name: Debug output
         run: |
           echo "=== FILE CHECK ==="
           ls -R
           echo "=== JSON CONTENT ==="
-          cat airport_weather.json || echo "NO FILE"
+          cat airport_weather.json || echo "NO FILE FOUND"
 
       - name: Commit changes
         run: |
@@ -43,6 +43,6 @@ jobs:
 
           git status
 
-          git commit -m "update weather cache" || echo "NO CHANGES"
+          git commit -m "update weather cache v2" || echo "NO CHANGES"
 
           git push || echo "NO PUSH"

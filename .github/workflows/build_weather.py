@@ -4,6 +4,13 @@ from datetime import datetime
 
 METAR_URL = "https://aviationweather.gov/api/data/metar?format=raw&hours=2&taf=false"
 
+# STEP 6: Airport whitelist (FAA-style seed list)
+ALLOWED_AIRPORTS = {
+    "KBNA": True,
+    "KJWN": True,
+    "KMQY": True
+}
+
 
 def get_metars():
     r = requests.get(METAR_URL, timeout=30)
@@ -54,8 +61,8 @@ def extract():
 
         icao = parts[0]
 
-        # AIRPORT FILTER (FAA-style ICAO only)
-        if len(icao) != 4 or not (icao.startswith("K") or icao.startswith("C") or icao.startswith("E")):
+        # STEP 6 FILTER: only real airports in whitelist
+        if icao not in ALLOWED_AIRPORTS:
             continue
 
         metar = " ".join(parts)
@@ -79,7 +86,7 @@ def main():
 
     output = {
         "meta": {
-            "version": 3,
+            "version": 6,
             "generated": datetime.utcnow().isoformat(),
             "source": "NOAA-METAR-FILTERED"
         },

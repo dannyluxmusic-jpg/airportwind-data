@@ -1,8 +1,8 @@
 {
   "meta": {
-    "version": 6,
-    "generated": "2026-05-06T16:48:33.111882",
-    "source": "NOAA-METAR-FILTERED"
+    "version": 7,
+    "generated": "2026-05-06T16:49:36.729873",
+    "source": "FAA-NASR-METAR"
   },
   "airports": {}
 }

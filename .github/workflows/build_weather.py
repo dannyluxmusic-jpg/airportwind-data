@@ -5,9 +5,21 @@ from datetime import datetime
 METAR_URL = "https://aviationweather.gov/api/data/metar?format=raw&hours=2&taf=false"
 
 
-def get_metars():
-    r = requests.get(METAR_URL, timeout=30)
-    return r.text.splitlines()
+def fetch_metars():
+    try:
+        r = requests.get(METAR_URL, timeout=30)
+        r.raise_for_status()
+        return r.text.splitlines()
+    except Exception as e:
+        print("❌ METAR fetch failed:", e)
+        return []
+
+
+def get_icao(line):
+    parts = line.split()
+    if len(parts) < 3:
+        return None
+    return parts[0]
 
 
 def parse_ceiling(metar):
@@ -26,14 +38,7 @@ def parse_vis(metar):
     return int(m.group(1))
 
 
-def parse_wx(metar):
-    for code in ["TS", "RA", "SN", "FG", "BR"]:
-        if code in metar:
-            return code
-    return ""
-
-
-def category(ceil, vis):
+def classify(ceil, vis):
     if ceil < 500 or vis < 1:
         return "LIFR"
     if ceil < 1000 or vis < 3:
@@ -43,43 +48,44 @@ def category(ceil, vis):
     return "VFR"
 
 
-def extract():
-    lines = get_metars()
+def build():
+    lines = fetch_metars()
+
+    print("📡 METAR LINES RECEIVED:", len(lines))
 
     airports = {}
 
-    # 🟢 IMPORTANT: no filtering yet (this was your bug)
     for line in lines:
-        parts = line.split()
-        if len(parts) < 3:
+
+        icao = get_icao(line)
+        if not icao:
             continue
 
-        icao = parts[0]
+        print("ICAO:", icao)
 
-        metar = " ".join(parts)
-
-        ceil = parse_ceiling(metar)
-        vis = parse_vis(metar)
-        wx = parse_wx(metar)
+        ceil = parse_ceiling(line)
+        vis = parse_vis(line)
 
         airports[icao] = {
-            "cat": category(ceil, vis),
+            "cat": classify(ceil, vis),
             "ceil": ceil,
-            "vis": vis,
-            "wx": wx
+            "vis": vis
         }
+
+    print("🛬 TOTAL AIRPORTS BUILT:", len(airports))
 
     return airports
 
 
 def main():
-    airports = extract()
+
+    airports = build()
 
     output = {
         "meta": {
             "version": 2,
             "generated": datetime.utcnow().isoformat(),
-            "source": "NOAA-METAR"
+            "source": "METAR"
         },
         "airports": airports
     }
@@ -87,7 +93,7 @@ def main():
     with open("airport_weather.json", "w") as f:
         json.dump(output, f, indent=2)
 
-    print("Updated airports:", len(airports))
+    print("✅ JSON WRITTEN")
 
 
 if __name__ == "__main__":

@@ -1,18 +1,12 @@
 {
   "meta": {
     "version": 2,
-    "generated": "2026-05-06T19:23:26.529628",
-    "source": "FORCED_V2_TRACE"
+    "generated": "TEST",
+    "source": "FORCED_DEBUG"
   },
   "airports": {
-    "V2-KJFK": {
+    "TEST": {
       "cat": "VFR"
-    },
-    "V2-KLAX": {
-      "cat": "MVFR"
-    },
-    "V2-KJWN": {
-      "cat": "IFR"
     }
   }
 }

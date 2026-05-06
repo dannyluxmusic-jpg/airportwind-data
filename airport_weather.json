@@ -1,14 +1,27 @@
 {
   "meta": {
-    "generated": "2026-05-06T19:10:20.251461",
-    "debug": true
+    "version": 2,
+    "generated": "2026-05-06T19:20:53.106091",
+    "source": "V2_FIXED_PIPELINE"
   },
   "airports": {
-    "TEST1": {
-      "cat": "VFR"
+    "KJFK": {
+      "name": "John F Kennedy Intl",
+      "lat": 40.6413,
+      "lon": -73.7781,
+      "metar": "VFR"
     },
-    "TEST2": {
-      "cat": "VFR"
+    "KLAX": {
+      "name": "Los Angeles Intl",
+      "lat": 33.9425,
+      "lon": -118.4081,
+      "metar": "MVFR"
+    },
+    "KJWN": {
+      "name": "John C Tune",
+      "lat": 36.1824,
+      "lon": -86.8867,
+      "metar": "IFR"
     }
   }
 }

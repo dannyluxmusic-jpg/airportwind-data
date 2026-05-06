@@ -4,8 +4,6 @@ permissions:
   contents: write
 
 on:
-  schedule:
-    - cron: "*/10 * * * *"
   workflow_dispatch:
 
 jobs:
@@ -16,6 +14,9 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
 
+      - name: Show full repo structure (DEBUG)
+        run: find .
+
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
@@ -24,16 +25,12 @@ jobs:
       - name: Install dependencies
         run: pip install requests
 
-      - name: Show file structure (debug)
-        run: ls -R
-
-      - name: Run weather builder
-        run: python build_weather.py
-
-      - name: Commit results
+      - name: Try running script (debug all paths)
         run: |
-          git config user.name "github-actions"
-          git config user.email "github-actions@github.com"
-          git add airport_weather.json
-          git commit -m "update weather cache" || exit 0
-          git push
+          echo "LOOKING FOR FILE..."
+          ls -R
+          python build_weather.py || true
+          python .github/workflows/build_weather.py || true
+
+      - name: Stop here for diagnosis
+        run: echo "DONE DEBUG RUN"

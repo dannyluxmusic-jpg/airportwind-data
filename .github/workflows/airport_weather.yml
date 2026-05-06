@@ -25,7 +25,7 @@ jobs:
         run: pip install requests
 
       - name: Run weather builder (THIS WAS MISSING)
-        run: python airportwind-data/build_weather.py
+        run: python .github/workflows/build_weather.py
 
       - name: Commit changes
         run: |

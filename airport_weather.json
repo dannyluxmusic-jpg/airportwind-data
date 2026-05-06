@@ -1,23 +1,13 @@
 {
   "meta": {
-    "version": 1,
-    "generated": "2026-05-06T19:08:45.603997",
-    "source": "STATIC_TEST"
+    "generated": "2026-05-06T19:10:20.251461",
+    "debug": true
   },
   "airports": {
-    "KJFK": {
-      "lat": 40.6413,
-      "lon": -73.7781,
+    "TEST1": {
       "cat": "VFR"
     },
-    "KLAX": {
-      "lat": 33.9425,
-      "lon": -118.4081,
-      "cat": "VFR"
-    },
-    "KJWN": {
-      "lat": 36.1824,
-      "lon": -86.8867,
+    "TEST2": {
       "cat": "VFR"
     }
   }

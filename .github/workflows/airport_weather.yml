@@ -16,6 +16,11 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
 
+      - name: Show repo structure (DEBUG)
+        run: |
+          echo "=== REPO STRUCTURE ==="
+          ls -R
+
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
@@ -24,13 +29,27 @@ jobs:
       - name: Install dependencies
         run: pip install requests
 
-      - name: Run weather builder (THIS WAS MISSING)
-        run: python .github/workflows/build_weather.py
+      - name: Run weather builder
+        run: |
+          echo "=== RUNNING PYTHON ==="
+          python build_weather.py
+          echo "=== PYTHON DONE ==="
 
-      - name: Commit changes
+      - name: Verify file output (DEBUG)
+        run: |
+          echo "=== CHECKING OUTPUT FILE ==="
+          ls -lah
+          cat airport_weather.json || echo "FILE NOT FOUND"
+
+      - name: Commit and push changes
         run: |
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
+
           git add airport_weather.json
-          git commit -m "update weather cache" || exit 0
-          git push
+
+          echo "=== GIT STATUS ==="
+          git status
+
+          git commit -m "update weather cache" || echo "NO CHANGES TO COMMIT"
+          git push || echo "NO PUSH NEEDED"

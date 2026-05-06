@@ -1,39 +1,36 @@
 import json
+import os
 from datetime import datetime
 
 def main():
 
+    print("🔥 PYTHON STARTED")
+
+    print("CURRENT DIR:", os.getcwd())
+    print("FILES:", os.listdir("."))
+
     airports = {
-        "KJFK": {
-            "lat": 40.6413,
-            "lon": -73.7781,
-            "cat": "VFR"
-        },
-        "KLAX": {
-            "lat": 33.9425,
-            "lon": -118.4081,
-            "cat": "VFR"
-        },
-        "KJWN": {
-            "lat": 36.1824,
-            "lon": -86.8867,
-            "cat": "VFR"
-        }
+        "TEST1": {"cat": "VFR"},
+        "TEST2": {"cat": "VFR"}
     }
 
     output = {
         "meta": {
-            "version": 1,
             "generated": datetime.utcnow().isoformat(),
-            "source": "STATIC_TEST"
+            "debug": True
         },
         "airports": airports
     }
 
-    with open("airport_weather.json", "w") as f:
+    file_path = "airport_weather.json"
+
+    with open(file_path, "w") as f:
         json.dump(output, f, indent=2)
 
-    print("AIRPORTS WRITTEN:", len(airports))
+    print("✅ FILE WRITTEN AT:", file_path)
+
+    print("VERIFY CONTENT:")
+    print(json.dumps(output, indent=2))
 
 
 if __name__ == "__main__":

@@ -1,43 +1,25 @@
 import json
-import requests
-from datetime import datetime
-
-# 🌍 more reliable aviation METAR feed
-URL = "https://tgftp.nws.noaa.gov/data/observations/metar/stations.txt"
-
-
-def parse_line(line):
-    parts = line.split()
-    if len(parts) < 3:
-        return None
-    return parts[0], line
-
 
 def main():
 
-    try:
-        r = requests.get(URL, timeout=30)
-        data = r.text
-    except Exception as e:
-        print("REQUEST FAILED:", e)
-        return
+    print("🔥 SCRIPT STARTED")
 
-    print("RAW SIZE:", len(data))
+    airports = {
+        "TEST1": {"cat": "VFR"},
+        "TEST2": {"cat": "IFR"}
+    }
 
-    airports = {}
-
-    for line in data.splitlines():
-
-        parsed = parse_line(line)
-        if not parsed:
-            continue
-
-        icao, full = parsed
-        airports[icao] = {"raw": full}
-
-    print("AIRPORT COUNT:", len(airports))
+    print("AIRPORTS:", len(airports))
 
     output = {
-        "meta": {
-            "generated": datetime.utcnow().isoformat(),
-            "source": "NOAA-
+        "meta": {"test": True},
+        "airports": airports
+    }
+
+    with open("airport_weather.json", "w") as f:
+        json.dump(output, f, indent=2)
+
+    print("✅ FILE WRITTEN")
+
+if __name__ == "__main__":
+    main()

@@ -4,19 +4,19 @@ from datetime import datetime
 
 METAR_URL = "https://aviationweather.gov/api/data/metar?format=raw&hours=2&taf=false"
 
+
 def get_metars():
     r = requests.get(METAR_URL, timeout=30)
     return r.text.splitlines()
 
+
 def parse_ceiling(metar):
-    # very simplified ceiling detection
     import re
     matches = re.findall(r"(BKN|OVC)(\d{3})", metar)
     if not matches:
         return 10000
-
-    # take lowest layer
     return min(int(h) * 100 for _, h in matches)
+
 
 def parse_vis(metar):
     import re
@@ -25,11 +25,13 @@ def parse_vis(metar):
         return 10
     return int(m.group(1))
 
+
 def parse_wx(metar):
     for code in ["TS", "RA", "SN", "FG", "BR"]:
         if code in metar:
             return code
     return ""
+
 
 def category(ceil, vis):
     if ceil < 500 or vis < 1:
@@ -40,9 +42,9 @@ def category(ceil, vis):
         return "MVFR"
     return "VFR"
 
+
 def extract():
     lines = get_metars()
-
     airports = {}
 
     for line in lines:
@@ -51,6 +53,11 @@ def extract():
             continue
 
         icao = parts[0]
+
+        # AIRPORT FILTER (FAA-style ICAO only)
+        if len(icao) != 4 or not (icao.startswith("K") or icao.startswith("C") or icao.startswith("E")):
+            continue
+
         metar = " ".join(parts)
 
         ceil = parse_ceiling(metar)
@@ -66,14 +73,15 @@ def extract():
 
     return airports
 
+
 def main():
     airports = extract()
 
     output = {
         "meta": {
-            "version": 2,
+            "version": 3,
             "generated": datetime.utcnow().isoformat(),
-            "source": "NOAA-METAR"
+            "source": "NOAA-METAR-FILTERED"
         },
         "airports": airports
     }
@@ -82,6 +90,7 @@ def main():
         json.dump(output, f, indent=2)
 
     print(f"Updated {len(airports)} airports")
+
 
 if __name__ == "__main__":
     main()

@@ -16,11 +16,6 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
 
-      - name: Show repo structure (DEBUG)
-        run: |
-          echo "=== REPO STRUCTURE ==="
-          ls -R
-
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
@@ -30,14 +25,11 @@ jobs:
         run: pip install requests
 
       - name: Run weather builder
-        run: |
-          echo "=== RUNNING PYTHON ==="
-          python build_weather.py
-          echo "=== PYTHON DONE ==="
+        run: python build_weather.py
 
-      - name: Verify file output (DEBUG)
+      - name: Debug file output
         run: |
-          echo "=== CHECKING OUTPUT FILE ==="
+          echo "=== FILE CHECK ==="
           ls -lah
           cat airport_weather.json || echo "FILE NOT FOUND"
 
@@ -48,8 +40,8 @@ jobs:
 
           git add airport_weather.json
 
-          echo "=== GIT STATUS ==="
           git status
 
-          git commit -m "update weather cache" || echo "NO CHANGES TO COMMIT"
-          git push || echo "NO PUSH NEEDED"
+          git commit -m "update weather cache" || echo "NO CHANGES"
+
+          git push || echo "NO PUSH"

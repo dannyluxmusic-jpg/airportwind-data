@@ -27,12 +27,12 @@ jobs:
         run: pip install requests
 
       - name: Generate airport weather JSON
-        run: python .github/workflows/build_weather.py
+        run: python build_weather.py
 
-      - name: Commit updated JSON
+      - name: Commit and push changes
         run: |
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
           git add airport_weather.json
-          git commit -m "Update airport weather cache" || exit 0
+          git commit -m "update weather cache" || exit 0
           git push

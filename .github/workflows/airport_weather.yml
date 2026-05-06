@@ -16,6 +16,9 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
 
+      - name: Debug file structure
+        run: ls -R
+
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
@@ -25,7 +28,7 @@ jobs:
         run: pip install requests
 
       - name: Generate airport weather JSON
-        run: python ./build_weather.py
+        run: python build_weather.py
 
       - name: Commit and push changes
         run: |

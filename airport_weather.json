@@ -1,11 +1,14 @@
 {
   "meta": {
     "version": 2,
-    "proof": "THIS FILE EXECUTED"
+    "status": "DEBUG_RUN",
+    "note": "if you see this in GitHub, script is working"
   },
   "airports": {
-    "PROOF": {
-      "cat": "VFR"
+    "TEST": {
+      "cat": "VFR",
+      "lat": 0,
+      "lon": 0
     }
   }
 }

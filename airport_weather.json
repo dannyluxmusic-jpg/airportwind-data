@@ -1,0 +1,33 @@
+{
+  "meta": {
+    "version": 1,
+    "generated": "2026-05-06T16:40:42.420767",
+    "source": "METAR-MOCK"
+  },
+  "airports": {
+    "KBNA": {
+      "cat": "VFR",
+      "ceil": 4500,
+      "vis": 10,
+      "wind": 320,
+      "wind_spd": 10,
+      "wx": "BR"
+    },
+    "KJWN": {
+      "cat": "MVFR",
+      "ceil": 1800,
+      "vis": 4,
+      "wind": 290,
+      "wind_spd": 12,
+      "wx": "RA"
+    },
+    "KMQY": {
+      "cat": "IFR",
+      "ceil": 800,
+      "vis": 2,
+      "wind": 310,
+      "wind_spd": 8,
+      "wx": "FG"
+    }
+  }
+}

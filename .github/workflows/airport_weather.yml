@@ -27,7 +27,7 @@ jobs:
         run: pip install requests
 
       - name: Generate airport weather JSON
-        run: python build_weather.py
+        run: python .github/workflows/build_weather.py
 
       - name: Commit updated JSON
         run: |

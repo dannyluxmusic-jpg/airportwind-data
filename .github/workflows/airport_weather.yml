@@ -25,15 +25,16 @@ jobs:
         run: pip install requests
 
       - name: Run weather builder
-        run: python build_weather.py
+        run: python .github/workflows/build_weather.py
 
-      - name: Debug file output
+      - name: Debug output
         run: |
           echo "=== FILE CHECK ==="
-          ls -lah
-          cat airport_weather.json || echo "FILE NOT FOUND"
+          ls -R
+          echo "=== JSON CONTENT ==="
+          cat airport_weather.json || echo "NO FILE"
 
-      - name: Commit and push changes
+      - name: Commit changes
         run: |
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"

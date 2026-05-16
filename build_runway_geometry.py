@@ -1,10 +1,9 @@
-
 import csv
 import io
 import zipfile
 import requests
 
-NASR_URL = "https://www.faa.gov/air_traffic/flight_info/aeronav/aero_data/NASR_Subscription/current/NASR_Subscription.zip"
+NASR_URL = "https://nfdc.faa.gov/webContent/28DaySub/28DaySubscription_Effective_2026-04-16.zip"
 
 print("Downloading NASR...")
 

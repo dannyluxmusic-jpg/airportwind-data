@@ -4,25 +4,27 @@ import requests
 
 NASR_URL = "https://nfdc.faa.gov/webContent/28DaySub/28DaySubscription_Effective_2026-04-16.zip"
 
-print("Downloading NASR ZIP...")
-
 response = requests.get(
     NASR_URL,
     timeout=120,
-    headers={
-        "User-Agent": "Mozilla/5.0"
-    }
+    headers={"User-Agent": "Mozilla/5.0"}
 )
 
 response.raise_for_status()
 
-print("Opening ZIP...")
-
 zf = zipfile.ZipFile(io.BytesIO(response.content))
 
-print("ZIP CONTENTS:")
+with zf.open("APT.txt") as f:
+    lines = f.read().decode("latin-1", errors="ignore").splitlines()
 
-for name in zf.namelist():
-    print(name)
+count = 0
+
+for line in lines:
+    if "KECP" in line:
+        print(line)
+        count += 1
+
+        if count >= 20:
+            break
 
 print("DONE")

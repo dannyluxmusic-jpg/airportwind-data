@@ -17,12 +17,8 @@ zf = zipfile.ZipFile(io.BytesIO(response.content))
 with zf.open("APT.txt") as f:
     lines = f.read().decode("latin-1", errors="ignore").splitlines()
 
-for i, line in enumerate(lines):
-    if "KECP" in line:
-        print("LINE", i)
+for line in lines:
+    if line.startswith("RWY") and "16/34" in line:
         print(line)
 
-        for j in range(i + 1, min(i + 20, len(lines))):
-            print(lines[j])
-
-        break
+print("DONE")

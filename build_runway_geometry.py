@@ -1,9 +1,8 @@
-import csv
 import io
 import zipfile
 import requests
 
-NASR_URL = "https://nfdc.faa.gov/webContent/28DaySub/28DaySubscription_Effective_2026-04-16.zip"
+NASR_URL = "https://nfdc.faa.gov/webContent/28DaySub/current/28DaySubscription_Effective.zip"
 
 print("Downloading NASR...")
 
@@ -14,35 +13,9 @@ print("Opening ZIP...")
 
 zf = zipfile.ZipFile(io.BytesIO(response.content))
 
-csv_name = None
+print("ZIP CONTENTS:")
 
 for name in zf.namelist():
-    upper = name.upper()
-
-    if "APT_RWY" in upper and upper.endswith(".CSV"):
-        csv_name = name
-        break
-
-print("FOUND:", csv_name)
-
-if not csv_name:
-    raise RuntimeError("APT_RWY.csv not found")
-
-with zf.open(csv_name) as f:
-    text = io.TextIOWrapper(f, encoding="latin-1")
-
-    reader = csv.reader(text)
-
-    matches = 0
-
-    for row in reader:
-        joined = ",".join(row)
-
-        if "KECP" in joined:
-            print(joined)
-            matches += 1
-
-            if matches >= 5:
-                break
+    print(name)
 
 print("DONE")

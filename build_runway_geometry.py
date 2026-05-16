@@ -17,14 +17,12 @@ zf = zipfile.ZipFile(io.BytesIO(response.content))
 with zf.open("APT.txt") as f:
     lines = f.read().decode("latin-1", errors="ignore").splitlines()
 
-count = 0
-
-for line in lines:
+for i, line in enumerate(lines):
     if "KECP" in line:
+        print("LINE", i)
         print(line)
-        count += 1
 
-        if count >= 20:
-            break
+        for j in range(i + 1, min(i + 20, len(lines))):
+            print(lines[j])
 
-print("DONE")
+        break

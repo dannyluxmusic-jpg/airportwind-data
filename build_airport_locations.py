@@ -1,112 +1,172 @@
 import csv
-import io
-import re
-import zipfile
 import requests
+import zipfile
+import io
 
-NASR_URL = "https://nfdc.faa.gov/webContent/28DaySub/28DaySubscription_Effective_2026-04-16.zip"
-OUTPUT_FILE = "airport_locations.csv"
-
-coord_pattern = re.compile(
-    r"\d{2,3}-\d{2}-\d{2}\.\d+[NS]|\d{3}-\d{2}-\d{2}\.\d+[EW]"
-)
-
-apt_ident_pattern = re.compile(r"\bAIRPORT\s+([A-Z0-9]{2,4})\b")
-
-
-def dms_to_decimal(value):
-    match = re.match(r"^(\d{2,3})-(\d{2})-(\d{2}\.\d+)([NSEW])$", value)
-
-    if not match:
-        return None
-
-    degrees = float(match.group(1))
-    minutes = float(match.group(2))
-    seconds = float(match.group(3))
-    direction = match.group(4)
-
-    decimal = degrees + (minutes / 60.0) + (seconds / 3600.0)
-
-    if direction in ["S", "W"]:
-        decimal *= -1
-
-    return decimal
-
+NASR_URL = "https://aeronav.faa.gov/aero_data/NASR_Subscription.zip"
 
 print("Downloading NASR ZIP...")
+r = requests.get(NASR_URL, timeout=300)
+r.raise_for_status()
 
-response = requests.get(
-    NASR_URL,
-    timeout=120,
-    headers={"User-Agent": "Mozilla/5.0"}
-)
+z = zipfile.ZipFile(io.BytesIO(r.content))
 
-response.raise_for_status()
+apt_name = None
 
-zf = zipfile.ZipFile(io.BytesIO(response.content))
+for name in z.namelist():
+    upper = name.upper()
 
-print("Opening APT.txt...")
+    if upper.endswith("APT_BASE.csv"):
+        apt_name = name
+        break
 
-with zf.open("APT.txt") as f:
-    lines = f.read().decode("latin-1", errors="ignore").splitlines()
+    if upper.endswith("APT.txt"):
+        apt_name = name
 
-rows = []
-skipped = 0
+if not apt_name:
+    raise RuntimeError("APT file not found")
 
-for line in lines:
-    if not line.startswith("APT"):
-        continue
+print("Opening", apt_name)
 
-    match = apt_ident_pattern.search(line)
-    if not match:
-        skipped += 1
-        continue
+with z.open(apt_name) as f:
+    raw = f.read().decode("latin1", errors="ignore")
 
-    airport = match.group(1).strip().upper()
+lines = raw.splitlines()
 
-    if len(airport) == 4 and airport.startswith("K"):
-        airport = airport[1:]
+out_rows = []
+seen = set()
 
-    coords = coord_pattern.findall(line)
+# ------------------------------------------------------------------
+# FAA FIXED WIDTH APT.txt FORMAT
+# ------------------------------------------------------------------
 
-    if len(coords) < 2:
-        skipped += 1
-        continue
+if apt_name.upper().endswith("APT.TXT"):
 
-    lat = dms_to_decimal(coords[0])
-    lon = dms_to_decimal(coords[1])
+    for line in lines:
 
-    if lat is None or lon is None:
-        skipped += 1
-        continue
+        if not line.startswith("APT"):
+            continue
 
-    rows.append({
-        "airport": airport,
-        "lat": f"{lat:.8f}",
-        "lon": f"{lon:.8f}",
-    })
+        try:
+            ident = line[27:31].strip().upper()
 
-with open(OUTPUT_FILE, "w", newline="", encoding="utf-8") as f:
-    writer = csv.DictWriter(
-        f,
-        fieldnames=[
-            "airport",
-            "lat",
-            "lon",
-        ]
-    )
+            lat = line[538:550].strip()
+            lon = line[565:578].strip()
 
-    writer.writeheader()
-    writer.writerows(rows)
+            if not ident:
+                continue
 
-print("WROTE:", OUTPUT_FILE)
-print("AIRPORTS:", len(rows))
-print("SKIPPED:", skipped)
+            lat = float(lat)
+            lon = float(lon)
 
-print("\nCHECK ECP/KJWN:")
+            # FIX BAD PARSE
+            if abs(lat) > 90:
+                lat = lat / 3600.0
 
-for row in rows:
-    if row["airport"] in ["ECP", "JWN", "BNA"]:
-        print(row)
+            if abs(lon) > 180:
+                lon = lon / 3600.0
+
+            if abs(lat) > 90 or abs(lon) > 180:
+                continue
+
+            key = ident
+
+            if key in seen:
+                continue
+
+            seen.add(key)
+
+            out_rows.append([ident, lat, lon])
+
+        except:
+            continue
+
+# ------------------------------------------------------------------
+# CSV FORMAT
+# ------------------------------------------------------------------
+
+else:
+
+    reader = csv.DictReader(lines)
+
+    possible_ident = [
+        "ARPT_ID",
+        "ARPT IDENTIFIER",
+        "IDENT",
+        "LOCATION_ID",
+    ]
+
+    possible_lat = [
+        "LAT_DECIMAL",
+        "LATITUDE",
+        "ARP_LATITUDE",
+    ]
+
+    possible_lon = [
+        "LONG_DECIMAL",
+        "LONGITUDE",
+        "ARP_LONGITUDE",
+    ]
+
+    def pick(cols):
+        for c in cols:
+            if c in reader.fieldnames:
+                return c
+        return None
+
+    ident_col = pick(possible_ident)
+    lat_col = pick(possible_lat)
+    lon_col = pick(possible_lon)
+
+    if not ident_col or not lat_col or not lon_col:
+        raise RuntimeError("Could not locate FAA CSV columns")
+
+    for row in reader:
+
+        try:
+            ident = row[ident_col].strip().upper()
+
+            lat = float(row[lat_col])
+            lon = float(row[lon_col])
+
+            if not ident:
+                continue
+
+            if abs(lat) > 90 or abs(lon) > 180:
+                continue
+
+            if ident in seen:
+                continue
+
+            seen.add(ident)
+
+            out_rows.append([ident, lat, lon])
+
+        except:
+            continue
+
+# ------------------------------------------------------------------
+# WRITE CSV
+# ------------------------------------------------------------------
+
+with open("airport_locations.csv", "w", newline="") as f:
+    writer = csv.writer(f)
+
+    writer.writerow(["airport", "lat", "lon"])
+
+    writer.writerows(out_rows)
+
+print("WROTE: airport_locations.csv")
+print("AIRPORTS:", len(out_rows))
+
+print("\nCHECK ECP/KJWN:\n")
+
+for row in out_rows:
+    if row[0] in ["ECP", "JWN", "BNA"]:
+        print({
+            "airport": row[0],
+            "lat": row[1],
+            "lon": row[2]
+        })
 
 print("\nDONE")

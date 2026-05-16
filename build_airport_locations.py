@@ -50,17 +50,18 @@ if apt_name.upper().endswith("APT.TXT"):
 
     for line in lines:
 
-        if not line.startswith("APT"):
-            continue
-
         try:
-            ident = line[27:31].strip().upper()
 
-            lat = line[538:550].strip()
-            lon = line[565:578].strip()
+            if len(line) < 600:
+                continue
+
+            ident = line[27:31].strip().upper()
 
             if not ident:
                 continue
+
+            lat = line[538:550].strip()
+            lon = line[565:578].strip()
 
             lat = float(lat)
             lon = float(lon)

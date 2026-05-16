@@ -2,11 +2,31 @@ import io
 import zipfile
 import requests
 
-NASR_URL = "https://nfdc.faa.gov/webContent/28DaySub/current/28DaySubscription_Effective.zip"
+# FAA always redirects this page to current cycle
+INDEX_URL = "https://www.faa.gov/air_traffic/flight_info/aeronav/aero_data/NASR_Subscription/"
 
-print("Downloading NASR...")
+print("Fetching FAA page...")
 
-response = requests.get(NASR_URL, timeout=120)
+html = requests.get(INDEX_URL, timeout=120).text
+
+zip_url = None
+
+for token in html.split('"'):
+    if "28DaySubscription_Effective_" in token and token.endswith(".zip"):
+        if token.startswith("http"):
+            zip_url = token
+        else:
+            zip_url = "https://nfdc.faa.gov" + token
+        break
+
+print("ZIP URL:", zip_url)
+
+if not zip_url:
+    raise RuntimeError("Could not find FAA NASR ZIP")
+
+print("Downloading NASR ZIP...")
+
+response = requests.get(zip_url, timeout=120)
 response.raise_for_status()
 
 print("Opening ZIP...")

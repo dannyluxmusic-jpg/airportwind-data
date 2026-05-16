@@ -3,7 +3,7 @@ import requests
 import zipfile
 import io
 
-NASR_URL = "https://aeronav.faa.gov/aero_data/NASR_Subscription.zip"
+NASR_URL = "https://aeronav.faa.gov/aero_data/NASR_Subscription/NASR.zip"
 
 print("Downloading NASR ZIP...")
 r = requests.get(NASR_URL, timeout=300)
@@ -59,7 +59,6 @@ if apt_name.upper().endswith("APT.TXT"):
             lat = float(lat)
             lon = float(lon)
 
-            # FIX BAD PARSE
             if abs(lat) > 90:
                 lat = lat / 3600.0
 
@@ -69,12 +68,10 @@ if apt_name.upper().endswith("APT.TXT"):
             if abs(lat) > 90 or abs(lon) > 180:
                 continue
 
-            key = ident
-
-            if key in seen:
+            if ident in seen:
                 continue
 
-            seen.add(key)
+            seen.add(ident)
 
             out_rows.append([ident, lat, lon])
 

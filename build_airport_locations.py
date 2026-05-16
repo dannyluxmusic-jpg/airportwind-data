@@ -14,14 +14,20 @@ z = zipfile.ZipFile(io.BytesIO(r.content))
 apt_name = None
 
 for name in z.namelist():
+
     upper = name.upper()
 
-    if upper.endswith("APT_BASE.csv"):
+    if "APT_BASE.CSV" in upper:
         apt_name = name
         break
 
-    if upper.endswith("APT.txt"):
+    if upper.endswith("APT.TXT"):
         apt_name = name
+
+print("FILES FOUND:")
+
+for n in z.namelist()[:20]:
+    print(n)
 
 if not apt_name:
     raise RuntimeError("APT file not found")

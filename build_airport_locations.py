@@ -3,7 +3,7 @@ import requests
 import zipfile
 import io
 
-NASR_URL = "https://aeronav.faa.gov/aero_data/NASR_Subscription/NASR.zip"
+NASR_URL = "https://nfdc.faa.gov/webContent/28DaySub/28DaySubscription_Effective_2026-04-16.zip"
 
 print("Downloading NASR ZIP...")
 r = requests.get(NASR_URL, timeout=300)

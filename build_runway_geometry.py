@@ -33,6 +33,8 @@ for line in lines:
     print("\n===================")
     print("RAW:", line[:120])
     print("COORDS:", coords)
+    print(f"Valid runway geometries: {valid_count}")
+    print(f"Skipped malformed rows: {skipped_count}")
 
     count += 1
     if count >= 10:

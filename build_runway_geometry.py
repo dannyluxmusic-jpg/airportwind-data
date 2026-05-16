@@ -29,15 +29,43 @@ for line in lines:
 
     print("\n===================")
 
-    print("AIRPORT:", line[3:10].strip())
+    print("RAW LINE:")
+    print(repr(line))
 
-    print("RUNWAY:", line[13:20].strip())
+    print("LINE LENGTH:", len(line))
 
-    print("END1 LAT:", line[83:97].strip())
-    print("END1 LON:", line[98:113].strip())
+    airport_id = line[3:10].strip()
+    runway_id = line[13:20].strip()
 
-    print("END2 LAT:", line[286:300].strip())
-    print("END2 LON:", line[301:316].strip())
+    end1_lat = line[83:97].strip()
+    end1_lon = line[98:113].strip()
+
+    end2_lat = line[286:300].strip()
+    end2_lon = line[301:316].strip()
+
+    print("\nPARSED FIELDS")
+
+    print("AIRPORT:", airport_id)
+    print("RUNWAY:", runway_id)
+
+    print("END1 LAT:", end1_lat)
+    print("END1 LON:", end1_lon)
+
+    print("END2 LAT:", end2_lat)
+    print("END2 LON:", end2_lon)
+
+    print("\nRAW SLICES")
+
+    print("AIRPORT RAW :", repr(line[3:10]))
+    print("RUNWAY RAW  :", repr(line[13:20]))
+
+    print("END1 LAT RAW:", repr(line[83:97]))
+    print("END1 LON RAW:", repr(line[98:113]))
+
+    print("END2 LAT RAW:", repr(line[286:300]))
+    print("END2 LON RAW:", repr(line[301:316]))
+
+    print("===================")
 
     count += 1
 

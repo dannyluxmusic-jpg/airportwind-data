@@ -11,13 +11,10 @@ coord_pattern = re.compile(
     r"\d{2,3}-\d{2}-\d{2}\.\d+[NS]|\d{3}-\d{2}-\d{2}\.\d+[EW]"
 )
 
-icao_pattern = re.compile(r"\bK[A-Z0-9]{3}\b")
+apt_ident_pattern = re.compile(r"\bAIRPORT\s+([A-Z0-9]{2,4})\b")
 
 
 def dms_to_decimal(value):
-    # Examples:
-    # 30-21-40.2600N
-    # 085-47-44.1680W
     match = re.match(r"^(\d{2,3})-(\d{2})-(\d{2}\.\d+)([NSEW])$", value)
 
     if not match:
@@ -73,7 +70,7 @@ with zf.open("APT.txt") as f:
 
 # Build FAA site-number -> airport ident map.
 # RWY records use site numbers like 03430.3.
-# APT records contain the airport identifier like KECP.
+# APT records usually contain the public airport identifier after the word AIRPORT.
 site_to_ident = {}
 
 for line in lines:
@@ -81,19 +78,19 @@ for line in lines:
         continue
 
     site_number = line[3:10].strip()
+    match = apt_ident_pattern.search(line)
 
-    match = icao_pattern.search(line)
-
-    if not match:
+    if not site_number or not match:
         continue
 
-    icao = match.group(0)
+    ident = match.group(1).strip().upper()
 
-    # Store as FAA-style 3-letter for U.S. airports:
-    # KECP -> ECP
-    faa_id = icao[1:] if icao.startswith("K") else icao
+    # Store as FAA-style ID for U.S. airports:
+    # KECP -> ECP, but ECP stays ECP.
+    if len(ident) == 4 and ident.startswith("K"):
+        ident = ident[1:]
 
-    site_to_ident[site_number] = faa_id
+    site_to_ident[site_number] = ident
 
 
 print("Mapped airports:", len(site_to_ident))

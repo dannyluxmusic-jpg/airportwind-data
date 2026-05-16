@@ -1,43 +1,55 @@
-import io
 import re
-import zipfile
-import requests
 
-NASR_URL = "https://nfdc.faa.gov/webContent/28DaySub/28DaySubscription_Effective_2026-04-16.zip"
+valid_count = 0
+skipped_count = 0
 
-coord_pattern = re.compile(r"\d{2,3}-\d{2}-\d{2}\.\d{4}[NSEW]")
+def extract_coords(raw_line):
+    """
+    Extract FAA runway endpoint coordinates from malformed NASR rows.
+    Returns:
+        [lat1, lon1, lat2, lon2]
+    or []
+    """
 
-response = requests.get(
-    NASR_URL,
-    timeout=120,
-    headers={"User-Agent": "Mozilla/5.0"}
-)
-response.raise_for_status()
+    # FAA coords look like:
+    # 61-12-56.4587N
+    # 149-51-09.0466W
 
-zf = zipfile.ZipFile(io.BytesIO(response.content))
+    pattern = r'\d{2,3}-\d{2}-\d{2}\.\d+[NS]|\d{3}-\d{2}-\d{2}\.\d+[EW]'
 
-with zf.open("APT.txt") as f:
-    lines = f.read().decode("latin-1", errors="ignore").splitlines()
+    matches = re.findall(pattern, raw_line)
 
-count = 0
+    if len(matches) >= 4:
+        return matches[:4]
 
-for line in lines:
-    if not line.startswith("RWY"):
-        continue
+    return []
 
-    if "16/34" not in line:
-        continue
 
-    coords = coord_pattern.findall(line)
+with open("APT_RWY.txt", "r", encoding="latin-1") as f:
+    for line in f:
 
-    print("\n===================")
-    print("RAW:", line[:120])
-    print("COORDS:", coords)
-    print(f"Valid runway geometries: {valid_count}")
-    print(f"Skipped malformed rows: {skipped_count}")
+        if not line.startswith("RWY"):
+            continue
 
-    count += 1
-    if count >= 10:
-        break
+        coords = extract_coords(line)
 
-print("\nDONE")
+        print("\n===================")
+        print("RAW:", line.strip())
+        print("COORDS:", coords)
+
+        if len(coords) < 4:
+            skipped_count += 1
+            continue
+
+        lat1, lon1, lat2, lon2 = coords
+
+        # ---------------------------------
+        # YOUR EXISTING GEOMETRY CODE HERE
+        # ---------------------------------
+
+        valid_count += 1
+
+
+print("\n===================")
+print(f"Valid runway geometries: {valid_count}")
+print(f"Skipped malformed rows: {skipped_count}")

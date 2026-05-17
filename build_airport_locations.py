@@ -60,20 +60,17 @@ with z.open(apt_name) as f:
 
 lines = raw.splitlines()
 
-count = 0
+out_rows = []
+seen = set()
 
-for line in lines:
+def parse_dms(coord):
 
-    if not line.startswith("APT"):
-        continue
+    match = re.match(
+        r'(\d+)-(\d+)-([\d.]+)([NSEW])',
+        coord
+    )
 
-    count += 1
+    if not match:
+        return None
 
-    if count <= 5:
-
-        print("")
-        print("LINE LENGTH:", len(line))
-        print(line)
-        print("")
-
-print("TOTAL APT RECORDS:", count)
+    deg = float(match.group(1))

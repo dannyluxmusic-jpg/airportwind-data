@@ -47,8 +47,8 @@ for line in lines:
 
     try:
 
-        if not line.startswith("APT"):
-            continue
+        print(line[:20])
+break
 
         ident = line[1210:1217].strip().upper()
 

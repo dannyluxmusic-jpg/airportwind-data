@@ -17,12 +17,9 @@ for name in z.namelist():
 
     upper = name.upper()
 
-    if "APT_BASE.CSV" in upper:
-        apt_name = name
-        break
-
     if upper.endswith("APT.TXT"):
         apt_name = name
+        break
 
 print("FILES FOUND:")
 
@@ -46,108 +43,42 @@ seen = set()
 # FAA FIXED WIDTH APT.txt FORMAT
 # ------------------------------------------------------------------
 
-if apt_name.upper().endswith("APT.TXT"):
+for line in lines:
 
-    for line in lines:
+    try:
 
-        try:
-
-            if len(line) < 600:
-                continue
-
-            ident = line[27:31].strip().upper()
-
-            if not ident:
-                continue
-
-            lat = line[538:550].strip()
-            lon = line[565:578].strip()
-
-            lat = float(lat)
-            lon = float(lon)
-
-            if abs(lat) > 90:
-                lat = lat / 3600.0
-
-            if abs(lon) > 180:
-                lon = lon / 3600.0
-
-            if abs(lat) > 90 or abs(lon) > 180:
-                continue
-
-            if ident in seen:
-                continue
-
-            seen.add(ident)
-
-            out_rows.append([ident, lat, lon])
-
-        except:
+        if not line.startswith("APT"):
             continue
 
-# ------------------------------------------------------------------
-# CSV FORMAT
-# ------------------------------------------------------------------
+        ident = line[1210:1217].strip().upper()
 
-else:
+        lat = line[523:535].strip()
+        lon = line[550:564].strip()
 
-    reader = csv.DictReader(lines)
-
-    possible_ident = [
-        "ARPT_ID",
-        "ARPT IDENTIFIER",
-        "IDENT",
-        "LOCATION_ID",
-    ]
-
-    possible_lat = [
-        "LAT_DECIMAL",
-        "LATITUDE",
-        "ARP_LATITUDE",
-    ]
-
-    possible_lon = [
-        "LONG_DECIMAL",
-        "LONGITUDE",
-        "ARP_LONGITUDE",
-    ]
-
-    def pick(cols):
-        for c in cols:
-            if c in reader.fieldnames:
-                return c
-        return None
-
-    ident_col = pick(possible_ident)
-    lat_col = pick(possible_lat)
-    lon_col = pick(possible_lon)
-
-    if not ident_col or not lat_col or not lon_col:
-        raise RuntimeError("Could not locate FAA CSV columns")
-
-    for row in reader:
-
-        try:
-            ident = row[ident_col].strip().upper()
-
-            lat = float(row[lat_col])
-            lon = float(row[lon_col])
-
-            if not ident:
-                continue
-
-            if abs(lat) > 90 or abs(lon) > 180:
-                continue
-
-            if ident in seen:
-                continue
-
-            seen.add(ident)
-
-            out_rows.append([ident, lat, lon])
-
-        except:
+        if not ident:
             continue
+
+        lat = float(lat)
+        lon = float(lon)
+
+        if abs(lat) > 90:
+            lat = lat / 3600.0
+
+        if abs(lon) > 180:
+            lon = lon / 3600.0
+
+        if abs(lat) > 90 or abs(lon) > 180:
+            continue
+
+        if ident in seen:
+            continue
+
+        seen.add(ident)
+
+        out_rows.append([ident, lat, lon])
+
+    except:
+        continue
 
 # ------------------------------------------------------------------
 # WRITE CSV

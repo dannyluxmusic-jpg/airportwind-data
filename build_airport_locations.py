@@ -65,32 +65,52 @@ lines = raw.splitlines()
 out_rows = []
 seen = set()
 
+airport_count = 0
+
 for line in lines:
 
     if not line.startswith("APT"):
         continue
 
+    airport_count += 1
+
     try:
 
-        ident = line[1210:1217].strip().upper()
+        matches = re.findall(
+            r'[-]?\d+\.\d+',
+            line
+        )
 
-        lat = line[523:535].strip()
-        lon = line[550:563].strip()
-
-        if not ident:
+        if len(matches) < 2:
             continue
 
-        lat = float(lat)
-        lon = float(lon)
+        lat = None
+        lon = None
 
-        if abs(lat) > 90:
-            lat = lat / 3600.0
+        for value in matches:
 
-        if abs(lon) > 180:
-            lon = lon / 3600.0
+            v = float(value)
 
-        if abs(lat) > 90 or abs(lon) > 180:
+            if lat is None and abs(v) <= 90:
+                lat = v
+                continue
+
+            if lat is not None and abs(v) <= 180:
+                lon = v
+                break
+
+        if lat is None or lon is None:
             continue
+
+        ident_match = re.search(
+            r'\b[A-Z0-9]{3,4}\b',
+            line
+        )
+
+        if not ident_match:
+            continue
+
+        ident = ident_match.group(0).upper()
 
         if ident in seen:
             continue
@@ -118,8 +138,8 @@ with open("airport_locations.csv", "w", newline="") as f:
 
     writer.writerows(out_rows)
 
-print("WROTE: airport_locations.csv")
-print("AIRPORTS:", len(out_rows))
+print("APT RECORDS:", airport_count)
+print("WROTE:", len(out_rows))
 
 print("\nCHECK ECP/JWN/BNA:\n")
 

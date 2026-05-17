@@ -46,9 +46,7 @@ apt_name = None
 
 for name in z.namelist():
 
-    upper = name.upper()
-
-    if upper.endswith("APT.TXT"):
+    if name.upper().endswith("APT.TXT"):
         apt_name = name
         break
 
@@ -65,42 +63,16 @@ lines = raw.splitlines()
 out_rows = []
 seen = set()
 
-airport_count = 0
+apt_records = 0
 
 for line in lines:
 
     if not line.startswith("APT"):
         continue
 
-    airport_count += 1
+    apt_records += 1
 
     try:
-
-        matches = re.findall(
-            r'[-]?\d+\.\d+',
-            line
-        )
-
-        if len(matches) < 2:
-            continue
-
-        lat = None
-        lon = None
-
-        for value in matches:
-
-            v = float(value)
-
-            if lat is None and abs(v) <= 90:
-                lat = v
-                continue
-
-            if lat is not None and abs(v) <= 180:
-                lon = v
-                break
-
-        if lat is None or lon is None:
-            continue
 
         ident_match = re.search(
             r'\b[A-Z0-9]{3,4}\b',
@@ -111,6 +83,31 @@ for line in lines:
             continue
 
         ident = ident_match.group(0).upper()
+
+        numbers = re.findall(
+            r'-?\d+\.\d+',
+            line
+        )
+
+        lat = None
+        lon = None
+
+        for i in range(len(numbers) - 1):
+
+            a = float(numbers[i])
+            b = float(numbers[i + 1])
+
+            # US latitude range
+            if 15 <= a <= 75:
+
+                # US longitude range
+                if -180 <= b <= -50:
+                    lat = a
+                    lon = b
+                    break
+
+        if lat is None or lon is None:
+            continue
 
         if ident in seen:
             continue
@@ -138,8 +135,8 @@ with open("airport_locations.csv", "w", newline="") as f:
 
     writer.writerows(out_rows)
 
-print("APT RECORDS:", airport_count)
-print("WROTE:", len(out_rows))
+print("APT RECORDS:", apt_records)
+print("AIRPORTS:", len(out_rows))
 
 print("\nCHECK ECP/JWN/BNA:\n")
 

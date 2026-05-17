@@ -63,6 +63,21 @@ lines = raw.splitlines()
 out_rows = []
 seen = set()
 
+def dms_to_decimal(value, hemisphere):
+
+    value = value.strip()
+
+    degrees = int(value[0:3])
+    minutes = int(value[3:5])
+    seconds = float(value[5:11])
+
+    decimal = degrees + (minutes / 60.0) + (seconds / 3600.0)
+
+    if hemisphere in ["S", "W"]:
+        decimal *= -1
+
+    return decimal
+
 apt_records = 0
 
 for line in lines:
@@ -74,40 +89,32 @@ for line in lines:
 
     try:
 
-        ident_match = re.search(
-            r'\b[A-Z0-9]{3,4}\b',
-            line
-        )
+        ident = line[27:31].strip().upper()
 
-        if not ident_match:
+        if not ident:
             continue
 
-        ident = ident_match.group(0).upper()
+        lat_raw = line[538:550]
+        lat_hemi = line[550:551]
 
-        numbers = re.findall(
-            r'-?\d+\.\d+',
-            line
+        lon_raw = line[565:578]
+        lon_hemi = line[578:579]
+
+        if not lat_raw.strip():
+            continue
+
+        if not lon_raw.strip():
+            continue
+
+        lat = dms_to_decimal(
+            lat_raw,
+            lat_hemi
         )
 
-        lat = None
-        lon = None
-
-        for i in range(len(numbers) - 1):
-
-            a = float(numbers[i])
-            b = float(numbers[i + 1])
-
-            # US latitude range
-            if 15 <= a <= 75:
-
-                # US longitude range
-                if -180 <= b <= -50:
-                    lat = a
-                    lon = b
-                    break
-
-        if lat is None or lon is None:
-            continue
+        lon = dms_to_decimal(
+            lon_raw,
+            lon_hemi
+        )
 
         if ident in seen:
             continue

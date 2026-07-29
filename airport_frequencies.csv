@@ -1,4 +1,4 @@
-# updated 2026-07-01 09:49:09.572093
+# updated 2026-07-29 08:41:22.242398
 icao,type,value
 00OI,unicom,123.050
 00TX,unicom,122.725
@@ -46,6 +46,7 @@ icao,type,value
 05PA,unicom,123.050
 06AA,ctaf,122.500
 06AK,ctaf,122.800
+06CT,ctaf,122.900
 06IN,ctaf,122.900
 06MD,unicom,123.050
 06MI,ctaf,122.900
@@ -115,6 +116,7 @@ icao,type,value
 0MN5,ctaf,122.900
 0MN6,ctaf,122.900
 0MN8,ctaf,122.900
+0MN9,ctaf,122.900
 0MU5,unicom,123.050
 0NC2,unicom,123.050
 0NE9,ctaf,122.900
@@ -277,6 +279,7 @@ icao,type,value
 22MN,ctaf,122.900
 22NR,ctaf,122.900
 22NY,ctaf,122.900
+22PR,ctaf,122.900
 23AK,ctaf,122.800
 23CD,unicom,122.800
 23IN,unicom,123.050
@@ -305,6 +308,7 @@ icao,type,value
 26KY,unicom,123.075
 26MA,unicom,123.050
 26MN,ctaf,122.900
+26ND,ctaf,122.900
 26NR,ctaf,122.900
 26OH,ctaf,122.900
 26PA,ctaf,123.050
@@ -378,6 +382,7 @@ icao,type,value
 2NK5,ctaf,122.900
 2NK9,ctaf,122.900
 2OA1,ctaf,122.900
+2OH1,ctaf,122.900
 2OH3,ctaf,122.900
 2OH5,ctaf,122.900
 2OH6,ctaf,122.900
@@ -409,9 +414,11 @@ icao,type,value
 30TE,unicom,122.800
 31GA,ctaf,122.900
 31GE,ctaf,122.900
+31MA,ctaf,122.900
 31ME,ctaf,122.900
 31MI,ctaf,122.900
 31MN,ctaf,122.900
+31WA,ctaf,123.050
 31WA,unicom,123.050
 31WI,ctaf,122.900
 32GA,ctaf,122.900
@@ -530,6 +537,7 @@ icao,type,value
 3OH3,ctaf,122.900
 3OH5,ctaf,122.900
 3OH6,ctaf,122.900
+3OK1,ctaf,122.900
 3PA3,ctaf,122.900
 3PN8,ctaf,122.900
 3PS2,ctaf,122.900
@@ -538,6 +546,7 @@ icao,type,value
 3TA7,unicom,122.800
 3TE3,ctaf,122.900
 3VA4,ctaf,122.900
+3VA6,ctaf,122.900
 3VG5,ctaf,122.900
 3WI7,ctaf,122.900
 3WN1,ctaf,122.900
@@ -610,6 +619,7 @@ icao,type,value
 47FL,ctaf,122.900
 47GE,ctaf,122.900
 47IL,ctaf,122.900
+47MI,ctaf,122.900
 47MT,ctaf,122.900
 47NE,unicom,122.800
 47OI,ctaf,122.900
@@ -675,12 +685,15 @@ icao,type,value
 4NK0,unicom,123.050
 4OA1,ctaf,122.900
 4OH0,ctaf,122.900
+4OH1,ctaf,122.900
 4OH2,ctaf,122.900
+4OH3,ctaf,122.900
 4OH5,ctaf,122.900
 4OH7,ctaf,122.900
 4OH8,ctaf,122.900
 4OH9,ctaf,122.900
 4OK3,unicom,122.800
+4OK8,ctaf,122.900
 4OR0,unicom,122.800
 4OR6,unicom,122.800
 4OR9,ctaf,122.900
@@ -693,6 +706,7 @@ icao,type,value
 4PS7,ctaf,122.900
 4TA1,unicom,122.800
 4TN6,unicom,122.725
+4VA0,ctaf,122.900
 4VA4,ctaf,122.900
 4VG3,ctaf,122.900
 4VG8,ctaf,122.900
@@ -715,7 +729,6 @@ icao,type,value
 51MY,ctaf,122.900
 51SC,ctaf,122.900
 51TE,ctaf,122.900
-51TX,ctaf,122.900
 51WA,ctaf,122.900
 52AK,ctaf,123.600
 52MI,ctaf,122.900
@@ -759,6 +772,7 @@ icao,type,value
 57AZ,unicom,122.975
 57FA,unicom,122.800
 57LS,ctaf,122.900
+57MD,ctaf,122.900
 57MI,ctaf,122.900
 57NJ,ctaf,122.900
 57PN,ctaf,122.900
@@ -826,9 +840,11 @@ icao,type,value
 5OH1,ctaf,122.900
 5OH2,ctaf,122.900
 5OH3,ctaf,122.900
+5OH6,ctaf,122.900
 5OH7,ctaf,122.900
 5OH8,ctaf,122.900
 5OI8,ctaf,122.900
+5OK6,ctaf,122.900
 5PS4,ctaf,122.900
 5TA7,unicom,122.800
 5TA9,ctaf,122.900
@@ -952,6 +968,7 @@ icao,type,value
 6OI4,ctaf,122.900
 6OI6,unicom,123.050
 6OK4,unicom,122.800
+6OK7,ctaf,122.900
 6TA1,unicom,123.050
 6TA3,ctaf,122.900
 6TS2,ctaf,122.900
@@ -981,6 +998,7 @@ icao,type,value
 73MI,ctaf,122.900
 73NR,ctaf,122.900
 73OH,ctaf,122.900
+73OI,ctaf,122.900
 73TX,ctaf,122.900
 74GE,ctaf,122.900
 74MD,ctaf,122.900
@@ -1065,6 +1083,7 @@ icao,type,value
 7LA8,ctaf,122.900
 7MD6,ctaf,122.900
 7ME7,ctaf,122.900
+7MI2,ctaf,122.900
 7MI4,ctaf,122.900
 7MI5,ctaf,122.900
 7MI6,ctaf,122.900
@@ -1312,7 +1331,6 @@ icao,type,value
 9MI0,ctaf,122.900
 9MI3,ctaf,122.900
 9MI4,ctaf,122.900
-9MI7,ctaf,122.900
 9MI8,ctaf,122.900
 9MI9,ctaf,122.900
 9MN0,ctaf,123.000
@@ -2089,7 +2107,6 @@ K1I8,ctaf,122.900
 K1I9,ctaf,122.900
 K1J9,ctaf,122.700
 K1J9,unicom,122.700
-K1K1,awos_phone,316-530-6004
 K1K1,ctaf,123.075
 K1K1,unicom,123.075
 K1K2,ctaf,122.900
@@ -2160,6 +2177,7 @@ K1Q2,ctaf,122.900
 K1Q4,ctaf,122.900
 K1Q5,ctaf,122.900
 K1Q9,ctaf,122.900
+K1QK,awos_phone,785-953-3030
 K1QK,ctaf,122.900
 K1R1,ctaf,122.900
 K1R4,ctaf,122.900
@@ -3059,6 +3077,7 @@ K50R,ctaf,122.800
 K50R,unicom,122.800
 K50S,ctaf,122.900
 K51A,ctaf,122.900
+K51C,ctaf,122.900
 K51D,ctaf,122.800
 K51D,unicom,122.800
 K51G,ctaf,122.900
@@ -4099,7 +4118,7 @@ KAEL,ctaf,123.000
 KAEL,unicom,123.000
 KAEX,asos_phone,318-442-6583
 KAEX,ctaf,127.350
-KAFE,awos_phone,907-785-3124
+KAFE,awos_phone,907-782-4981
 KAFE,ctaf,122.900
 KAFF,ctaf,124.150
 KAFJ,awos_phone,724-228-3529
@@ -4123,7 +4142,7 @@ KAFW,asos_phone,817-491-6188
 KAGC,asos_phone,412-466-8968
 KAGC,unicom,122.950
 KAGI,awos_phone,504-425-5011
-KAGN,awos_phone,907-788-3120
+KAGN,awos_phone,907-205-5480
 KAGN,ctaf,122.900
 KAGO,awos_phone,870-901-3532
 KAGO,ctaf,122.800
@@ -4457,7 +4476,7 @@ KAVX,unicom,122.700
 KAWG,awos_phone,319-653-4149
 KAWG,ctaf,122.700
 KAWG,unicom,122.700
-KAWI,asos_phone,907-763-8881
+KAWI,asos_phone,907-217-1305
 KAWI,ctaf,122.800
 KAWM,asos_phone,870-733-9987
 KAWM,ctaf,123.050
@@ -4494,7 +4513,7 @@ KAZC,ctaf,122.700
 KAZC,unicom,122.700
 KAZE,ctaf,122.800
 KAZE,unicom,122.800
-KAZK,awos_phone,907-822-3011
+KAZK,awos_phone,907-621-9261
 KAZO,asos_phone,269-459-3391
 KAZO,ctaf,118.300
 KAZO,unicom,122.950
@@ -4541,7 +4560,7 @@ KBBG,unicom,122.950
 KBBP,awos_phone,843-479-5817
 KBBP,ctaf,122.800
 KBBP,unicom,122.800
-KBBW,asos_phone,308-872-5354
+KBBW,asos_phone,308-870-8247
 KBBW,ctaf,122.800
 KBBW,unicom,122.800
 KBCB,awos_phone,540-231-4837
@@ -4644,7 +4663,7 @@ KBHB,unicom,123.000
 KBHC,awos_phone,912-705-5865
 KBHC,ctaf,122.800
 KBHC,unicom,122.800
-KBHK,asos_phone,406-778-3312
+KBHK,asos_phone,406-518-0452
 KBHK,ctaf,122.900
 KBHM,asos_phone,205-591-6172
 KBHM,unicom,122.950
@@ -4723,7 +4742,7 @@ KBLV,unicom,122.950
 KBMC,awos_phone,435-723-3852
 KBMC,ctaf,123.050
 KBMC,unicom,123.050
-KBMG,asos_phone,812-825-8046
+KBMG,asos_phone,812-200-0732
 KBMG,ctaf,120.775
 KBMG,unicom,122.950
 KBMI,awos_phone,309-661-9478
@@ -4732,7 +4751,7 @@ KBMI,unicom,122.950
 KBML,asos_phone,603-449-3328
 KBML,ctaf,122.700
 KBML,unicom,122.700
-KBMQ,asos_phone,512-756-7277
+KBMQ,asos_phone,737-365-5660
 KBMQ,ctaf,122.800
 KBMQ,unicom,122.800
 KBMT,awos_phone,409-866-2832
@@ -5082,10 +5101,10 @@ KCDK,ctaf,122.900
 KCDN,awos_phone,803-424-1979
 KCDN,ctaf,123.000
 KCDN,unicom,123.000
-KCDR,asos_phone,308-432-5574
+KCDR,asos_phone,308-880-5992
 KCDR,ctaf,122.800
 KCDR,unicom,122.800
-KCDS,asos_phone,940-937-6337
+KCDS,asos_phone,940-226-1189
 KCDS,ctaf,122.800
 KCDS,unicom,122.800
 KCDV,asos_phone,907-424-5900
@@ -5710,7 +5729,7 @@ KDIK,unicom,123.000
 KDKB,awos_phone,815-748-2350
 KDKB,ctaf,122.700
 KDKB,unicom,122.700
-KDKK,asos_phone,716-366-7664
+KDKK,asos_phone,716-413-3698
 KDKK,ctaf,123.075
 KDKK,unicom,123.075
 KDKR,awos_phone,936-545-8510
@@ -5790,7 +5809,7 @@ KDRT,unicom,122.800
 KDSF,awos_phone,985-773-7295
 KDSM,asos_phone,515-218-1035
 KDSM,unicom,122.950
-KDSV,asos_phone,585-335-2380
+KDSV,asos_phone,585-699-2746
 KDSV,ctaf,123.000
 KDSV,unicom,123.000
 KDT1,ctaf,123.050
@@ -5838,7 +5857,7 @@ KDUY,ctaf,122.700
 KDVK,awos_phone,859-854-0058
 KDVK,ctaf,122.800
 KDVK,unicom,122.800
-KDVL,awos_phone,701-662-7214
+KDVL,awos_phone,701-979-8345
 KDVL,ctaf,122.800
 KDVL,unicom,122.800
 KDVN,asos_phone,563-388-2154
@@ -5879,7 +5898,7 @@ KDYB,unicom,123.000
 KDYL,asos_phone,215-345-0392
 KDYL,ctaf,122.975
 KDYL,unicom,122.975
-KDYR,awos_phone,731-287-0300
+KDYR,awos_phone,731-737-9482
 KDYR,ctaf,123.050
 KDYR,unicom,123.050
 KDYT,awos_phone,218-720-4886
@@ -6045,7 +6064,7 @@ KEFT,ctaf,123.050
 KEFT,unicom,123.050
 KEFW,ctaf,122.800
 KEFW,unicom,122.800
-KEGE,awos_phone,970-524-7386
+KEGE,awos_phone,970-687-6755
 KEGE,ctaf,119.800
 KEGQ,ctaf,122.800
 KEGQ,unicom,122.800
@@ -6110,7 +6129,7 @@ KELK,unicom,122.800
 KELM,asos_phone,607-796-0065
 KELM,ctaf,121.100
 KELM,unicom,122.950
-KELN,asos_phone,509-925-2040
+KELN,asos_phone,509-591-0451
 KELN,ctaf,123.000
 KELN,unicom,123.000
 KELO,awos_phone,218-365-3814
@@ -6145,7 +6164,7 @@ KENM,awos_phone,907-269-2755
 KENM,ctaf,122.900
 KENN,asos_phone,907-832-5689
 KENN,ctaf,122.100
-KENV,awos_phone,435-665-2521
+KENV,awos_phone,435-677-5641
 KENV,ctaf,122.800
 KENV,unicom,122.800
 KENW,asos_phone,262-652-7730
@@ -6393,7 +6412,7 @@ KFCY,unicom,122.800
 KFDK,awos_phone,301-600-1457
 KFDK,ctaf,132.400
 KFDK,unicom,122.950
-KFDR,asos_phone,580-335-7591
+KFDR,asos_phone,580-530-3512
 KFDR,ctaf,123.050
 KFDR,unicom,123.050
 KFDW,awos_phone,803-712-2577
@@ -6545,7 +6564,7 @@ KFRH,awos_phone,812-936-2252
 KFRH,ctaf,122.800
 KFRH,unicom,122.800
 KFRI,ctaf,126.200
-KFRM,awos_phone,507-238-1562
+KFRM,awos_phone,507-618-7358
 KFRM,ctaf,122.800
 KFRM,unicom,122.800
 KFRN,ctaf,125.000
@@ -6858,7 +6877,7 @@ KGPI,unicom,122.950
 KGPM,awos_phone,972-606-1433
 KGPM,ctaf,128.550
 KGPM,unicom,123.075
-KGPT,asos_phone,228-867-9937
+KGPT,asos_phone,228-687-0116
 KGPT,ctaf,123.700
 KGPT,unicom,122.950
 KGPZ,awos_phone,218-326-8337
@@ -6925,7 +6944,7 @@ KGUY,unicom,122.700
 KGVE,awos_phone,540-832-2095
 KGVE,ctaf,123.000
 KGVE,unicom,123.000
-KGVL,asos_phone,770-532-4687
+KGVL,asos_phone,770-771-5055
 KGVL,ctaf,123.075
 KGVL,unicom,123.075
 KGVQ,awos_phone,585-343-6369
@@ -6938,7 +6957,7 @@ KGVW,awos_phone,832-917-1465
 KGWB,awos_phone,260-925-8225
 KGWB,ctaf,123.000
 KGWB,unicom,123.000
-KGWO,asos_phone,662-453-3304
+KGWO,asos_phone,662-451-0918
 KGWO,ctaf,118.350
 KGWO,unicom,122.950
 KGWR,awos_phone,701-678-6801
@@ -7155,7 +7174,7 @@ KHLA,unicom,122.800
 KHLB,awos_phone,812-933-0108
 KHLB,ctaf,122.725
 KHLB,unicom,122.725
-KHLC,asos_phone,785-421-3471
+KHLC,asos_phone,785-922-9256
 KHLC,ctaf,122.900
 KHLG,asos_phone,304-277-3504
 KHLG,ctaf,118.100
@@ -7181,7 +7200,7 @@ KHNB,unicom,122.800
 KHND,asos_phone,702-614-4537
 KHND,ctaf,125.100
 KHND,unicom,122.950
-KHNH,awos_phone,907-945-3687
+KHNH,awos_phone,907-202-8236
 KHNH,ctaf,122.700
 KHNL,asos_phone,808-807-2538
 KHNM,awos_phone,808-248-4864
@@ -7202,7 +7221,7 @@ KHOC,ctaf,123.050
 KHOC,unicom,123.050
 KHOE,awos_phone,912-487-1253
 KHOE,ctaf,122.900
-KHOM,asos_phone,907-235-3603
+KHOM,asos_phone,907-202-8234
 KHOM,ctaf,123.600
 KHON,asos_phone,605-215-0039
 KHON,ctaf,123.000
@@ -7342,7 +7361,7 @@ KHXF,unicom,123.000
 KHYA,asos_phone,508-862-2601
 KHYA,ctaf,119.500
 KHYA,unicom,122.950
-KHYG,awos_phone,907-285-3888
+KHYG,awos_phone,907-560-7602
 KHYG,ctaf,122.900
 KHYI,awos_phone,512-353-8005
 KHYI,ctaf,126.825
@@ -7502,7 +7521,7 @@ KIDP,awos_phone,620-331-5980
 KIDP,ctaf,123.050
 KIDP,unicom,123.050
 KIEM,ctaf,122.900
-KIEN,asos_phone,605-867-1584
+KIEN,asos_phone,605-229-9337
 KIEN,ctaf,122.900
 KIER,awos_phone,318-352-1575
 KIER,ctaf,122.800
@@ -7560,7 +7579,7 @@ KILI,ctaf,123.600
 KILM,asos_phone,910-212-6314
 KILM,ctaf,119.900
 KILM,unicom,122.950
-KILN,asos_phone,937-383-7334
+KILN,asos_phone,937-347-3258
 KIML,asos_phone,308-301-2403
 KIML,ctaf,122.800
 KIML,unicom,122.800
@@ -7678,7 +7697,7 @@ KIYS,ctaf,122.800
 KIZA,awos_phone,805-686-5325
 KIZA,ctaf,122.800
 KIZA,unicom,122.800
-KIZG,asos_phone,207-935-2882
+KIZG,asos_phone,207-275-5105
 KIZG,ctaf,122.800
 KIZG,unicom,122.800
 KJAC,awos_phone,307-739-9108
@@ -8698,7 +8717,7 @@ KMGC,unicom,122.700
 KMGG,awos_phone,320-963-3300
 KMGG,ctaf,122.800
 KMGG,unicom,122.800
-KMGJ,asos_phone,845-457-1486
+KMGJ,asos_phone,845-990-2308
 KMGJ,ctaf,122.725
 KMGJ,unicom,122.725
 KMGM,asos_phone,334-245-6083
@@ -8980,7 +8999,7 @@ KMSO,ctaf,118.400
 KMSO,unicom,122.950
 KMSP,asos_phone,218-203-0160
 KMSP,unicom,122.950
-KMSS,asos_phone,315-764-0481
+KMSS,asos_phone,315-957-8060
 KMSS,ctaf,123.000
 KMSS,unicom,123.000
 KMSV,awos_phone,845-583-5056
@@ -8997,7 +9016,7 @@ KMTJ,asos_phone,970-249-1534
 KMTJ,ctaf,122.800
 KMTJ,unicom,122.800
 KMTK,awos_phone,337-761-8234
-KMTM,awos_phone,907-886-7989
+KMTM,awos_phone,907-560-7608
 KMTM,ctaf,122.900
 KMTN,awos_phone,410-682-8848
 KMTN,ctaf,121.300
@@ -9415,7 +9434,7 @@ KOIN,unicom,122.800
 KOJA,awos_phone,580-772-7020
 KOJA,ctaf,122.800
 KOJA,unicom,122.800
-KOJC,asos_phone,913-780-6969
+KOJC,asos_phone,913-361-8893
 KOJC,ctaf,126.000
 KOJC,unicom,122.950
 KOKB,asos_phone,760-439-9683
@@ -9701,7 +9720,7 @@ KPAQ,ctaf,123.600
 KPBF,asos_phone,870-536-0228
 KPBF,ctaf,123.000
 KPBF,unicom,123.000
-KPBG,asos_phone,518-324-5539
+KPBG,asos_phone,518-957-5905
 KPBG,ctaf,122.700
 KPBG,unicom,122.700
 KPBH,awos_phone,715-339-4520
@@ -9743,7 +9762,7 @@ KPEA,awos_phone,641-628-3459
 KPEA,ctaf,122.800
 KPEA,unicom,122.800
 KPEC,ctaf,122.900
-KPEO,asos_phone,315-536-4102
+KPEO,asos_phone,315-924-0797
 KPEO,ctaf,123.000
 KPEO,unicom,123.000
 KPEQ,awos_phone,432-445-3867
@@ -9903,7 +9922,7 @@ KPOF,unicom,123.000
 KPOH,ctaf,122.800
 KPOH,unicom,122.800
 KPOR,asos_phone,907-783-2626
-KPOU,asos_phone,845-462-0648
+KPOU,asos_phone,845-836-6748
 KPOU,ctaf,124.000
 KPOU,unicom,122.950
 KPOV,awos_phone,330-298-9353
@@ -9929,13 +9948,13 @@ KPPQ,unicom,122.800
 KPQI,awos_phone,207-764-7248
 KPQI,ctaf,122.800
 KPQI,unicom,122.800
-KPQL,asos_phone,228-474-2836
+KPQL,asos_phone,228-666-7450
 KPQL,ctaf,118.575
 KPQL,unicom,122.800
 KPQN,awos_phone,507-825-6895
 KPQN,ctaf,122.800
 KPQN,unicom,122.800
-KPRB,asos_phone,805-239-3593
+KPRB,asos_phone,805-721-3168
 KPRB,ctaf,123.000
 KPRB,unicom,123.000
 KPRC,asos_phone,928-541-3850
@@ -10361,7 +10380,7 @@ KRVR,ctaf,122.700
 KRVS,asos_phone,918-299-0740
 KRVS,ctaf,120.300
 KRVS,unicom,122.950
-KRWF,asos_phone,507-644-3564
+KRWF,asos_phone,507-644-3854
 KRWF,ctaf,123.000
 KRWF,unicom,123.000
 KRWI,asos_phone,252-446-0732
@@ -10632,7 +10651,7 @@ KSEQ,ctaf,122.975
 KSER,awos_phone,812-522-4244
 KSER,ctaf,122.800
 KSER,unicom,122.800
-KSET,asos_phone,636-250-4590
+KSET,asos_phone,636-400-9504
 KSET,ctaf,122.700
 KSET,unicom,122.700
 KSEZ,awos_phone,928-282-1993
@@ -11118,7 +11137,7 @@ KTBX,awos_phone,307-709-4487
 KTCC,asos_phone,575-461-4940
 KTCC,ctaf,122.950
 KTCC,unicom,122.950
-KTCL,asos_phone,205-750-8940
+KTCL,asos_phone,205-800-4042
 KTCL,ctaf,126.300
 KTCL,unicom,122.950
 KTCM,asos_phone,253-982-3434
@@ -11735,7 +11754,6 @@ KW35,ctaf,122.900
 KW36,ctaf,124.700
 KW36,unicom,122.800
 KW37,ctaf,122.900
-KW39,ctaf,128.250
 KW40,awos_phone,919-658-8067
 KW40,ctaf,122.800
 KW40,unicom,122.800
@@ -11823,7 +11841,7 @@ KWNA,awos_phone,907-868-7317
 KWNA,ctaf,122.900
 KWRG,awos_phone,907-874-2458
 KWRG,ctaf,122.600
-KWRL,asos_phone,307-347-4217
+KWRL,asos_phone,307-395-4602
 KWRL,ctaf,123.050
 KWRL,unicom,123.050
 KWSB,ctaf,122.900
@@ -12129,6 +12147,7 @@ MI54,ctaf,122.900
 MI55,ctaf,122.900
 MI57,ctaf,122.900
 MI58,ctaf,122.900
+MI61,ctaf,122.900
 MI62,ctaf,122.900
 MI63,ctaf,122.900
 MI64,ctaf,122.900
@@ -12345,6 +12364,7 @@ NR15,ctaf,122.900
 NR22,ctaf,122.900
 NR25,ctaf,123.050
 NR27,ctaf,122.900
+NR28,ctaf,122.900
 NR32,ctaf,122.900
 NR33,ctaf,122.900
 NR44,ctaf,122.900
@@ -12396,6 +12416,7 @@ OH06,ctaf,122.900
 OH08,ctaf,122.900
 OH09,ctaf,122.900
 OH11,ctaf,122.900
+OH12,ctaf,122.900
 OH14,ctaf,122.900
 OH16,ctaf,122.900
 OH17,ctaf,122.900
@@ -12777,7 +12798,7 @@ TWR3CRW,ground,118.550
 TWR3CRW,ground,128.500
 TWR3CSG,ground,120.100
 TWR3CSM,ground,119.600
-TWR3CVG,departure,127.175
+TWR3CVG,departure,126.650
 TWR3CVG,ground,118.300
 TWR3CVS,ground,118.425
 TWR3CWA,ground,119.750
@@ -13238,8 +13259,8 @@ TWR3OQU,ground,118.600
 TWR3ORD,ground,118.050
 TWR3ORD,ground,121.675
 TWR3ORD,ground,132.700
-TWR3ORF,departure,125.200
 TWR3ORF,ground,118.500
+TWR3ORF,tower,125.200
 TWR3ORH,ground,120.500
 TWR3ORL,ground,118.700
 TWR3OSH,ground,118.500
@@ -13526,6 +13547,7 @@ TWR64B8,clearance,124.550
 TWR64GA52,departure,134.500
 TWR64KY21,departure,124.625
 TWR64NK01,departure,126.050
+TWR64PN41,departure,124.900
 TWR64R5,departure,133.550
 TWR64S2,tower,122.300
 TWR65NN,departure,118.800
@@ -13805,7 +13827,6 @@ TWR6MLE,tower,118.250
 TWR6MLS,tower,122.200
 TWR6MLY,tower,122.650
 TWR6MOU,departure,124.000
-TWR6MQY,clearance,118.400
 TWR6MSN,departure,135.450
 TWR6MSO,tower,122.200
 TWR6MTH,tower,132.200
@@ -14620,7 +14641,7 @@ TWR7LEX,tower,127.425
 TWR7LFT,departure,121.100
 TWR7LFT,departure,128.700
 TWR7LFT,tower,118.050
-TWR7LGA,departure,126.050
+TWR7LGA,tower,126.050
 TWR7LIT,departure,119.500
 TWR7LIT,departure,119.750
 TWR7LIT,departure,119.850
@@ -15599,6 +15620,7 @@ VT11,unicom,122.800
 VT44,unicom,122.800
 VT46,unicom,122.800
 VT76,ctaf,122.900
+WA03,ctaf,128.250
 WA07,ctaf,122.900
 WA15,unicom,123.000
 WA23,ctaf,122.900

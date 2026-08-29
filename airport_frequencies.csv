@@ -1,4 +1,4 @@
-# updated 2026-08-01 08:21:40.905174
+# updated 2026-08-29 12:25:46.846120
 icao,type,value
 00OI,unicom,123.050
 00TX,unicom,122.725
@@ -27,6 +27,7 @@ icao,type,value
 03PN,unicom,122.800
 04AA,ctaf,122.500
 04AL,ctaf,123.600
+04CA,unicom,122.975
 04CL,unicom,122.800
 04FA,unicom,122.800
 04MD,unicom,122.700
@@ -62,6 +63,7 @@ icao,type,value
 07GE,ctaf,122.900
 07KY,unicom,122.800
 07LA,ctaf,122.900
+07MI,ctaf,122.900
 07MT,ctaf,122.900
 07OK,unicom,122.800
 07TA,unicom,123.050
@@ -133,8 +135,8 @@ icao,type,value
 0TN8,ctaf,123.050
 0TN8,unicom,123.050
 0TS0,ctaf,122.800
-0TX1,ctaf,122.975
-0TX1,unicom,122.975
+0TX1,ctaf,123.075
+0TX1,unicom,123.075
 0TX7,ctaf,122.900
 0WI5,ctaf,122.900
 0WI6,ctaf,122.900
@@ -248,6 +250,7 @@ icao,type,value
 1OH4,ctaf,122.900
 1OH6,ctaf,122.900
 1OH7,ctaf,122.900
+1OI6,ctaf,122.900
 1OI7,ctaf,122.900
 1OK0,unicom,122.800
 1PS6,unicom,122.950
@@ -382,6 +385,7 @@ icao,type,value
 2NK5,ctaf,122.900
 2NK9,ctaf,122.900
 2OA1,ctaf,122.900
+2OA5,ctaf,122.900
 2OH1,ctaf,122.900
 2OH3,ctaf,122.900
 2OH5,ctaf,122.900
@@ -545,6 +549,7 @@ icao,type,value
 3TA5,ctaf,122.900
 3TA7,unicom,122.800
 3TE3,ctaf,122.900
+3TX2,ctaf,122.800
 3VA4,ctaf,122.900
 3VA6,ctaf,122.900
 3VG5,ctaf,122.900
@@ -557,7 +562,6 @@ icao,type,value
 40AR,ctaf,122.900
 40MI,ctaf,122.900
 40NC,ctaf,122.900
-40OH,ctaf,122.900
 40OI,ctaf,122.900
 40OR,ctaf,122.800
 40XS,ctaf,122.900
@@ -606,6 +610,7 @@ icao,type,value
 45MI,ctaf,122.900
 45MS,ctaf,122.900
 45NE,ctaf,122.900
+45NK,ctaf,122.900
 45NR,unicom,123.050
 45OI,ctaf,122.900
 45XS,unicom,122.700
@@ -727,6 +732,7 @@ icao,type,value
 51FA,ctaf,122.900
 51FL,ctaf,122.900
 51MY,ctaf,122.900
+51OH,ctaf,122.900
 51SC,ctaf,122.900
 51TE,ctaf,122.900
 51WA,ctaf,122.900
@@ -752,6 +758,7 @@ icao,type,value
 54NR,ctaf,122.900
 54TA,ctaf,122.900
 55AK,ctaf,122.800
+55IL,ctaf,122.900
 55ME,ctaf,122.900
 55MI,ctaf,122.900
 55MT,ctaf,122.900
@@ -843,6 +850,7 @@ icao,type,value
 5OH6,ctaf,122.900
 5OH7,ctaf,122.900
 5OH8,ctaf,122.900
+5OI5,ctaf,122.900
 5OI8,ctaf,122.900
 5OK6,ctaf,122.900
 5PS4,ctaf,122.900
@@ -874,7 +882,6 @@ icao,type,value
 61OI,ctaf,122.900
 61TA,ctaf,122.900
 61TE,ctaf,122.900
-61XA,ctaf,122.900
 62AK,ctaf,122.800
 62AZ,ctaf,122.900
 62FA,ctaf,122.900
@@ -909,7 +916,8 @@ icao,type,value
 66MA,ctaf,122.900
 66OI,ctaf,122.900
 66SC,ctaf,122.900
-66TE,unicom,122.975
+66TE,ctaf,123.075
+66TE,unicom,123.075
 67AK,ctaf,122.800
 67AR,ctaf,122.900
 67MD,ctaf,122.900
@@ -991,6 +999,8 @@ icao,type,value
 72ME,ctaf,122.900
 72MI,ctaf,122.900
 72NY,ctaf,122.900
+72OH,ctaf,122.900
+72PA,ctaf,122.900
 72TE,ctaf,122.975
 72TE,unicom,122.975
 72VA,unicom,123.050
@@ -1051,6 +1061,7 @@ icao,type,value
 79AK,ctaf,122.800
 79IN,unicom,123.050
 79MI,ctaf,122.900
+79MS,ctaf,122.900
 79MT,ctaf,122.900
 79NC,unicom,122.800
 79NR,ctaf,122.900
@@ -1060,6 +1071,7 @@ icao,type,value
 79SC,ctaf,122.900
 79TS,ctaf,122.900
 79WS,ctaf,122.900
+79WY,ctaf,122.900
 7AK2,unicom,122.800
 7AK3,ctaf,122.500
 7AK4,ctaf,122.800
@@ -1097,6 +1109,7 @@ icao,type,value
 7MY9,ctaf,122.900
 7NC0,ctaf,122.900
 7NC6,ctaf,122.900
+7NC7,ctaf,122.900
 7NE8,ctaf,122.900
 7NK2,unicom,123.050
 7NK6,unicom,122.800
@@ -1132,6 +1145,7 @@ icao,type,value
 81FD,ctaf,122.900
 81II,unicom,123.050
 81MI,ctaf,122.900
+81OH,ctaf,122.900
 81WA,unicom,123.050
 81WI,ctaf,122.900
 82AK,ctaf,121.300
@@ -1228,6 +1242,7 @@ icao,type,value
 8OH0,ctaf,122.900
 8OH9,ctaf,123.075
 8OH9,unicom,123.075
+8OI3,ctaf,122.900
 8OI4,ctaf,122.900
 8OI9,ctaf,122.900
 8PA1,ctaf,122.900
@@ -1274,6 +1289,8 @@ icao,type,value
 92OI,ctaf,122.900
 92SC,ctaf,122.900
 92TX,unicom,122.800
+93NR,ctaf,122.800
+93NR,unicom,122.800
 93OH,ctaf,122.900
 93SC,ctaf,122.900
 94CL,unicom,123.075
@@ -1298,12 +1315,15 @@ icao,type,value
 97MN,ctaf,122.900
 97NC,ctaf,122.900
 97OH,ctaf,122.900
+97OK,ctaf,122.900
 98ME,ctaf,122.900
 98MO,ctaf,122.900
 98NH,ctaf,122.900
+98OH,ctaf,122.900
 98SC,ctaf,122.900
 98TN,unicom,122.725
 98WY,ctaf,122.900
+99CL,unicom,122.700
 99FL,ctaf,122.900
 99GA,unicom,122.800
 99MN,ctaf,123.050
@@ -1348,6 +1368,7 @@ icao,type,value
 9OH2,ctaf,122.900
 9OH4,ctaf,122.900
 9OH6,ctaf,122.900
+9OH7,ctaf,122.900
 9OH8,ctaf,122.900
 9OH9,ctaf,122.900
 9OI2,ctaf,122.900
@@ -1355,6 +1376,7 @@ icao,type,value
 9OI5,unicom,122.800
 9OI9,ctaf,122.900
 9OK1,unicom,123.050
+9OK5,ctaf,122.900
 9PR1,ctaf,122.900
 9TA7,unicom,123.050
 9TE2,awos_phone,325-276-2771
@@ -1592,6 +1614,7 @@ IL48,unicom,122.800
 IL54,ctaf,122.900
 IL62,ctaf,122.900
 IL72,ctaf,122.900
+IL73,ctaf,122.900
 IL84,unicom,122.800
 IL91,ctaf,122.900
 IN06,unicom,123.050
@@ -1763,8 +1786,6 @@ K0C4,ctaf,122.900
 K0C5,ctaf,122.900
 K0C8,ctaf,122.700
 K0C8,unicom,122.700
-K0D7,ctaf,122.800
-K0D7,unicom,122.800
 K0D8,awos_phone,605-765-0132
 K0D8,ctaf,122.800
 K0D8,unicom,122.800
@@ -2261,6 +2282,7 @@ K22D,ctaf,122.900
 K22F,ctaf,122.900
 K22I,ctaf,122.800
 K22I,unicom,122.800
+K22K,ctaf,122.900
 K22L,awos_phone,317-964-9799
 K22M,ctaf,122.800
 K22M,unicom,122.800
@@ -2510,9 +2532,6 @@ K2U4,ctaf,122.900
 K2U5,ctaf,122.900
 K2U7,ctaf,122.900
 K2U8,ctaf,122.900
-K2V5,awos_phone,970-332-5930
-K2V5,ctaf,122.800
-K2V5,unicom,122.800
 K2V6,awos_phone,970-848-3007
 K2V6,ctaf,122.800
 K2V6,unicom,122.800
@@ -2707,6 +2726,8 @@ K3KS,ctaf,122.900
 K3L2,ctaf,123.000
 K3L2,unicom,123.000
 K3L4,awos_phone,337-538-2321
+K3L7,ctaf,123.000
+K3L7,unicom,123.000
 K3LF,awos_phone,217-324-4735
 K3LF,ctaf,122.800
 K3LF,unicom,122.800
@@ -3562,7 +3583,6 @@ K79D,ctaf,122.900
 K79J,asos_phone,334-222-9770
 K79J,ctaf,123.050
 K79J,unicom,123.050
-K79N,ctaf,122.900
 K79S,awos_phone,406-622-5976
 K79S,ctaf,122.800
 K79S,unicom,122.800
@@ -3589,7 +3609,6 @@ K7B9,unicom,123.000
 K7BM,awos_phone,303-512-4419
 K7D3,ctaf,122.900
 K7D8,ctaf,122.900
-K7D9,ctaf,122.900
 K7F3,ctaf,122.800
 K7F3,unicom,122.800
 K7F7,ctaf,122.800
@@ -3611,6 +3630,7 @@ K7K5,ctaf,122.800
 K7K5,unicom,122.800
 K7K7,ctaf,122.900
 K7KA,ctaf,122.700
+K7KS,ctaf,122.900
 K7L2,awos_phone,701-254-4965
 K7L2,ctaf,122.900
 K7L8,ctaf,122.900
@@ -3876,6 +3896,7 @@ K96D,ctaf,122.900
 K96G,ctaf,122.900
 K96Z,ctaf,122.900
 K97G,ctaf,122.900
+K97M,awos_phone,406-775-6028
 K97M,ctaf,122.900
 K97Y,ctaf,122.800
 K97Y,unicom,122.800
@@ -4051,7 +4072,7 @@ KABQ,unicom,122.950
 KABR,asos_phone,605-206-9423
 KABR,ctaf,122.700
 KABR,unicom,122.700
-KABY,asos_phone,229-638-0164
+KABY,awos_phone,229-638-0164
 KABY,ctaf,120.250
 KABY,unicom,122.950
 KACB,awos_phone,231-533-8941
@@ -4218,7 +4239,7 @@ KAKI,ctaf,122.900
 KAKK,awos_phone,907-560-7609
 KAKK,ctaf,122.800
 KAKK,unicom,122.800
-KAKN,asos_phone,907-246-7506
+KAKN,asos_phone,907-300-7084
 KAKN,ctaf,121.900
 KAKN,unicom,122.950
 KAKO,asos_phone,970-514-5719
@@ -4593,6 +4614,7 @@ KBDL,unicom,122.950
 KBDN,awos_phone,541-382-1477
 KBDN,ctaf,123.000
 KBDN,unicom,123.000
+KBDQ,awos_phone,501-645-1010
 KBDQ,ctaf,122.800
 KBDQ,unicom,122.800
 KBDR,asos_phone,203-381-9453
@@ -4934,8 +4956,6 @@ KBZN,ctaf,118.200
 KBZN,unicom,122.950
 KC00,ctaf,122.900
 KC01,ctaf,122.900
-KC02,ctaf,122.800
-KC02,unicom,122.800
 KC03,ctaf,123.000
 KC03,unicom,123.000
 KC04,awos_phone,231-861-7415
@@ -5726,6 +5746,8 @@ KDIJ,unicom,122.700
 KDIK,asos_phone,701-227-0280
 KDIK,ctaf,123.000
 KDIK,unicom,123.000
+KDJT,asos_phone,561-444-7590
+KDJT,unicom,122.950
 KDKB,awos_phone,815-748-2350
 KDKB,ctaf,122.700
 KDKB,unicom,122.700
@@ -5892,7 +5914,7 @@ KDXX,ctaf,122.800
 KDXX,unicom,122.800
 KDYA,ctaf,122.800
 KDYA,unicom,122.800
-KDYB,awos_phone,843-821-8403
+KDYB,awos_phone,843-851-5786
 KDYB,ctaf,123.000
 KDYB,unicom,123.000
 KDYL,asos_phone,215-345-0392
@@ -6162,7 +6184,7 @@ KENL,ctaf,122.800
 KENL,unicom,122.800
 KENM,awos_phone,907-269-2755
 KENM,ctaf,122.900
-KENN,asos_phone,907-832-5689
+KENN,asos_phone,907-600-3104
 KENN,ctaf,122.100
 KENV,awos_phone,435-677-5641
 KENV,ctaf,122.800
@@ -7611,7 +7633,7 @@ KINK,unicom,123.000
 KINL,asos_phone,218-210-0035
 KINL,ctaf,122.800
 KINL,unicom,122.800
-KINR,awos_phone,907-621-4688
+KINR,awos_phone,907-202-8243
 KINR,ctaf,122.900
 KINT,asos_phone,336-661-3096
 KINT,ctaf,123.750
@@ -7834,7 +7856,6 @@ KJWG,ctaf,122.800
 KJWG,unicom,122.800
 KJWN,awos_phone,615-350-6222
 KJWN,ctaf,119.450
-KJWN,unicom,122.700
 KJWY,awos_phone,972-227-0471
 KJWY,ctaf,122.975
 KJWY,unicom,122.975
@@ -9349,7 +9370,6 @@ KO68,ctaf,122.900
 KO69,awos_phone,707-773-1529
 KO69,ctaf,122.700
 KO69,unicom,122.700
-KO74,ctaf,122.900
 KO79,ctaf,122.900
 KO81,ctaf,122.900
 KO85,awos_phone,530-225-4183
@@ -9437,6 +9457,7 @@ KOJA,unicom,122.800
 KOJC,asos_phone,913-361-8893
 KOJC,ctaf,126.000
 KOJC,unicom,122.950
+KOK2,ctaf,122.900
 KOKB,asos_phone,760-439-9683
 KOKB,ctaf,122.725
 KOKB,unicom,122.725
@@ -9726,8 +9747,6 @@ KPBG,unicom,122.700
 KPBH,awos_phone,715-339-4520
 KPBH,ctaf,122.800
 KPBH,unicom,122.800
-KPBI,asos_phone,561-444-7590
-KPBI,unicom,122.950
 KPBM,awos_phone,281-846-7123
 KPBV,asos_phone,907-560-7610
 KPBV,ctaf,122.800
@@ -9786,7 +9805,7 @@ KPGD,unicom,122.975
 KPGM,ctaf,122.900
 KPGR,ctaf,122.800
 KPGR,unicom,122.800
-KPGV,awos_phone,252-758-6485
+KPGV,awos_phone,252-758-2762
 KPGV,ctaf,122.800
 KPGV,unicom,122.800
 KPHD,asos_phone,330-339-1125
@@ -9921,7 +9940,7 @@ KPOF,ctaf,123.000
 KPOF,unicom,123.000
 KPOH,ctaf,122.800
 KPOH,unicom,122.800
-KPOR,asos_phone,907-783-2626
+KPOR,asos_phone,907-560-7691
 KPOU,asos_phone,845-836-6748
 KPOU,ctaf,124.000
 KPOU,unicom,122.950
@@ -10376,7 +10395,7 @@ KRVL,ctaf,122.700
 KRVL,unicom,122.700
 KRVN,ctaf,122.800
 KRVN,unicom,122.800
-KRVR,ctaf,122.700
+KRVR,unicom,122.700
 KRVS,asos_phone,918-299-0740
 KRVS,ctaf,120.300
 KRVS,unicom,122.950
@@ -10396,6 +10415,9 @@ KRWV,ctaf,122.900
 KRXE,asos_phone,208-356-0986
 KRXE,ctaf,122.800
 KRXE,unicom,122.800
+KRYA,awos_phone,970-332-5930
+KRYA,ctaf,122.800
+KRYA,unicom,122.800
 KRYN,awos_phone,520-578-0269
 KRYN,ctaf,125.800
 KRYV,awos_phone,920-261-0734
@@ -11175,7 +11197,7 @@ KTFP,ctaf,122.700
 KTFP,unicom,122.700
 KTGC,ctaf,122.800
 KTGC,unicom,122.800
-KTGI,awos_phone,757-891-2246
+KTGI,awos_phone,757-891-2496
 KTGI,ctaf,122.800
 KTGI,unicom,122.800
 KTHA,awos_phone,931-454-2052
@@ -11728,8 +11750,6 @@ KW13,awos_phone,540-941-7570
 KW13,ctaf,123.050
 KW13,unicom,123.050
 KW16,ctaf,122.900
-KW17,ctaf,122.800
-KW17,unicom,122.800
 KW20,ctaf,123.000
 KW20,unicom,123.000
 KW22,awos_phone,304-472-9428
@@ -12115,10 +12135,12 @@ ME68,unicom,122.800
 ME74,ctaf,122.900
 ME79,unicom,122.800
 MI00,ctaf,122.900
+MI02,ctaf,122.900
 MI03,ctaf,122.900
 MI04,ctaf,122.900
 MI05,ctaf,122.900
 MI06,ctaf,122.900
+MI08,ctaf,122.900
 MI09,ctaf,122.900
 MI11,unicom,123.000
 MI12,ctaf,122.900
@@ -12173,6 +12195,7 @@ MI95,ctaf,122.900
 MI96,ctaf,122.900
 MI97,ctaf,123.050
 MI97,unicom,123.050
+MI98,ctaf,122.900
 MI99,ctaf,122.900
 MN00,ctaf,122.900
 MN02,ctaf,122.900
@@ -12193,6 +12216,7 @@ MN27,ctaf,122.900
 MN30,ctaf,122.900
 MN32,ctaf,122.900
 MN33,unicom,123.050
+MN36,ctaf,122.900
 MN37,ctaf,122.900
 MN40,ctaf,122.900
 MN45,ctaf,122.900
@@ -12413,6 +12437,7 @@ OH01,ctaf,122.900
 OH02,ctaf,122.900
 OH05,ctaf,122.900
 OH06,ctaf,122.900
+OH07,ctaf,122.900
 OH08,ctaf,122.900
 OH09,ctaf,122.900
 OH11,ctaf,122.900
@@ -12431,6 +12456,7 @@ OH33,ctaf,122.900
 OH35,unicom,122.800
 OH37,ctaf,122.900
 OH38,ctaf,122.900
+OH44,ctaf,122.900
 OH46,ctaf,122.800
 OH46,unicom,122.800
 OH49,ctaf,122.900
@@ -12471,10 +12497,13 @@ OI23,ctaf,122.900
 OI24,ctaf,122.900
 OI35,ctaf,122.900
 OI36,ctaf,122.900
+OI38,ctaf,122.900
 OI41,ctaf,122.900
 OI44,ctaf,122.900
 OI51,ctaf,122.900
 OI53,ctaf,122.900
+OI69,ctaf,122.900
+OI71,ctaf,122.900
 OI76,ctaf,122.900
 OI80,ctaf,122.900
 OI82,ctaf,122.900
@@ -12483,6 +12512,8 @@ OI83,ctaf,122.900
 OI85,ctaf,122.900
 OI86,ctaf,122.900
 OI87,ctaf,122.900
+OI88,ctaf,122.800
+OI88,unicom,122.800
 OI95,ctaf,122.900
 OI98,ctaf,122.900
 OK01,unicom,122.800
@@ -12586,6 +12617,7 @@ SD27,ctaf,122.900
 SD28,ctaf,122.900
 SD38,ctaf,122.900
 SD68,unicom,122.800
+SD78,ctaf,122.900
 SN29,unicom,122.800
 SN95,unicom,122.800
 TA25,ctaf,120.900
@@ -12828,6 +12860,9 @@ TWR3DET,ground,121.300
 TWR3DFW,departure,126.550
 TWR3DFW,ground,118.100
 TWR3DHN,ground,118.400
+TWR3DJT,departure,124.600
+TWR3DJT,departure,127.350
+TWR3DJT,ground,118.750
 TWR3DLF,departure,119.600
 TWR3DLH,ground,118.300
 TWR3DMA,ground,118.850
@@ -13280,9 +13315,6 @@ TWR3PAE,ground,120.200
 TWR3PAH,ground,119.600
 TWR3PAM,ground,118.050
 TWR3PAO,ground,118.600
-TWR3PBI,departure,124.600
-TWR3PBI,departure,127.350
-TWR3PBI,ground,118.750
 TWR3PCA,tower,126.200
 TWR3PCT,tower,119.700
 TWR3PDK,ground,120.900
@@ -13354,6 +13386,7 @@ TWR3RSW,departure,125.150
 TWR3RSW,departure,128.750
 TWR3RSW,ground,119.750
 TWR3RSW,ground,134.425
+TWR3RVR,tower,120.025
 TWR3RVS,ground,119.200
 TWR3RYM,tower,126.200
 TWR3RYN,ground,118.200
@@ -13759,6 +13792,7 @@ TWR6IDA,tower,122.550
 TWR6IFP,clearance,118.250
 TWR6IGG,departure,118.800
 TWR6II561,departure,119.225
+TWR6IIK,tower,122.600
 TWR6IKO,departure,118.000
 TWR6ILI,departure,118.800
 TWR6ILI,tower,123.600
@@ -14014,7 +14048,7 @@ TWR7A80,departure,126.975
 TWR7A80,departure,128.575
 TWR7A80,departure,132.475
 TWR7A80,departure,133.475
-TWR7A80,ground,127.900
+TWR7A80,ground,134.725
 TWR7A80,tower,118.700
 TWR7A80,tower,118.950
 TWR7A80,tower,119.250
@@ -14030,13 +14064,13 @@ TWR7A80,tower,125.650
 TWR7A80,tower,126.975
 TWR7A80,tower,127.250
 TWR7A80,tower,127.700
-TWR7A80,tower,127.900
 TWR7A80,tower,128.000
 TWR7A80,tower,128.525
 TWR7A80,tower,128.575
 TWR7A80,tower,133.475
 TWR7A80,tower,134.000
 TWR7A80,tower,134.250
+TWR7A80,tower,134.725
 TWR7A80,tower,135.375
 TWR7A90,departure,118.200
 TWR7A90,departure,119.700
@@ -14365,6 +14399,16 @@ TWR7DAB,departure,125.350
 TWR7DAB,departure,125.800
 TWR7DAB,tower,118.850
 TWR7DAB,tower,125.800
+TWR7DJT,departure,123.625
+TWR7DJT,departure,125.200
+TWR7DJT,departure,127.350
+TWR7DJT,departure,128.300
+TWR7DJT,departure,132.800
+TWR7DJT,tower,120.825
+TWR7DJT,tower,123.625
+TWR7DJT,tower,124.600
+TWR7DJT,tower,125.200
+TWR7DJT,tower,127.350
 TWR7DLF,departure,119.600
 TWR7DLF,departure,127.750
 TWR7DLF,tower,120.500
@@ -14918,11 +14962,10 @@ TWR7ORF,departure,119.550
 TWR7ORF,departure,124.900
 TWR7ORF,departure,125.200
 TWR7ORF,departure,125.700
-TWR7ORF,departure,126.050
 TWR7ORF,departure,127.900
+TWR7ORF,departure,134.875
 TWR7ORF,tower,118.900
 TWR7ORF,tower,124.900
-TWR7ORF,tower,125.200
 TWR7ORF,tower,125.700
 TWR7OZR,departure,121.100
 TWR7OZR,departure,125.400
@@ -14975,16 +15018,6 @@ TWR7P80,tower,126.000
 TWR7P80,tower,126.900
 TWR7PAM,departure,124.150
 TWR7PAM,departure,125.200
-TWR7PBI,departure,123.625
-TWR7PBI,departure,125.200
-TWR7PBI,departure,127.350
-TWR7PBI,departure,128.300
-TWR7PBI,departure,132.800
-TWR7PBI,tower,120.825
-TWR7PBI,tower,123.625
-TWR7PBI,tower,124.600
-TWR7PBI,tower,125.200
-TWR7PBI,tower,127.350
 TWR7PCT,approach,124.550
 TWR7PCT,approach,126.400
 TWR7PCT,clearance,125.525
@@ -15435,6 +15468,7 @@ TWR9DAL,tower,124.000
 TWR9DCA,tower,124.000
 TWR9DEN,tower,124.000
 TWR9DFW,tower,124.000
+TWR9DJT,tower,124.000
 TWR9DOV,tower,124.000
 TWR9DSM,tower,124.000
 TWR9DTW,tower,124.000
@@ -15513,7 +15547,6 @@ TWR9OXC,tower,124.000
 TWR9OXR,tower,124.000
 TWR9PAE,tower,124.000
 TWR9PAO,tower,124.000
-TWR9PBI,tower,124.000
 TWR9PDX,tower,124.000
 TWR9PHL,tower,124.000
 TWR9PHX,tower,124.000
@@ -15542,6 +15575,7 @@ TWR9SDM,tower,124.000
 TWR9SEA,tower,124.000
 TWR9SEE,tower,124.000
 TWR9SFO,tower,124.000
+TWR9SGR,tower,124.000
 TWR9SJC,tower,124.000
 TWR9SJU,tower,124.000
 TWR9SKF,tower,124.000
@@ -15606,6 +15640,7 @@ VA58,ctaf,122.900
 VA88,unicom,123.050
 VA89,ctaf,122.900
 VA96,unicom,122.700
+VG19,unicom,122.800
 VG22,ctaf,122.900
 VG31,ctaf,122.900
 VG40,ctaf,122.900
@@ -15684,6 +15719,7 @@ WY05,ctaf,122.900
 WY11,unicom,122.800
 WY20,unicom,122.800
 WY37,ctaf,122.900
+WY41,ctaf,122.900
 WY45,ctaf,122.900
 WY46,ctaf,122.900
 WY50,unicom,122.950
